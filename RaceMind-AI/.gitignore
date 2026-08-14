@@ -1,0 +1,45 @@
+# --- Node / TypeScript ---
+node_modules/
+.next/
+out/
+dist/
+build/
+.turbo/
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.db
+*.sqlite3
+
+# backend/.env is real local config (has DATABASE_URL, SECRET_KEY, etc) -
+# .env.example is the tracked template
+backend/.env
+
+# --- Electron ---
+apps/desktop/release/
+apps/desktop/out/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# --- Alembic (keep migrations, ignore pycache under versions/) ---
+backend/alembic/versions/__pycache__/
+
+# --- Logs ---
+*.log
+npm-debug.log*

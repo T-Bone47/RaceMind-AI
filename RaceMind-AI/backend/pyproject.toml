@@ -1,0 +1,46 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+explicit_package_bases = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_defs = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "jwt.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "fastf1.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "faster_whisper.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "sounddevice.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "soundfile.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Test functions/fixtures are pytest-driven and don't gain much from
+# explicit annotations the way application code does; application code
+# stays fully strict above.
+module = "tests.*"
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
