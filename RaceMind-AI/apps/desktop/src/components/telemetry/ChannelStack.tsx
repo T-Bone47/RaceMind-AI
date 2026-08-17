@@ -1,19 +1,20 @@
 import { useMemo, useRef } from 'react';
 import { Panel } from '../ui/Panel';
 import { Trace } from '../ui/Trace';
+import { useSessionStore } from '../../store/sessionStore';
 import {
-  brake,
+  brake as mockBrake,
   battery,
   delta,
   drs,
   ers,
   fuelFlow,
-  gear,
+  gear as mockGear,
   refSpeed,
   rpm,
-  speed,
+  speed as mockSpeed,
   steering,
-  throttle } from
+  throttle as mockThrottle } from
 '../../data/telemetry';
 import { trackCorners } from '../../data/track';
 
@@ -31,19 +32,6 @@ interface Channel {
   decimals?: number;
 }
 
-const channels: Channel[] = [
-{ key: 'speed', label: 'Speed', unit: 'kph', color: '#00E5FF', values: speed, ghost: refSpeed, height: 108, min: 40, max: 350 },
-{ key: 'delta', label: 'Delta to ref', unit: 's', color: '#00D68F', values: delta, height: 62, baseline: 0, decimals: 3 },
-{ key: 'pedals', label: 'Throttle', unit: '%', color: '#00D68F', values: throttle, height: 58, min: 0, max: 100 },
-{ key: 'brake', label: 'Brake', unit: '%', color: '#E10600', values: brake, height: 58, min: 0, max: 100 },
-{ key: 'gear', label: 'Gear', unit: '', color: '#B15CFF', values: gear, height: 48, min: 0, max: 8 },
-{ key: 'rpm', label: 'RPM', unit: '', color: '#FFC531', values: rpm, height: 52, min: 5000, max: 12500 },
-{ key: 'steering', label: 'Steering', unit: '°', color: '#F3F7FB', values: steering, height: 52, min: -130, max: 130, baseline: 0 },
-{ key: 'ers', label: 'ERS deploy', unit: 'kW', color: '#00E5FF', values: ers, height: 52, min: 0, max: 170 },
-{ key: 'battery', label: 'Battery', unit: '%', color: '#B15CFF', values: battery, height: 48, min: 0, max: 100 },
-{ key: 'fuel', label: 'Fuel flow', unit: 'kg/h', color: '#FF7A29', values: fuelFlow, height: 48, min: 0, max: 100 }];
-
-
 interface Props {
   cursor: number;
   onCursor: (c: number) => void;
@@ -51,13 +39,27 @@ interface Props {
 }
 
 const rivalTraces: Record<string, {color: string;values: number[];}> = {
-  LEC: { color: '#E10600', values: speed.map((v, i) => v - Math.sin(i / 6) * 9 - 3) },
-  VER: { color: '#3D8BFF', values: speed.map((v, i) => v + Math.cos(i / 7) * 8 - 1) },
-  NOR: { color: '#FF7A29', values: speed.map((v, i) => v + Math.sin(i / 5) * 7 + 2) }
+  LEC: { color: '#E10600', values: mockSpeed.map((v, i) => v - Math.sin(i / 6) * 9 - 3) },
+  VER: { color: '#3D8BFF', values: mockSpeed.map((v, i) => v + Math.cos(i / 7) * 8 - 1) },
+  NOR: { color: '#FF7A29', values: mockSpeed.map((v, i) => v + Math.sin(i / 5) * 7 + 2) }
 };
 
 export function ChannelStack({ cursor, onCursor, compare }: Props) {
+  const store = useSessionStore();
   const ref = useRef<HTMLDivElement>(null);
+
+  const channels: Channel[] = useMemo(() => [
+    { key: 'speed', label: 'Speed', unit: 'kph', color: '#00E5FF', values: store.speedHistory.some(v => v > 0) ? store.speedHistory : mockSpeed, ghost: refSpeed, height: 108, min: 40, max: 350 },
+    { key: 'delta', label: 'Delta to ref', unit: 's', color: '#00D68F', values: delta, height: 62, baseline: 0, decimals: 3 },
+    { key: 'pedals', label: 'Throttle', unit: '%', color: '#00D68F', values: store.throttleHistory.some(v => v > 0) ? store.throttleHistory : mockThrottle, height: 58, min: 0, max: 100 },
+    { key: 'brake', label: 'Brake', unit: '%', color: '#E10600', values: store.brakeHistory.some(v => v > 0) ? store.brakeHistory : mockBrake, height: 58, min: 0, max: 100 },
+    { key: 'gear', label: 'Gear', unit: '', color: '#B15CFF', values: store.gearHistory.some(v => v > 0) ? store.gearHistory : mockGear, height: 48, min: 0, max: 8 },
+    { key: 'rpm', label: 'RPM', unit: '', color: '#FFC531', values: rpm, height: 52, min: 5000, max: 12500 },
+    { key: 'steering', label: 'Steering', unit: '°', color: '#F3F7FB', values: steering, height: 52, min: -130, max: 130, baseline: 0 },
+    { key: 'ers', label: 'ERS deploy', unit: 'kW', color: '#00E5FF', values: ers, height: 52, min: 0, max: 170 },
+    { key: 'battery', label: 'Battery', unit: '%', color: '#B15CFF', values: battery, height: 48, min: 0, max: 100 },
+    { key: 'fuel', label: 'Fuel flow', unit: 'kg/h', color: '#FF7A29', values: fuelFlow, height: 48, min: 0, max: 100 }
+  ], [store.speedHistory, store.throttleHistory, store.brakeHistory, store.gearHistory]);
 
   const drsZones = useMemo(() => {
     const zones: {start: number;end: number;}[] = [];

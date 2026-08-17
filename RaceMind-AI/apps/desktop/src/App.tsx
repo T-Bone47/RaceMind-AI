@@ -1,6 +1,7 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { AppShell } from './components/layout/AppShell';
+import { useSessionStore } from './store/sessionStore';
 
 const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
 const Telemetry = lazy(() => import('./pages/Telemetry').then(m => ({ default: m.Telemetry })));
@@ -22,6 +23,14 @@ function PageFallback() {
 }
 
 export function App() {
+  useEffect(() => {
+    // Connect to the generic live UDP session broadcasted by the backend
+    useSessionStore.getState().connectWebSocket('00000000-0000-0000-0000-000000000000');
+    return () => {
+      useSessionStore.getState().disconnectWebSocket();
+    };
+  }, []);
+
   return (
     <Suspense fallback={<PageFallback />}>
       <Routes>

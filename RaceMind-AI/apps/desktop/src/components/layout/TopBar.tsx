@@ -1,5 +1,6 @@
 import { Bell, CloudRain, Command, FlaskConical, Radio, Search, Thermometer, Wind } from 'lucide-react';
 import { focusDriver, session } from '../../data/race';
+import { useSessionStore } from '../../store/sessionStore';
 import { formatClock } from '../../utils/format';
 import { useLiveTick } from '../../hooks/useLiveTick';
 import { Readout } from '../ui/Metric';
@@ -12,7 +13,8 @@ interface TopBarProps {
 export function TopBar({ onOpenCommand }: TopBarProps) {
   const tick = useLiveTick(1000);
   const elapsed = session.elapsed + tick;
-  const tyre = compoundOf(focusDriver.compound);
+  const store = useSessionStore();
+  const tyre = compoundOf((store.tyres.compound || focusDriver.compound).toUpperCase() as any);
 
   return (
     <header className="relative z-10 flex h-14 shrink-0 items-center gap-3 border-b border-white/[0.06] bg-carbon-800/85 px-3 backdrop-blur-xl lg:gap-4 lg:px-4">
@@ -22,10 +24,10 @@ export function TopBar({ onOpenCommand }: TopBarProps) {
         </span>
         <div className="min-w-0">
           <p className="truncate text-[12.5px] font-semibold leading-none tracking-tight text-f1-white">
-            {session.event}
+            {store.trackName || session.event}
           </p>
           <p className="mt-1 truncate font-mono text-[9px] uppercase tracking-[0.16em] text-silver/60">
-            {session.round} · {session.circuit}
+            {session.round} · {store.trackName || session.circuit}
           </p>
         </div>
       </div>
@@ -33,9 +35,9 @@ export function TopBar({ onOpenCommand }: TopBarProps) {
       <div className="mx-1 hidden h-7 w-px bg-white/[0.07] xl:block" />
 
       <div className="hidden items-center gap-4 xl:flex">
-        <Readout label="Lap" value={`${session.lap}/${session.totalLaps}`} hint="Current lap of total race distance" />
+        <Readout label="Lap" value={`${store.currentLap}/${store.totalLaps}`} hint="Current lap of total race distance" />
         <Readout label="Elapsed" value={formatClock(elapsed)} hint="Time since lights out" />
-        <div className="flex items-center gap-1.5" title={`Running the ${tyre.name} compound, ${focusDriver.tyreAge} laps old`}>
+        <div className="flex items-center gap-1.5" title={`Running the ${tyre.name} compound, ${store.tyres.ageLaps} laps old`}>
           <span
             className="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full border-2 font-mono text-[8px] font-bold"
             style={{ borderColor: tyre.color, color: tyre.color }}>
@@ -45,12 +47,12 @@ export function TopBar({ onOpenCommand }: TopBarProps) {
           <div className="leading-none">
             <p className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-silver/50">Tyre</p>
             <p className="mt-1 font-mono text-[12px] font-semibold tabular" style={{ color: tyre.color }}>
-              {focusDriver.tyreAge}L
+              {store.tyres.ageLaps}L
             </p>
           </div>
         </div>
-        <Readout label="Track" value={`${session.trackTemp}°`} color="#FF7A29" icon={Thermometer} hint="Track surface temperature" />
-        <Readout label="Wind" value={`${session.windSpeed} kph`} color="#8E99A8" icon={Wind} hint="Wind speed at the start-finish line" />
+        <Readout label="Track" value={`${store.trackTempC}°`} color="#FF7A29" icon={Thermometer} hint="Track surface temperature" />
+        <Readout label="Air" value={`${store.airTempC}°`} color="#8E99A8" icon={Wind} hint="Air temperature" />
         <Readout
           label="Rain 30m"
           value={`${session.rainProbability}%`}
