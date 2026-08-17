@@ -1,5 +1,5 @@
-// @ts-nocheck
-import React, { useEffect, useState } from 'react';
+
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { VoiceStage } from '../components/voice/VoiceStage';
 import { ConversationLog } from '../components/voice/ConversationLog';
@@ -7,12 +7,6 @@ import { ReasoningPanel } from '../components/voice/ReasoningPanel';
 import { ContextPanel } from '../components/voice/ContextPanel';
 import type { VoiceState } from '../data/voice';
 
-const cycle: Record<VoiceState, {next: VoiceState;ms: number;}> = {
-  idle: { next: 'listening', ms: 5200 },
-  listening: { next: 'thinking', ms: 3800 },
-  thinking: { next: 'speaking', ms: 2600 },
-  speaking: { next: 'idle', ms: 5000 }
-};
 
 export function Voice() {
   const [state, setState] = useState<VoiceState>('idle');

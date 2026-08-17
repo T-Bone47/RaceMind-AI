@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Panel } from '../ui/Panel';
 import { Trace } from '../ui/Trace';
 import {
@@ -118,7 +118,7 @@ export function ChannelStack({ cursor, onCursor, compare }: Props) {
 
         {channels.map((ch) => {
           const idx = Math.round(cursor * (ch.values.length - 1));
-          const current = ch.values[idx];
+          const current = ch.values[idx]!;
           return (
             <div key={ch.key} className="relative border-b border-white/[0.04] last:border-b-0">
               <div className="absolute left-3 top-1.5 z-10 flex items-baseline gap-2">

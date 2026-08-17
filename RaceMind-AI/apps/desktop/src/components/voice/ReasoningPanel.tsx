@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Check, Loader2 } from 'lucide-react';
 import { reasoning } from '../../data/voice';

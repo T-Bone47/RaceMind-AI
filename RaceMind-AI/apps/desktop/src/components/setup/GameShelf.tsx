@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Gamepad2 } from 'lucide-react';
 import { games } from '../../data/setups';

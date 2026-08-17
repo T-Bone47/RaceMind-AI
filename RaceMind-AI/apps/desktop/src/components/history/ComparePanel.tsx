@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { GitCompare, X } from 'lucide-react';
 import { typeColor, type SessionRecord } from '../../data/sessions';

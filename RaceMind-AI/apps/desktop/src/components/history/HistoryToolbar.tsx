@@ -1,4 +1,3 @@
-import React from 'react';
 import { Archive, Calendar, Database, Search, SlidersHorizontal, X } from 'lucide-react';
 import { archive, typeColor, type SessionType } from '../../data/sessions';
 

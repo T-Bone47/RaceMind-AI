@@ -1,4 +1,3 @@
-import React from 'react';
 import { Minus, Moon, Plus, Printer, RefreshCw, Sun } from 'lucide-react';
 import type { ReportTemplate } from '../../data/reports';
 

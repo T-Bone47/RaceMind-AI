@@ -1,4 +1,3 @@
-import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, GitCompare, Sparkles } from 'lucide-react';
 import { severityMeta, type Insight } from '../../data/insights';
@@ -52,7 +51,7 @@ export function InsightDetail({ insight }: {insight: Insight;}) {
                 Evidence · {insight.evidence.label}
               </span>
               <span className="font-mono text-[10px]" style={{ color: insight.evidence.color }}>
-                {insight.evidence.values[insight.evidence.values.length - 1].toFixed(1)} {insight.evidence.unit}
+                {insight.evidence.values[insight.evidence.values.length - 1]!.toFixed(1)} {insight.evidence.unit}
               </span>
             </div>
             <div className="overflow-hidden rounded-lg border border-white/[0.06] bg-black/30 px-1 pt-1">

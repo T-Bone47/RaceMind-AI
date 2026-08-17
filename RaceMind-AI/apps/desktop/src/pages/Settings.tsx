@@ -1,5 +1,5 @@
-// @ts-nocheck
-import React, { useCallback, useMemo, useState } from 'react';
+
+import { useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SettingsNav } from '../components/settings/SettingsNav';
 import { ProfileSection } from '../components/settings/ProfileSection';
@@ -8,10 +8,10 @@ import { InterfaceSection } from '../components/settings/InterfaceSection';
 import { SystemSection } from '../components/settings/SystemSection';
 import { SaveBar } from '../components/settings/SaveBar';
 import { defaultSettings, sections, type SectionId, type SettingsState } from '../data/settings';
-import { useScreenInit } from '../useScreenInit.js';
+import { useScreenInit } from '../useScreenInit';
 
 export function Settings() {
-  const screenInit = useScreenInit();
+  const screenInit = useScreenInit<{ active: string }>();
   const [active, setActive] = useState<SectionId>(screenInit.active as SectionId ?? 'profile');
   const [settings, setSettings] = useState<SettingsState>(defaultSettings);
   const [baseline, setBaseline] = useState<SettingsState>(defaultSettings);

@@ -1,5 +1,4 @@
 import { useRaceData } from '../../hooks/useRaceData';
-import React from 'react';
 import { Panel } from '../ui/Panel';
 import { RingGauge } from '../ui/RingGauge';
 import { Trace } from '../ui/Trace';

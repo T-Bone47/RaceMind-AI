@@ -1,7 +1,6 @@
 import { useRaceData } from '../../hooks/useRaceData';
-import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, ArrowUp, BatteryCharging, Flag, Fuel, Trophy, Wind } from 'lucide-react';
+import { ArrowDown, ArrowUp, BatteryCharging, Flag, Fuel, Trophy, Wind, type LucideIcon } from 'lucide-react';
 import { formatLapTime } from '../../utils/format';
 import { deltaTrace } from '../../utils/series';
 import { Trace } from '../ui/Trace';
@@ -17,7 +16,7 @@ export function RaceHeader() {
   const tick = useLiveTick(1400);
   const jitter = (tick % 7 - 3) * 0.004;
   const progress = session.lap / session.totalLaps * 100;
-  const liveDelta = delta[delta.length - 1];
+  const liveDelta = delta[delta.length - 1]!;
   const tyreLife = 100 - focusDriver.tyreAge * 2.4;
 
   return (
@@ -200,7 +199,7 @@ function Cell({
 
 
 
-}: {label: string;value: string;sub: string;tone: string;icon?: React.ComponentType<{className?: string;}>;children?: React.ReactNode;}) {
+}: {label: string;value: string;sub: string;tone: string;icon?: LucideIcon;children?: React.ReactNode;}) {
   return (
     <div className="flex flex-col justify-center bg-carbon-700/80 px-4 py-3 transition-colors hover:bg-carbon-600/80">
       <div className="flex items-center gap-1.5">
@@ -233,7 +232,7 @@ function State({
 
 
 
-}: {icon: React.ComponentType<{className?: string;strokeWidth?: number;}>;label: string;value: string;detail: string;tone: string;state: string;}) {
+}: {icon: LucideIcon;label: string;value: string;detail: string;tone: string;state: string;}) {
   return (
     <div className="flex items-center gap-2.5 bg-carbon-700/85 px-4 py-2.5">
       <span

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CalendarClock, Check, FileDown, Send } from 'lucide-react';
 import { recipients } from '../../data/reports';

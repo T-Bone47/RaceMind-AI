@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { skillRadar, comparisons } from '../../data/analytics';
 import { Panel } from '../ui/Panel';
@@ -18,7 +17,7 @@ function pointsFor(values: number[]): string {
 }
 
 export function SkillRadar({ compareTo }: {compareTo: string;}) {
-  const rival = comparisons.find((c) => c.code === compareTo) ?? comparisons[0];
+  const rival = comparisons.find((c) => c.code === compareTo) ?? comparisons[0]!;
   const rivalValues = skillRadar.map((a) => compareTo === 'FIELD' ? a.field : a.rival);
 
   return (
@@ -118,7 +117,7 @@ export function SkillRadar({ compareTo }: {compareTo: string;}) {
 
       <ul className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5">
         {skillRadar.map((a, i) => {
-          const rv = rivalValues[i];
+          const rv = rivalValues[i]!;
           const diff = a.self - rv;
           return (
             <li key={a.key} className="flex items-center justify-between">

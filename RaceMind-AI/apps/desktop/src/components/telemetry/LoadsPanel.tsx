@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React from 'react';
+
 import { Panel } from '../ui/Panel';
 import { brakeTemps, tyreLoads } from '../../data/telemetry';
 

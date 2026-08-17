@@ -1,4 +1,3 @@
-import React from 'react';
 import { CloudRain, Download, GitCompare, Save, Search, Sparkles, Star } from 'lucide-react';
 import { circuits, games, weatherOptions, type Circuit, type GameTitle, type WeatherKind } from '../../data/setups';
 

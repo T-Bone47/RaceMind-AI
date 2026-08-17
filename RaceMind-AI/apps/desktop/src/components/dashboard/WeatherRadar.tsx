@@ -1,5 +1,4 @@
 import { useRaceData } from '../../hooks/useRaceData';
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Droplets, Navigation } from 'lucide-react';
 import { Panel } from '../ui/Panel';

@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SettingsState } from '../../data/settings';
 import { accentOptions } from '../../data/settings';
 import { Panel } from '../ui/Panel';

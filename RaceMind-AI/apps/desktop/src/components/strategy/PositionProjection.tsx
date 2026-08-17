@@ -1,4 +1,3 @@
-import React from 'react';
 import { Panel } from '../ui/Panel';
 import type { SimInputs } from '../../data/strategy';
 import { projectTrace, type SimResult } from '../../utils/strategySim';
@@ -54,7 +53,7 @@ export function PositionProjection({ inputs, result }: {inputs: SimInputs;result
 
         {/* pit window band */}
         <rect
-          x={xFor(inputs.pitLap - laps[0])}
+          x={xFor(inputs.pitLap - laps[0]!)}
           y={8}
           width={Math.max(4, xFor(2) - xFor(0))}
           height={H - PAD_B - 8}
@@ -62,8 +61,8 @@ export function PositionProjection({ inputs, result }: {inputs: SimInputs;result
           opacity="0.08" />
         
         <line
-          x1={xFor(inputs.pitLap - laps[0])}
-          x2={xFor(inputs.pitLap - laps[0])}
+          x1={xFor(inputs.pitLap - laps[0]!)}
+          x2={xFor(inputs.pitLap - laps[0]!)}
           y1={8}
           y2={H - PAD_B}
           stroke="#00E5FF"
@@ -71,7 +70,7 @@ export function PositionProjection({ inputs, result }: {inputs: SimInputs;result
           strokeDasharray="4 4" />
         
         <text
-          x={xFor(inputs.pitLap - laps[0]) + 6}
+          x={xFor(inputs.pitLap - laps[0]!) + 6}
           y={20}
           fontSize="9.5"
           fill="#00E5FF"
@@ -99,13 +98,13 @@ export function PositionProjection({ inputs, result }: {inputs: SimInputs;result
               
               <circle
                 cx={xFor(s.values.length - 1)}
-                cy={yFor(s.values[s.values.length - 1])}
+                cy={yFor(s.values[s.values.length - 1]!)}
                 r={s.code === 'RUS' ? 4 : 2.6}
                 fill={s.color} />
               
               <text
                 x={xFor(s.values.length - 1) - 10}
-                y={yFor(s.values[s.values.length - 1]) - 8}
+                y={yFor(s.values[s.values.length - 1]!) - 8}
                 fontSize="10"
                 fill={s.color}
                 textAnchor="end"

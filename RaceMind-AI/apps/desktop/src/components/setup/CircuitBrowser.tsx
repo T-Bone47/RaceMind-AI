@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CloudRain, Flame, Moon, Sun, Wind } from 'lucide-react';
 import { circuits, type Circuit } from '../../data/setups';

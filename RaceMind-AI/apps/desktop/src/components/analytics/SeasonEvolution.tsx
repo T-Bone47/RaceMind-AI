@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { rounds } from '../../data/analytics';
 import { Panel } from '../ui/Panel';
@@ -95,21 +95,21 @@ export function SeasonEvolution() {
       </svg>
 
       <div className="mt-1 grid grid-cols-4 gap-2 border-t border-white/[0.06] pt-3">
-        <Readout label="Round" value={rounds[active].round} color="#F3F7FB" />
+        <Readout label="Round" value={rounds[active]!.round} color="#F3F7FB" />
         <Readout
           label="Quali Δ"
-          value={`${rounds[active].quali > 0 ? '+' : ''}${rounds[active].quali.toFixed(2)}s`}
-          color={rounds[active].quali < 0 ? '#00D68F' : '#FF7A29'} />
+          value={`${rounds[active]!.quali > 0 ? '+' : ''}${rounds[active]!.quali.toFixed(2)}s`}
+          color={rounds[active]!.quali < 0 ? '#00D68F' : '#FF7A29'} />
         
         <Readout
           label="Race Δ"
-          value={`${rounds[active].race > 0 ? '+' : ''}${rounds[active].race.toFixed(2)}s`}
-          color={rounds[active].race < 0 ? '#00D68F' : '#FF7A29'} />
+          value={`${rounds[active]!.race > 0 ? '+' : ''}${rounds[active]!.race.toFixed(2)}s`}
+          color={rounds[active]!.race < 0 ? '#00D68F' : '#FF7A29'} />
         
         <Readout
           label="Points"
-          value={rounds[active].dnf ? 'DNF' : `${rounds[active].points}`}
-          color={rounds[active].dnf ? '#E10600' : '#FFC531'} />
+          value={rounds[active]!.dnf ? 'DNF' : `${rounds[active]!.points}`}
+          color={rounds[active]!.dnf ? '#E10600' : '#FFC531'} />
         
       </div>
     </Panel>);

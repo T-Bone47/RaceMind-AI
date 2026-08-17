@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import { seeded } from './format';
 
 export type Point = {x: number;y: number;};
@@ -36,7 +36,7 @@ export function speedTrace(samples = 220, seed = 7): number[] {
     corners.forEach((c, ci) => {
       const d = Math.abs(t - c);
       const w = Math.exp(-(d * d) / 0.00055);
-      v -= w * severity[ci] * 250;
+      v -= w * severity[ci]! * 250;
     });
     v += (seeded(i + seed * 31) - 0.5) * 4;
     out.push(Math.max(62, v));
@@ -46,7 +46,7 @@ export function speedTrace(samples = 220, seed = 7): number[] {
 
 export function throttleTrace(speed: number[]): number[] {
   return speed.map((v, i) => {
-    const next = speed[Math.min(i + 3, speed.length - 1)];
+    const next = speed[Math.min(i + 3, speed.length - 1)]!;
     const rising = next - v;
     return Math.max(0, Math.min(100, 50 + rising * 26 + (v > 280 ? 46 : 0)));
   });
@@ -54,7 +54,7 @@ export function throttleTrace(speed: number[]): number[] {
 
 export function brakeTrace(speed: number[]): number[] {
   return speed.map((v, i) => {
-    const next = speed[Math.min(i + 3, speed.length - 1)];
+    const next = speed[Math.min(i + 3, speed.length - 1)]!;
     const falling = v - next;
     return Math.max(0, Math.min(100, falling * 12 - 4));
   });

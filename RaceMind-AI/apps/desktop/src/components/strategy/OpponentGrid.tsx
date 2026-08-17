@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Crosshair } from 'lucide-react';
 import { opponents } from '../../data/strategy';

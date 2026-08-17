@@ -1,5 +1,5 @@
-// @ts-nocheck
-import React, { useMemo, useState } from 'react';
+
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { InsightsHeader } from '../components/insights/InsightsHeader';
 import { InsightFeed } from '../components/insights/InsightFeed';
@@ -28,10 +28,10 @@ function Block({ index, className, children }: {index: number;className?: string
 
 export function Insights() {
   const [filter, setFilter] = useState<Severity | 'all'>('all');
-  const [selectedId, setSelectedId] = useState(insights[0].id);
+  const [selectedId, setSelectedId] = useState(insights[0]!.id);
 
   const selected = useMemo(
-    () => insights.find((i) => i.id === selectedId) ?? insights[0],
+    () => insights.find((i) => i.id === selectedId) ?? insights[0]!,
     [selectedId]
   );
 

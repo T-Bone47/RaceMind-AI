@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Panel } from '../ui/Panel';
 import { Trace } from '../ui/Trace';
 import { useSessionStore } from '@/store/sessionStore';
@@ -32,7 +32,7 @@ export function TelemetryStrip() {
         onMouseLeave={() => setHover(null)}>
         
         {channels.map((ch) => {
-          const current = hover === null ? ch.values[ch.values.length - 1] : ch.values[Math.round(hover / 100 * (ch.values.length - 1))];
+          const current = hover === null ? ch.values[ch.values.length - 1]! : ch.values[Math.round(hover / 100 * (ch.values.length - 1))]!;
           return (
             <div
               key={ch.key}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeftRight } from 'lucide-react';
 import { Panel } from '../ui/Panel';

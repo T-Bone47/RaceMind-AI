@@ -1,4 +1,3 @@
-import React from 'react';
 import { Camera } from 'lucide-react';
 import type { SettingsState } from '../../data/settings';
 import { focusDriver } from '../../data/race';

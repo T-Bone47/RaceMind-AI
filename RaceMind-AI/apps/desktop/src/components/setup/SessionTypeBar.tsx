@@ -1,4 +1,3 @@
-import React from 'react';
 import { sessionTypes, type SessionKind } from '../../data/setups';
 import { PillGroup, Tabs } from '../ui/Tabs';
 

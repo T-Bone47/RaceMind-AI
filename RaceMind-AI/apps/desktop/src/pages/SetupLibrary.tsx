@@ -1,5 +1,5 @@
-// @ts-nocheck
-import React, { useCallback, useMemo, useState } from 'react';
+
+import { useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SetupContextBar } from '../components/setup/SetupContextBar';
 import { SessionTypeBar } from '../components/setup/SessionTypeBar';
@@ -24,22 +24,22 @@ import {
   type WeatherKind } from
 '../data/setups';
 import { aiSetupFor, scoreSetup } from '../utils/setupScore';
-import { useScreenInit } from '../useScreenInit.js';
+import { useScreenInit } from '../useScreenInit';
 
 export function SetupLibrary() {
-  const screenInit = useScreenInit();
-  const [gameId, setGameId] = useState(games[0].id);
-  const [circuitId, setCircuitId] = useState(circuits[0].id);
+  const screenInit = useScreenInit<{ tab: string }>();
+  const [gameId, setGameId] = useState(games[0]!.id);
+  const [circuitId, setCircuitId] = useState(circuits[0]!.id);
   const [session, setSession] = useState<SessionKind>('Race');
   const [weather, setWeather] = useState<WeatherKind>('Dry');
   const [tab, setTab] = useState(screenInit.tab ?? 'setup');
   const [values, setValues] = useState<SetupValues>(baseSetup);
   const [savedValues, setSavedValues] = useState<SetupValues>(baseSetup);
   const [favourite, setFavourite] = useState(true);
-  const [docId, setDocId] = useState(documents[0].id);
+  const [docId, setDocId] = useState(documents[0]!.id);
 
-  const game = games.find((g) => g.id === gameId) ?? games[0];
-  const circuit = circuits.find((c) => c.id === circuitId) ?? circuits[0];
+  const game = games.find((g) => g.id === gameId) ?? games[0]!;
+  const circuit = circuits.find((c) => c.id === circuitId) ?? circuits[0]!;
 
   const recommended = useMemo(() => aiSetupFor(baseSetup, circuit), [circuit]);
   const score = useMemo(() => scoreSetup(values, circuit), [values, circuit]);

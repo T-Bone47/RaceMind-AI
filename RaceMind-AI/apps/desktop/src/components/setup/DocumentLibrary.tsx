@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Eye,
@@ -11,12 +11,13 @@ import {
   Sparkles,
   Table2,
   UploadCloud,
-  Wand2 } from
+  Wand2,
+  type LucideIcon } from
 'lucide-react';
 import { documents, type SetupDoc } from '../../data/setups';
 import { Panel } from '../ui/Panel';
 
-const kindMeta: Record<SetupDoc['kind'], {color: string;icon: React.ComponentType<{className?: string;}>;}> = {
+const kindMeta: Record<SetupDoc['kind'], {color: string;icon: LucideIcon;}> = {
   PDF: { color: '#E10600', icon: FileText },
   XLSX: { color: '#00D68F', icon: FileSpreadsheet },
   DOCX: { color: '#3D8BFF', icon: FileText },

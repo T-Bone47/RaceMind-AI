@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, TrendingDown, TrendingUp } from 'lucide-react';
 import { coachingInsights } from '../../data/analytics';

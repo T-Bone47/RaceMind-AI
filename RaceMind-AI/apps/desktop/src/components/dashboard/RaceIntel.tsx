@@ -1,5 +1,4 @@
 import { useRaceData } from '../../hooks/useRaceData';
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Siren, TrendingUp } from 'lucide-react';
 import { Panel } from '../ui/Panel';

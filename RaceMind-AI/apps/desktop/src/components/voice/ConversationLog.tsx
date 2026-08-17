@@ -1,7 +1,6 @@
-// @ts-nocheck
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import { Check, Sparkles, User, Wrench } from 'lucide-react';
+import { Sparkles, User } from 'lucide-react';
 import { Panel } from '../ui/Panel';
 import { useSessionStore } from '@/store/sessionStore';
 

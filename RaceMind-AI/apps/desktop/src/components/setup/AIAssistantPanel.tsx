@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Send, Sparkles, User } from 'lucide-react';
 import { adaptOptions, assistantMessages, documents } from '../../data/setups';
@@ -10,7 +10,7 @@ interface Props {
 
 export function AIAssistantPanel({ documentId }: Props) {
   const [adapt, setAdapt] = useState<string[]>(['wheel', 'smooth']);
-  const doc = documents.find((d) => d.id === documentId) ?? documents[0];
+  const doc = documents.find((d) => d.id === documentId) ?? documents[0]!;
 
   const toggle = (id: string) => {
     const group = adaptOptions.find((o) => o.id === id)?.group;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CircleAlert, Radio, ShieldCheck, Zap } from 'lucide-react';
 import type { SimInputs } from '../../data/strategy';

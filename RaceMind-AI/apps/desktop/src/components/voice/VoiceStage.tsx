@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Mic, MicOff, Radio, Send, Square, Volume2 } from 'lucide-react';
 import { VoiceOrb, stateColor } from './VoiceOrb';

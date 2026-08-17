@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRightLeft, Download } from 'lucide-react';
 import { paramGroups, setupSources, type Circuit, type SetupValues } from '../../data/setups';
@@ -15,8 +15,8 @@ interface Props {
 const allParams = paramGroups.flatMap((g) => g.params);
 
 export function SetupComparison({ current, circuit, onLoad }: Props) {
-  const [againstId, setAgainstId] = useState(setupSources[0].id);
-  const against = setupSources.find((s) => s.id === againstId) ?? setupSources[0];
+  const [againstId, setAgainstId] = useState(setupSources[0]?.id ?? '');
+  const against = setupSources.find((s) => s.id === againstId) ?? setupSources[0]!;
 
   const currentScore = scoreSetup(current, circuit);
   const againstScore = scoreSetup(against.values, circuit);

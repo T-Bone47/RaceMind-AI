@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Thermometer } from 'lucide-react';
 import type { Circuit } from '../../data/setups';
@@ -79,7 +79,7 @@ export function CircuitIntelligence({ circuit }: {circuit: Circuit;}) {
             }
 
             {points.map((p, i) => {
-              const z = circuit.zones[i];
+              const z = circuit.zones[i]!;
               const m = zoneMeta[z.kind];
               const on = i === active;
               return (

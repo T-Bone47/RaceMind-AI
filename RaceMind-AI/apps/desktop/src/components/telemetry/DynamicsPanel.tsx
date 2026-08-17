@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React from 'react';
+
 import { Panel } from '../ui/Panel';
 import { Trace } from '../ui/Trace';
 import { gLat, gLon, rideHeightFront, rideHeightRear, wheelSlip } from '../../data/telemetry';
@@ -10,8 +9,8 @@ interface Props {
 
 export function DynamicsPanel({ cursor }: Props) {
   const idx = Math.round(cursor * (gLat.length - 1));
-  const lat = gLat[idx];
-  const lon = gLon[idx];
+  const lat = gLat[idx]!;
+  const lon = gLon[idx]!;
   const total = Math.sqrt(lat * lat + lon * lon);
   const R = 62;
 
@@ -48,7 +47,7 @@ export function DynamicsPanel({ cursor }: Props) {
               <circle
                 key={i}
                 cx={l / 5 * R}
-                cy={-gLon[i] / 5 * R}
+                cy={-gLon[i]! / 5 * R}
                 r="1.1"
                 fill="#FF7A29"
                 opacity={0.16} />
@@ -90,9 +89,9 @@ export function DynamicsPanel({ cursor }: Props) {
       </div>
 
       <div className="mt-4 space-y-3">
-        <Channel label="Ride height · front" values={rideHeightFront} color="#00E5FF" value={`${rideHeightFront[idx].toFixed(1)} mm`} />
-        <Channel label="Ride height · rear" values={rideHeightRear} color="#B15CFF" value={`${rideHeightRear[idx].toFixed(1)} mm`} />
-        <Channel label="Wheel slip" values={wheelSlip} color="#FFC531" value={`${wheelSlip[idx].toFixed(2)} %`} />
+        <Channel label="Ride height · front" values={rideHeightFront} color="#00E5FF" value={`${rideHeightFront[idx]!.toFixed(1)} mm`} />
+        <Channel label="Ride height · rear" values={rideHeightRear} color="#B15CFF" value={`${rideHeightRear[idx]!.toFixed(1)} mm`} />
+        <Channel label="Wheel slip" values={wheelSlip} color="#FFC531" value={`${wheelSlip[idx]!.toFixed(2)} %`} />
       </div>
     </Panel>);
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChevronRight, Gauge, MessageSquare, Settings2 } from 'lucide-react';
 import { contextSignals, recentSessions, voiceProfile } from '../../data/voice';
 import { Panel } from '../ui/Panel';

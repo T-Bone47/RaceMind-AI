@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import { brakeTrace, deltaTrace, gearTrace, speedTrace, throttleTrace, wave } from '../utils/series';
 import { seeded } from '../utils/format';
 
@@ -16,7 +16,7 @@ export const ers = wave(SAMPLES, 5, 1).map((v) => Math.max(0, Math.min(160, 80 +
 export const battery = (() => {
   let charge = 74;
   return ers.map((d, i) => {
-    charge += (brake[i] > 30 ? 0.9 : 0) - d / 140;
+    charge += (brake[i]! > 30 ? 0.9 : 0) - d / 140;
     charge = Math.max(18, Math.min(100, charge));
     return charge;
   });
@@ -24,15 +24,15 @@ export const battery = (() => {
 export const fuelFlow = throttle.map((t) => 22 + t / 100 * 78);
 export const delta = deltaTrace(SAMPLES, 3);
 
-export const gLat = steering.map((s, i) => s / 118 * 4.6 * (speed[i] / 336) * 1.4);
+export const gLat = steering.map((s, i) => s / 118 * 4.6 * (speed[i]! / 336) * 1.4);
 export const gLon = speed.map((v, i) => {
   const next = speed[Math.min(i + 2, speed.length - 1)];
-  return (next - v) * 0.42;
+  return (next! - v) * 0.42;
 });
 
 export const rideHeightFront = wave(SAMPLES, 12, 1).map((v) => 26 + v * 7);
 export const rideHeightRear = wave(SAMPLES, 17, 1).map((v) => 62 + v * 9);
-export const wheelSlip = brake.map((b, i) => Math.max(0, b * 0.06 + (throttle[i] > 92 ? 1.8 : 0) + seeded(i) * 0.6));
+export const wheelSlip = brake.map((b, i) => Math.max(0, b * 0.06 + (throttle[i]! > 92 ? 1.8 : 0) + seeded(i) * 0.6));
 
 export const laps = [
 { id: 43, time: 75.412, compound: 'MEDIUM', status: 'current' as const, sectors: [24.118, 33.902, 17.392] },

@@ -1,5 +1,5 @@
-// @ts-nocheck
-import React, { useId } from 'react';
+
+import { useId } from 'react';
 import { toAreaPath, toPath } from '../../utils/series';
 
 interface TraceProps {

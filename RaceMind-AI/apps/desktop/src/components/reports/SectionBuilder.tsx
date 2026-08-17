@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { BarChart3, BookOpen, ChevronDown, ChevronUp, FileStack, Layers, Table2 } from 'lucide-react';
 import type { ReportSection } from '../../data/reports';

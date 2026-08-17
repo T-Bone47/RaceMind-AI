@@ -1,4 +1,3 @@
-import React from 'react';
 import { AlertTriangle, Inbox, Loader2, WifiOff } from 'lucide-react';
 import { status } from './tokens';
 

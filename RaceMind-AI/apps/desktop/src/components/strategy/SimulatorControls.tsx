@@ -1,4 +1,3 @@
-import React from 'react';
 import { CloudRain, Flag, Gauge, Timer } from 'lucide-react';
 import { compoundSpec, type Compound, type Neutralisation, type SimInputs } from '../../data/strategy';
 import { Panel } from '../ui/Panel';

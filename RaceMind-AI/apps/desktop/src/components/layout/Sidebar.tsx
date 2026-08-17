@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   Activity,
@@ -11,14 +10,15 @@ import {
   Radio,
   Settings,
   Target,
-  Wrench } from
+  Wrench,
+  type LucideIcon } from
 'lucide-react';
 
 export interface NavItem {
   to: string;
   label: string;
   code: string;
-  icon: React.ComponentType<{className?: string;strokeWidth?: number;}>;
+  icon: LucideIcon;
   ready: boolean;
   group: string;
   hint: string;

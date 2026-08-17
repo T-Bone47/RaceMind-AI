@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { DecisionBar } from '../components/strategy/DecisionBar';
 import { SimulatorControls } from '../components/strategy/SimulatorControls';

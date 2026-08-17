@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Clock, X } from 'lucide-react';
 import { predictions } from '../../data/insights';

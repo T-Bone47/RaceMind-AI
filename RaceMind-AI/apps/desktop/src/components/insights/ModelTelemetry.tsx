@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Cpu } from 'lucide-react';
 import { accuracyHistory, models } from '../../data/insights';
@@ -7,7 +6,7 @@ import { RingGauge } from '../ui/RingGauge';
 
 export function ModelTelemetry() {
   const peak = Math.max(...accuracyHistory.map((a) => a.value));
-  const latest = accuracyHistory[accuracyHistory.length - 1];
+  const latest = accuracyHistory[accuracyHistory.length - 1]!;
 
   return (
     <Panel

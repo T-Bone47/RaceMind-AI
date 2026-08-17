@@ -1,4 +1,3 @@
-import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CloudRain, Download, FileDown, MapPin, Play, Star, Sun } from 'lucide-react';
 import { artifacts, typeColor, type SessionRecord } from '../../data/sessions';

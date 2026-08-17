@@ -1,4 +1,4 @@
-import React from 'react';
+import { type LucideIcon } from 'lucide-react';
 
 type Scale = 'hero' | 'lg' | 'md' | 'sm';
 
@@ -33,7 +33,7 @@ export function Metric({
 
 
 
-}: {label: string;value: React.ReactNode;sub?: React.ReactNode;color?: string;scale?: Scale;icon?: React.ComponentType<{className?: string;strokeWidth?: number;}>;align?: 'left' | 'right';className?: string;children?: React.ReactNode;}) {
+}: {label: string;value: React.ReactNode;sub?: React.ReactNode;color?: string;scale?: Scale;icon?: LucideIcon;align?: 'left' | 'right';className?: string;children?: React.ReactNode;}) {
   const s = scales[scale];
   return (
     <div className={`${align === 'right' ? 'text-right' : ''} ${className}`}>
@@ -66,7 +66,7 @@ export function Readout({
 
 
 
-}: {label: string;value: React.ReactNode;color?: string;icon?: React.ComponentType<{className?: string;strokeWidth?: number;}>;hint?: string;}) {
+}: {label: string;value: React.ReactNode;color?: string;icon?: LucideIcon;hint?: string;}) {
   return (
     <div className="flex items-center gap-1.5" title={hint}>
       {Icon && <Icon className="h-3 w-3 shrink-0 text-silver/50" strokeWidth={1.7} />}

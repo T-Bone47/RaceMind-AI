@@ -1,4 +1,3 @@
-import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import type { SettingsState } from '../../data/settings';
 import { Panel } from '../ui/Panel';

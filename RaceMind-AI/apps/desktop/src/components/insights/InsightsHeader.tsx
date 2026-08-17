@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { BrainCircuit, FileText, RefreshCw, ShieldCheck } from 'lucide-react';
 import { insights, severityMeta, type Severity } from '../../data/insights';

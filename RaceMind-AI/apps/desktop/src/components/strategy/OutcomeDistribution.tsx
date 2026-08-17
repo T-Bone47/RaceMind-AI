@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Panel } from '../ui/Panel';
 import { RingGauge } from '../ui/RingGauge';

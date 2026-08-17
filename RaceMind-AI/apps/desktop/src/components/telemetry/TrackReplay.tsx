@@ -1,5 +1,5 @@
-// @ts-nocheck
-import React, { useEffect, useRef, useState } from 'react';
+
+import { useEffect, useRef, useState } from 'react';
 import { Panel } from '../ui/Panel';
 import { TRACK_PATH, TRACK_VIEWBOX, trackCorners } from '../../data/track';
 import { brake, gear, speed, throttle } from '../../data/telemetry';
@@ -24,7 +24,7 @@ export function TrackReplay({ cursor }: Props) {
   }, [cursor, length]);
 
   const idx = Math.round(cursor * (speed.length - 1));
-  const v = speed[idx];
+  const v = speed[idx]!;
   const heatColor = v > 280 ? '#B15CFF' : v > 200 ? '#00E5FF' : v > 130 ? '#00D68F' : '#E10600';
 
   return (
@@ -68,9 +68,9 @@ export function TrackReplay({ cursor }: Props) {
       </div>
 
       <div className="grid grid-cols-3 gap-px border-t border-white/[0.06] bg-white/[0.05]">
-        <Readout label="Gear" value={`${gear[idx]}`} color="#B15CFF" />
-        <Readout label="Throttle" value={`${Math.round(throttle[idx])}%`} color="#00D68F" />
-        <Readout label="Brake" value={`${Math.round(brake[idx])}%`} color="#E10600" />
+        <Readout label="Gear" value={`${gear[idx]!}`} color="#B15CFF" />
+        <Readout label="Throttle" value={`${Math.round(throttle[idx]!)}%`} color="#00D68F" />
+        <Readout label="Brake" value={`${Math.round(brake[idx]!)}%`} color="#E10600" />
       </div>
     </Panel>);
 

@@ -1,5 +1,5 @@
 import { useRaceData } from '../../hooks/useRaceData';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, ShieldAlert, Timer } from 'lucide-react';
 import { Panel } from '../ui/Panel';

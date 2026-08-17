@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDownRight, ArrowUpRight, Download, Trophy } from 'lucide-react';
 import { comparisons, scoreCards } from '../../data/analytics';

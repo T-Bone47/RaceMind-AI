@@ -1,5 +1,4 @@
 import { useRaceData } from '../../hooks/useRaceData';
-import React from 'react';
 import { Panel } from '../ui/Panel';
 import { Trace } from '../ui/Trace';
 import { StatusBadge } from '../ui/Badge';
@@ -12,7 +11,7 @@ const degradation = wave(60, 4, 1).map((v, i) => 100 - i * 1.05 + v * 3);
 export function TyreThermal() {
   const { focusDriver, tyres } = useRaceData();
 
-  const worst = tyres.reduce((a, t) => t.wear > a.wear ? t : a, tyres[0]);
+  const worst = tyres.reduce((a, t) => t.wear > a.wear ? t : a, tyres[0]!);
   const worstBand = wearBand(worst.wear);
 
   return (

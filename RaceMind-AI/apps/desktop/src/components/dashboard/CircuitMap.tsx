@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Maximize2, MapPin } from 'lucide-react';
 import { Panel, PanelChip } from '../ui/Panel';
 

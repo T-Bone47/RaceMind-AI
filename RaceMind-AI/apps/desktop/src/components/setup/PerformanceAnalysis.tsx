@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import type { SetupScore } from '../../utils/setupScore';
 import { Panel } from '../ui/Panel';

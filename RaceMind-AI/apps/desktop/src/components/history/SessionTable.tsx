@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, ArrowUp, Star } from 'lucide-react';
 import { typeColor, type SessionRecord } from '../../data/sessions';

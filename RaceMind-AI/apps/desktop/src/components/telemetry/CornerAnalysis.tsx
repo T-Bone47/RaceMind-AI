@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { cornerAnalysis, microSectors } from '../../data/telemetry';
 import { Panel } from '../ui/Panel';

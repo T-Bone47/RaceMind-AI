@@ -1,5 +1,5 @@
-// @ts-nocheck
-import React, { useCallback, useMemo, useState } from 'react';
+
+import { useCallback, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ReportsToolbar } from '../components/reports/ReportsToolbar';
 import { TemplateRail } from '../components/reports/TemplateRail';
@@ -32,14 +32,14 @@ function Block({ children, index, className = '' }: {children: React.ReactNode;i
 }
 
 export function Reports() {
-  const [templateId, setTemplateId] = useState(templates[0].id);
+  const [templateId, setTemplateId] = useState(templates[0]!.id);
   const [sections, setSections] = useState<ReportSection[]>(defaultSections);
   const [enabled, setEnabled] = useState(initialEnabled);
   const [zoom, setZoom] = useState(0.9);
   const [paper, setPaper] = useState<'dark' | 'light'>('dark');
   const [regenerating, setRegenerating] = useState(false);
 
-  const template = useMemo(() => templates.find((t) => t.id === templateId) ?? templates[0], [templateId]);
+  const template = useMemo(() => templates.find((t) => t.id === templateId) ?? templates[0]!, [templateId]);
 
   const toggle = useCallback((id: string) => setEnabled((prev) => ({ ...prev, [id]: !prev[id] })), []);
 
@@ -49,7 +49,7 @@ export function Reports() {
       const j = i + dir;
       if (i < 0 || j < 0 || j >= prev.length) return prev;
       const next = [...prev];
-      [next[i], next[j]] = [next[j], next[i]];
+      [next[i], next[j]] = [next[j]!, next[i]!];
       return next;
     });
   }, []);

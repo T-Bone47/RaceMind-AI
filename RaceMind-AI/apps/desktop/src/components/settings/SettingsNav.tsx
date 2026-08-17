@@ -1,9 +1,8 @@
-import React from 'react';
-import { Cpu, Database, Monitor, UserCog } from 'lucide-react';
+import { Cpu, Database, Monitor, UserCog, type LucideIcon } from 'lucide-react';
 import { sections, type SectionId } from '../../data/settings';
 import { Panel } from '../ui/Panel';
 
-const icons: Record<SectionId, React.ComponentType<{className?: string;strokeWidth?: number;}>> = {
+const icons: Record<SectionId, LucideIcon> = {
   profile: UserCog,
   intelligence: Cpu,
   interface: Monitor,

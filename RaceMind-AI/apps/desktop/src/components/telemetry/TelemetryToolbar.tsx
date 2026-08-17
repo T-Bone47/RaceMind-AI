@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React from 'react';
+
 import { ChevronLeft, ChevronRight, Layers, Pause, Play, RotateCcw, ZoomIn } from 'lucide-react';
 import { comparisonDrivers, laps } from '../../data/telemetry';
 import { formatLapTime } from '../../utils/format';
@@ -33,7 +32,7 @@ export function TelemetryToolbar({
   onReset,
   cursor
 }: Props) {
-  const lap = laps.find((l) => l.id === selectedLap) ?? laps[0];
+  const lap = laps.find((l) => l.id === selectedLap) ?? laps[0]!;
 
   return (
     <section className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-carbon-700/70 glass shadow-panel">

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { TelemetryToolbar } from '../components/telemetry/TelemetryToolbar';
 import { ChannelStack } from '../components/telemetry/ChannelStack';

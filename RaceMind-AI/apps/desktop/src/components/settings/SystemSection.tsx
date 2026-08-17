@@ -1,4 +1,3 @@
-import React from 'react';
 import { Plug, RefreshCw } from 'lucide-react';
 import { integrations, shortcuts, type SettingsState } from '../../data/settings';
 import { Panel } from '../ui/Panel';

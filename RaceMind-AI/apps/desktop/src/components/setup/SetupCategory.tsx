@@ -1,4 +1,3 @@
-import React from 'react';
 import { RotateCcw } from 'lucide-react';
 import type { ParamSpec, SetupValues } from '../../data/setups';
 import { Panel } from '../ui/Panel';

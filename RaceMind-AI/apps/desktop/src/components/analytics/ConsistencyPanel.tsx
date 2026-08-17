@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { lapDistribution } from '../../data/analytics';
 import { Panel } from '../ui/Panel';

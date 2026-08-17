@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Copy, FileText, Send } from 'lucide-react';
 import { executiveSummary } from '../../data/insights';

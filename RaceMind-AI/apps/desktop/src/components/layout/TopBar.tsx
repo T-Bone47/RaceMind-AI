@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bell, CloudRain, Command, FlaskConical, Radio, Search, Thermometer, Wind } from 'lucide-react';
 import { focusDriver, session } from '../../data/race';
 import { formatClock } from '../../utils/format';

@@ -1,5 +1,5 @@
-// @ts-nocheck
-import React, { useMemo, useState } from 'react';
+
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { HistoryToolbar } from '../components/history/HistoryToolbar';
 import { SessionTable, type SortKey } from '../components/history/SessionTable';
@@ -34,7 +34,7 @@ export function History() {
   const [types, setTypes] = useState<SessionType[]>([]);
   const [bookmarksOnly, setBookmarksOnly] = useState(false);
   const [bookmarks, setBookmarks] = useState(initialBookmarks);
-  const [selectedId, setSelectedId] = useState(sessions[0].id);
+  const [selectedId, setSelectedId] = useState(sessions[0]!.id);
   const [compareIds, setCompareIds] = useState<string[]>(['s01', 's10']);
   const [sortKey, setSortKey] = useState<SortKey>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
@@ -57,7 +57,7 @@ export function History() {
     });
   }, [query, types, bookmarksOnly, bookmarks, sortKey, sortDir]);
 
-  const selected = sessions.find((s) => s.id === selectedId) ?? sessions[0];
+  const selected = sessions.find((s) => s.id === selectedId) ?? sessions[0]!;
   const compared = compareIds.
   map((id) => sessions.find((s) => s.id === id)).
   filter((s): s is (typeof sessions)[number] => Boolean(s));
@@ -121,7 +121,7 @@ export function History() {
       </div>
 
       <Block index={3}>
-        <SessionDetail session={selected} starred={bookmarks[selected.id]} onToggleBookmark={toggleBookmark} />
+        <SessionDetail session={selected} starred={!!bookmarks[selected.id]} onToggleBookmark={toggleBookmark} />
       </Block>
 
       <p className="pb-2 pt-1 text-center font-mono text-[8.5px] uppercase tracking-[0.2em] text-silver/25">
