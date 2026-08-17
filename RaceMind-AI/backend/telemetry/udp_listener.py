@@ -12,6 +12,8 @@ implemented yet" rather than a silent wrong answer.
 from __future__ import annotations
 
 import asyncio
+import contextlib
+import enum
 import logging
 from collections.abc import Callable
 
@@ -23,6 +25,14 @@ from telemetry.provider import TelemetryProvider
 logger = logging.getLogger(__name__)
 
 _PACKET_QUEUE_SIZE = 5000
+
+
+class ConnectionState(enum.Enum):
+    DISCONNECTED = "DISCONNECTED"
+    CONNECTING = "CONNECTING"
+    CONNECTED = "CONNECTED"
+    STOPPING = "STOPPING"
+    FAILED = "FAILED"
 
 
 def _default_router() -> PacketRouter:
@@ -43,7 +53,10 @@ class _TelemetryDatagramProtocol(asyncio.DatagramProtocol):
 
 
 class UDPProvider(TelemetryProvider):
-    """Receives live UDP telemetry broadcast by a running game session."""
+    """Receives live UDP telemetry broadcast by a running game session.
+    Automatically handles socket conflicts, ensuring the REST API isn't blocked
+    if the port is in use during hot reloads.
+    """
 
     def __init__(
         self,
@@ -57,21 +70,53 @@ class UDPProvider(TelemetryProvider):
         self.port = port
         self.game = game
         self.router = router or _default_router()
+        self.state = ConnectionState.DISCONNECTED
         self._transport: asyncio.DatagramTransport | None = None
+        self._connection_task: asyncio.Task[None] | None = None
         self._packet_queue: asyncio.Queue[bytes] = asyncio.Queue(maxsize=_PACKET_QUEUE_SIZE)
 
     async def connect(self) -> None:
+        """Start the background maintenance loop to bind the UDP port.
+        Idempotent; safe to call multiple times.
+        """
+        if self.state in (ConnectionState.CONNECTING, ConnectionState.CONNECTED):
+            return
+
+        self.state = ConnectionState.CONNECTING
+        self._connection_task = asyncio.create_task(self._maintain_connection())
+
+    async def _maintain_connection(self) -> None:
         loop = asyncio.get_running_loop()
-        self._transport, _ = await loop.create_datagram_endpoint(
-            lambda: _TelemetryDatagramProtocol(self._on_packet),
-            local_addr=(self.host, self.port),
-        )
-        logger.info("UDPProvider listening on %s:%d for %s", self.host, self.port, self.game.value)
+        while self.state in (ConnectionState.CONNECTING, ConnectionState.CONNECTED, ConnectionState.FAILED):
+            if self._transport is None:
+                self.state = ConnectionState.CONNECTING
+                try:
+                    self._transport, _ = await loop.create_datagram_endpoint(
+                        lambda: _TelemetryDatagramProtocol(self._on_packet),
+                        local_addr=(self.host, self.port),
+                    )
+                    self.state = ConnectionState.CONNECTED
+                    logger.info("UDPProvider listening on %s:%d for %s", self.host, self.port, self.game.value)
+                except OSError as e:
+                    self.state = ConnectionState.FAILED
+                    logger.warning("Could not bind UDP port %d (is it in use?): %s. Retrying in 2s...", self.port, e)
+                    await asyncio.sleep(2)
+                    continue
+            await asyncio.sleep(1)
 
     async def disconnect(self) -> None:
+        self.state = ConnectionState.STOPPING
+        if self._connection_task is not None:
+            self._connection_task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await self._connection_task
+            self._connection_task = None
+
         if self._transport is not None:
             self._transport.close()
             self._transport = None
+        self.state = ConnectionState.DISCONNECTED
+        logger.info("UDPProvider disconnected")
 
     def _on_packet(self, data: bytes) -> None:
         try:
