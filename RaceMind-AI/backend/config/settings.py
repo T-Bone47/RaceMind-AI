@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 from functools import lru_cache
 from typing import Literal
+import re
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -88,6 +89,17 @@ class Settings(BaseSettings):
         return self.environment == "production"
 
     from pydantic import model_validator
+    @model_validator(mode="after")
+    def normalize_database_url(self) -> Settings:
+        """Railway (and most PaaS providers) inject DATABASE_URL as
+        ``postgresql://…``.  SQLAlchemy's async engine requires the
+        ``+asyncpg`` dialect suffix.  Rewrite transparently so deployment
+        works without manual URL editing."""
+        url = self.database_url
+        if url.startswith("postgresql://") or url.startswith("postgres://"):
+            self.database_url = re.sub(r"^postgres(ql)?://", "postgresql+asyncpg://", url)
+        return self
+
     @model_validator(mode="after")
     def validate_production_settings(self) -> Settings:
         if self.is_production:
