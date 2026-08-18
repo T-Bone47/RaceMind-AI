@@ -9,7 +9,7 @@ alembic>=1.14,<2.0
 pyjwt>=2.9,<3.0
 bcrypt>=4.2,<5.0
 python-multipart>=0.0.12
-anthropic>=0.40,<1.0
+google-genai>=0.2.0,<1.0
 fastf1>=3.8,<4.0
 
 # Voice stack (Phase 5) - see voice/config.py for provider selection

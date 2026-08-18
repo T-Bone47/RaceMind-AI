@@ -21,15 +21,17 @@ from fastapi.responses import JSONResponse
 logger = logging.getLogger("racemind.api")
 
 
+from config.context import request_id_var
+
+
 def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(Exception)
     async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-        request_id = getattr(request.state, "request_id", "unknown")
+        request_id = request_id_var.get()
         logger.exception(
-            "Unhandled exception on %s %s [request_id=%s]",
+            "Unhandled exception on %s %s",
             request.method,
             request.url.path,
-            request_id,
         )
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -44,7 +46,7 @@ async def request_logging_middleware(
     request: Request, call_next: Callable[[Request], Awaitable[Response]]
 ) -> Response:
     request_id = str(uuid.uuid4())
-    request.state.request_id = request_id
+    request_id_var.set(request_id)
     start = time.perf_counter()
 
     response = await call_next(request)
@@ -52,11 +54,10 @@ async def request_logging_middleware(
     duration_ms = (time.perf_counter() - start) * 1000
     response.headers["X-Request-ID"] = request_id
     logger.info(
-        "%s %s -> %d (%.1fms) [request_id=%s]",
+        "%s %s -> %d (%.1fms)",
         request.method,
         request.url.path,
         response.status_code,
         duration_ms,
-        request_id,
     )
     return response

@@ -21,11 +21,21 @@ logger = logging.getLogger(__name__)
 
 settings = get_settings()
 
+engine_kwargs = {
+    "echo": False,
+    "future": True,
+}
+
+if settings.database_url.startswith("postgresql"):
+    engine_kwargs.update({
+        "pool_pre_ping": True,
+        "pool_size": 20,
+        "max_overflow": 10,
+    })
+
 engine = create_async_engine(
     settings.database_url,
-    echo=False,
-    pool_pre_ping=True,
-    future=True,
+    **engine_kwargs,
 )
 
 AsyncSessionLocal = async_sessionmaker(

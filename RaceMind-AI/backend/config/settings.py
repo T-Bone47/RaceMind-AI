@@ -56,10 +56,10 @@ class Settings(BaseSettings):
     udp_default_host: str = "0.0.0.0"
     udp_default_port: int = 20777
 
-    # --- AI Engineer (Anthropic) ---
-    anthropic_api_key: str | None = None
-    anthropic_model: str = "claude-sonnet-5"
-    anthropic_max_tokens: int = 300
+    # --- AI Engineer (Gemini) ---
+    gemini_api_key: str | None = None
+    gemini_model: str = "gemini-2.5-flash"
+    gemini_max_tokens: int = 300
 
     # --- Reference data (FastF1) ---
     fastf1_cache_dir: str = "./.fastf1_cache"
@@ -83,6 +83,18 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.environment == "production"
+
+    from pydantic import model_validator
+    @model_validator(mode="after")
+    def validate_production_settings(self) -> Settings:
+        if self.is_production:
+            if self.debug:
+                raise ValueError("Debug mode must be disabled in production")
+            if self.secret_key == "dev-secret-change-me-in-production":
+                raise ValueError("A secure secret_key must be configured in production")
+            if "*" in self.cors_origins_list:
+                raise ValueError("Wildcard CORS origins (*) are not allowed in production")
+        return self
 
 
 @lru_cache

@@ -10,15 +10,29 @@ from __future__ import annotations
 
 import logging.config
 
+from config.context import request_id_var
+
+
+class RequestIdFilter(logging.Filter):
+    """Injects request_id into every log record."""
+    def filter(self, record: logging.LogRecord) -> bool:
+        record.request_id = request_id_var.get()
+        return True
+
 
 def configure_logging(level: str = "INFO") -> None:
     logging.config.dictConfig(
         {
             "version": 1,
             "disable_existing_loggers": False,
+            "filters": {
+                "request_id": {
+                    "()": RequestIdFilter,
+                }
+            },
             "formatters": {
                 "default": {
-                    "format": "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+                    "format": "%(asctime)s | %(levelname)-8s | %(name)s | [req=%(request_id)s] %(message)s",
                     "datefmt": "%Y-%m-%dT%H:%M:%S%z",
                 },
             },
@@ -27,6 +41,7 @@ def configure_logging(level: str = "INFO") -> None:
                     "class": "logging.StreamHandler",
                     "formatter": "default",
                     "stream": "ext://sys.stdout",
+                    "filters": ["request_id"],
                 },
             },
             "root": {
