@@ -61,6 +61,9 @@ class Settings(BaseSettings):
     gemini_model: str = "gemini-2.5-flash"
     gemini_max_tokens: int = 300
 
+    # --- Agent Authentication ---
+    agent_secret: str = "dev-agent-secret-change-me"
+
     # --- Reference data (FastF1) ---
     fastf1_cache_dir: str = "./.fastf1_cache"
 
@@ -92,6 +95,8 @@ class Settings(BaseSettings):
                 raise ValueError("Debug mode must be disabled in production")
             if self.secret_key == "dev-secret-change-me-in-production":
                 raise ValueError("A secure secret_key must be configured in production")
+            if self.agent_secret == "dev-agent-secret-change-me":
+                raise ValueError("A secure agent_secret must be configured in production")
             if "*" in self.cors_origins_list:
                 raise ValueError("Wildcard CORS origins (*) are not allowed in production")
         return self

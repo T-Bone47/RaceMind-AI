@@ -26,11 +26,7 @@ from config.settings import get_settings
 from database.session import engine
 from reference.fastf1_client import configure_cache as configure_fastf1_cache
 
-from api.websocket.manager import manager
-from telemetry.udp_listener import UDPProvider
-from telemetry.models import GameTitle
-import asyncio
-import uuid
+
 
 settings = get_settings()
 
@@ -40,37 +36,9 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     configure_logging(settings.log_level)
     configure_fastf1_cache(settings.fastf1_cache_dir)
     
-    udp_provider = UDPProvider(
-        host=settings.udp_default_host,
-        port=settings.udp_default_port,
-        game=GameTitle.F1_25,
-    )
-    await udp_provider.connect()
-    udp_task = asyncio.create_task(udp_provider.run())
-    
-    async def broadcast_loop():
-        live_session_id = uuid.UUID(int=0)
-        try:
-            async for message in udp_provider.stream():
-                await manager.broadcast(live_session_id, message.model_dump(mode="json"))
-        except asyncio.CancelledError:
-            pass
-
-    broadcast_task = asyncio.create_task(broadcast_loop())
-    
     yield
     
-    broadcast_task.cancel()
-    await udp_provider.disconnect()
-    udp_task.cancel()
-    try:
-        await broadcast_task
-        await udp_task
-    except asyncio.CancelledError:
-        pass
-    
     await engine.dispose()
-    # Trigger hot-reload test
 
 def create_app() -> FastAPI:
     app = FastAPI(

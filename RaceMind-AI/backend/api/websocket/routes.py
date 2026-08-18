@@ -23,3 +23,34 @@ async def telemetry_socket(websocket: WebSocket, session_id: uuid.UUID) -> None:
             await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(session_id, websocket)
+
+
+@router.websocket("/ws/telemetry/ingest")
+async def telemetry_ingest(websocket: WebSocket) -> None:
+    """The Desktop Companion (Telemetry Agent) connects here to stream
+    decoded UDP packets into the cloud backend.
+    """
+    from config.settings import get_settings
+    import json
+    
+    settings = get_settings()
+    
+    # Authenticate via header or query parameter
+    agent_secret = websocket.headers.get("x-agent-secret") or websocket.query_params.get("token")
+    if agent_secret != settings.agent_secret:
+        await websocket.close(code=1008, reason="Invalid Agent Secret")
+        return
+
+    await websocket.accept()
+    live_session_id = uuid.UUID(int=0)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Broadcast the incoming telemetry packet to all connected dashboard clients
+            try:
+                payload = json.loads(data)
+                await manager.broadcast(live_session_id, payload)
+            except json.JSONDecodeError:
+                pass
+    except WebSocketDisconnect:
+        pass
