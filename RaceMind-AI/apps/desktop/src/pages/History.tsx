@@ -1,17 +1,33 @@
-
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { HistoryToolbar } from '../components/history/HistoryToolbar';
 import { SessionTable, type SortKey } from '../components/history/SessionTable';
 import { SessionDetail } from '../components/history/SessionDetail';
 import { ComparePanel } from '../components/history/ComparePanel';
-import { sessions as mockSessions, type SessionType, type SessionRecord } from '../data/sessions';
 import { useSessions } from '../lib/api/session';
 
-const initialBookmarks = mockSessions.reduce<Record<string, boolean>>((acc, s) => {
-  acc[s.id] = s.bookmarked;
-  return acc;
-}, {});
+// Use basic string for SessionType instead of importing from mock
+type SessionType = 'P1' | 'P2' | 'P3' | 'Q1' | 'Q2' | 'Q3' | 'SPRINT' | 'RACE' | 'SIM';
+
+export interface SessionRecord {
+  id: string;
+  event: string;
+  circuit: string;
+  country: string;
+  type: SessionType;
+  date: string;
+  laps: number;
+  bestLap: number;
+  avgLap: number;
+  position: number;
+  compoundsUsed: string[];
+  distanceKm: number;
+  sizeGb: number;
+  conditions: 'Dry' | 'Damp' | 'Wet';
+  rating: number;
+  bookmarked: boolean;
+  note: string;
+}
 
 const fade = {
   hidden: { opacity: 0, y: 14 },
@@ -34,7 +50,7 @@ export function History() {
   const { data: serverSessions } = useSessions();
   
   const sessions: SessionRecord[] = useMemo(() => {
-    if (!serverSessions || serverSessions.length === 0) return mockSessions.slice(0, 0); // Empty or fallback to mock
+    if (!serverSessions || serverSessions.length === 0) return []; // No mock fallback
 
     return serverSessions.map(s => ({
       id: s.id,
@@ -60,7 +76,7 @@ export function History() {
   const [query, setQuery] = useState('');
   const [types, setTypes] = useState<SessionType[]>([]);
   const [bookmarksOnly, setBookmarksOnly] = useState(false);
-  const [bookmarks, setBookmarks] = useState(initialBookmarks);
+  const [bookmarks, setBookmarks] = useState<Record<string, boolean>>({});
   const [selectedId, setSelectedId] = useState(sessions.length > 0 ? sessions[0].id : "");
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<SortKey>('date');

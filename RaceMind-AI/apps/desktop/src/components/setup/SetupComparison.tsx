@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRightLeft, Download } from 'lucide-react';
-import { paramGroups, setupSources, type Circuit, type SetupValues } from '../../data/setups';
+import { paramGroups, type Circuit, type SetupValues, type SetupSource } from '../../data/setups';
 import { scoreSetup } from '../../utils/setupScore';
 import { Panel } from '../ui/Panel';
 import { EmptyState } from '../ui/EmptyState';
@@ -9,20 +9,21 @@ import { EmptyState } from '../ui/EmptyState';
 interface Props {
   current: SetupValues;
   circuit: Circuit;
+  sources: SetupSource[];
   onLoad: (values: SetupValues) => void;
 }
 
 const allParams = paramGroups.flatMap((g) => g.params);
 
-export function SetupComparison({ current, circuit, onLoad }: Props) {
-  const [againstId, setAgainstId] = useState(setupSources[0]?.id ?? '');
-  const against = setupSources.find((s) => s.id === againstId) ?? setupSources[0]!;
+export function SetupComparison({ current, circuit, sources, onLoad }: Props) {
+  const [againstId, setAgainstId] = useState(sources[0]?.id ?? '');
+  const against = sources.find((s) => s.id === againstId) ?? sources[0]!;
 
   const currentScore = scoreSetup(current, circuit);
   const againstScore = scoreSetup(against.values, circuit);
 
   const diffs = allParams.
-  map((p) => ({ p, a: current[p.key], b: against.values[p.key] })).
+  map((p) => ({ p, a: current[p.key] as number, b: against.values[p.key] as number })).
   filter((d) => Math.abs(d.a - d.b) > 0.001);
 
   return (
@@ -39,8 +40,8 @@ export function SetupComparison({ current, circuit, onLoad }: Props) {
       }>
       
       <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
-        {setupSources.map((s) => {
-          const on = s.id === againstId;
+        {sources.map((s) => {
+          const on = s.id === against.id;
           return (
             <button
               key={s.id}

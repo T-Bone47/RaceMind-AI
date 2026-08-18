@@ -19,10 +19,14 @@ import {
   documents,
   games,
   paramGroups,
+  setupSources,
   type SessionKind,
+  type SetupSource,
   type SetupValues,
-  type WeatherKind } from
-'../data/setups';
+  type WeatherKind
+} from '../data/setups';
+import { SetupNotes } from '../components/setup/SetupNotes';
+import { useCircuitSetups, mapBackendToSetupValues } from '../lib/api/setups';
 import { aiSetupFor, scoreSetup } from '../utils/setupScore';
 import { useScreenInit } from '../useScreenInit';
 
@@ -45,6 +49,20 @@ export function SetupLibrary() {
   const score = useMemo(() => scoreSetup(values, circuit), [values, circuit]);
   const baselineScore = useMemo(() => scoreSetup(savedValues, circuit), [savedValues, circuit]);
 
+  const { data: apiSetups } = useCircuitSetups(circuit.country);
+
+  const combinedSources = useMemo(() => {
+    const dbSources: SetupSource[] = (apiSetups || []).map(setup => ({
+      id: `db-${setup.id}`,
+      label: setup.session_type || 'Saved Setup',
+      author: 'Database',
+      tag: 'Imported',
+      color: '#FF7A29',
+      values: mapBackendToSetupValues(setup),
+    }));
+    return [...setupSources, ...dbSources];
+  }, [apiSetups]);
+
   const dirty = useMemo(
     () => (Object.keys(values) as (keyof SetupValues)[]).some((k) => values[k] !== savedValues[k]),
     [values, savedValues]
@@ -59,7 +77,7 @@ export function SetupLibrary() {
       setValues((prev) => {
         const next = { ...prev };
         keys.forEach((k) => {
-          next[k] = savedValues[k];
+          (next[k] as never) = savedValues[k] as never;
         });
         return next;
       });
@@ -120,19 +138,19 @@ export function SetupLibrary() {
                   </SetupCategory>
               )}
                 <div className="md:col-span-2">
-                  <SetupComparison current={values} circuit={circuit} onLoad={setValues} />
+                  <SetupComparison current={values} circuit={circuit} sources={combinedSources} onLoad={setValues} />
                 </div>
               </div>
 
               <div className="xl:col-span-4">
                 <div className="xl:sticky xl:top-3">
                   <AIRecommendation
-                  score={score}
-                  circuit={circuit}
-                  session={session}
-                  weather={weather}
-                  onApply={() => setValues(recommended)} />
-                
+                    score={score}
+                    circuit={circuit}
+                    session={session}
+                    weather={weather}
+                    onApply={() => setValues(recommended)} />
+                  <SetupNotes values={values} />
                 </div>
               </div>
             </div>

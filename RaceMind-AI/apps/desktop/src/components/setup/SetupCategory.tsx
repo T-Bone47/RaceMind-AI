@@ -55,8 +55,8 @@ export function SetupCategory({
       {children}
 
       {params.map((p) => {
-        const value = values[p.key];
-        const ref = reference[p.key];
+        const value = values[p.key] as number;
+        const ref = reference[p.key] as number;
         const delta = Number((value - ref).toFixed(2));
         const pct = (value - p.min) / (p.max - p.min) * 100;
         const refPct = (ref - p.min) / (p.max - p.min) * 100;

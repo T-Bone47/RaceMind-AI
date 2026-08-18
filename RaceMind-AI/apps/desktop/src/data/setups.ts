@@ -135,6 +135,8 @@ export interface SetupValues {
   pressureFR: number;
   pressureRL: number;
   pressureRR: number;
+  trackGuideVideoUrl?: string;
+  raceStrategyNotes?: string;
 }
 
 export interface ParamSpec {

@@ -25,6 +25,8 @@ export function mapBackendToSetupValues(backendSetup: Record<string, unknown>): 
     pressureFR: Number(backendSetup.tyre_pressure_fr),
     pressureRL: Number(backendSetup.tyre_pressure_rl),
     pressureRR: Number(backendSetup.tyre_pressure_rr),
+    trackGuideVideoUrl: backendSetup.track_guide_video_url as string | undefined,
+    raceStrategyNotes: backendSetup.race_strategy_notes as string | undefined,
   };
 }
 

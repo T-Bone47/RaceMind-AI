@@ -1,4 +1,3 @@
-
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { InsightsHeader } from '../components/insights/InsightsHeader';
@@ -7,7 +6,7 @@ import { InsightDetail } from '../components/insights/InsightDetail';
 import { ExecutiveSummary } from '../components/insights/ExecutiveSummary';
 import { PredictionBoard } from '../components/insights/PredictionBoard';
 import { ModelTelemetry } from '../components/insights/ModelTelemetry';
-import { insights as mockInsights, type Severity, type Insight } from '../data/insights';
+import { type Severity, type Insight } from '../data/insights';
 import { useSessionStore } from '../store/sessionStore';
 import { useCoachingReport, type CoachingReportRead } from '../lib/api/coaching';
 
@@ -35,7 +34,7 @@ export function Insights() {
   const { data: report } = useCoachingReport(sessionId || "");
 
   const activeInsights: Insight[] = useMemo(() => {
-    if (!report) return mockInsights.slice(0, 0); // Empty or fallback to mock
+    if (!report) return []; // Empty or fallback to mock
 
     const mapped: Insight[] = [];
 
