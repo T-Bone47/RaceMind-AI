@@ -61,6 +61,8 @@ class SetupImportRecord:
     ballast: int | None = None
     fuel_load: float | None = None
     notes: str | None = None
+    track_guide_video_url: str | None = None
+    race_strategy_notes: str | None = None
     source_attribution: str | None = None
 
 

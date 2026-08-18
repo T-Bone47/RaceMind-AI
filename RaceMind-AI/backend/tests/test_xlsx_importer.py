@@ -324,23 +324,22 @@ class TestXlsxImporterIntegration:
         assert r.tyre_pressure_rr == 22.0
 
     async def test_notes_contain_track_guide(self, importer) -> None:
-        """F1 26/25 dry sheets have reference link columns → notes."""
+        """F1 26/25 dry sheets have reference link columns → track_guide_video_url."""
         records = await importer.fetch(GameTitle.F1_26, "Australia")
-        assert records[0].notes is not None
-        assert "Track Guide" in records[0].notes
+        assert records[0].track_guide_video_url is not None
+        assert "http" in records[0].track_guide_video_url or records[0].track_guide_video_url != ""
 
     async def test_notes_contain_race_strategy(self, importer) -> None:
-        """F1 26/25 dry sheets include Race Strategy 50%."""
+        """F1 26/25 dry sheets include Race Strategy 50% → race_strategy_notes."""
         records = await importer.fetch(GameTitle.F1_26, "Australia")
-        assert "Race Strategy" in records[0].notes
+        assert records[0].race_strategy_notes is not None
 
     async def test_wet_sheet_no_strategy_columns(self, importer) -> None:
         """Wet and F2 sheets should only have Track Guide, no strategy."""
         records = await importer.fetch(GameTitle.F1_25, "Australia")
         wet_records = [r for r in records if r.weather == SetupWeather.WET]
         assert len(wet_records) == 1
-        if wet_records[0].notes:
-            assert "Race Strategy" not in wet_records[0].notes
+        assert wet_records[0].race_strategy_notes is None
 
     async def test_data_quality_las_vegas_f1_26(self, importer) -> None:
         """Las Vegas F1 26 has a missing-slash tyres cell."""

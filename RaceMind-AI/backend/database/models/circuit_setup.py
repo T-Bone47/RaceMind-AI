@@ -55,6 +55,8 @@ class CircuitSetup(UUIDPrimaryKeyMixin, TimestampMixin, Base):
 
     name: Mapped[str] = mapped_column(String(150), nullable=False)
     notes: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    track_guide_video_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    race_strategy_notes: Mapped[str | None] = mapped_column(String(1000), nullable=True)
 
     # --- Aero ---
     front_wing: Mapped[int] = mapped_column(Integer, nullable=False)

@@ -24,6 +24,8 @@ class CircuitSetupCreate(BaseModel):
     skill_level: SetupSkillLevel
     name: str = Field(min_length=1, max_length=150)
     notes: str | None = Field(default=None, max_length=1000)
+    track_guide_video_url: str | None = Field(default=None, max_length=1000)
+    race_strategy_notes: str | None = Field(default=None, max_length=1000)
 
     front_wing: int = Field(ge=0, le=50)
     rear_wing: int = Field(ge=0, le=50)

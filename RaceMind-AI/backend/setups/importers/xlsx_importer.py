@@ -214,12 +214,15 @@ def _parse_tyres(cell: str) -> tuple[float, float, float, float]:
     )
 
 
-def _build_notes(
+def _extract_notes_and_links(
     row: tuple[object, ...],
     config: _SheetConfig,
-) -> str | None:
-    """Assemble reference-link columns into a structured notes string."""
+) -> tuple[str | None, str | None, str | None]:
+    """Extract reference-link columns into separate fields and a structured notes string."""
     parts: list[str] = []
+    
+    track_guide_url: str | None = None
+    race_strategy_notes: str | None = None
 
     # Column indices depend on whether strategy columns exist.
     # Headers: Track(0), Aero(1), Trans(2), SuspGeom(3), Susp(4), Brakes(5), Tyres(6)
@@ -228,7 +231,7 @@ def _build_notes(
 
     track_guide = row[7] if len(row) > 7 else None
     if track_guide:
-        parts.append(f"Track Guide: {track_guide}")
+        track_guide_url = str(track_guide)
 
     if config.has_strategy_columns:
         race_strategy = row[8] if len(row) > 8 else None
@@ -236,13 +239,14 @@ def _build_notes(
         raw_hotlap = row[10] if len(row) > 10 else None
 
         if race_strategy:
-            parts.append(f"Race Strategy 50%: {race_strategy}")
+            race_strategy_notes = str(race_strategy)
         if short_format:
             parts.append(f"Short Format: {short_format}")
         if raw_hotlap:
             parts.append(f"Raw Hotlap: {raw_hotlap}")
 
-    return "\n".join(parts) if parts else None
+    notes = "\n".join(parts) if parts else None
+    return notes, track_guide_url, race_strategy_notes
 
 
 def _parse_row(
@@ -307,7 +311,7 @@ def _parse_row(
         logger.error("Cannot parse Tyres for %s (%s): %s", track_name, sheet_name, exc)
         return None, [_ParseWarning(track_name, sheet_name, "Tyres", str(exc))]
 
-    notes = _build_notes(row, config)
+    notes, track_guide_url, strategy_notes = _extract_notes_and_links(row, config)
 
     record = SetupImportRecord(
         game=config.game,
@@ -339,6 +343,8 @@ def _parse_row(
         tyre_pressure_rl=tyre_rl,
         tyre_pressure_rr=tyre_rr,
         notes=notes,
+        track_guide_video_url=track_guide_url,
+        race_strategy_notes=strategy_notes,
         source_attribution=_SOURCE_ATTRIBUTION,
     )
     return record, warnings

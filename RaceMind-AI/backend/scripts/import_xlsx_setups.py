@@ -66,11 +66,12 @@ async def main(xlsx_path: str) -> None:
         service = SetupService(repo)
 
         created_count = 0
-        for record in all_records:
+        unique_targets = {(r.game, r.track_name) for r in all_records}
+        for game, track_name in unique_targets:
             setups = await service.import_from(
                 importer,
-                record.game,
-                record.track_name,
+                game,
+                track_name,
                 source=SetupSource.COMMUNITY_IMPORT,
             )
             created_count += len(setups)
