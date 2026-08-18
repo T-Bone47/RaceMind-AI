@@ -23,9 +23,8 @@ from telemetry.parsers.f1_2020 import F12020Parser
 from telemetry.parsers.f1_2021 import F12021Parser
 from telemetry.parsers.f1_2022 import F12022Parser
 from telemetry.parsers.f1_2023 import F12023Parser
-from telemetry.parsers.f1_2024 import F1_2024Parser
-from telemetry.parsers.f1_2025 import F1_2025Parser
-from telemetry.parsers.f1_2026 import F1_2026Parser
+from telemetry.parsers.f1_2025 import F12025Parser
+from telemetry.parsers.f1_2025_2026_dlc import F120252026DLCParser
 
 _STUB_PARSERS: list[GameYearParser] = [
     F12015Parser(),
@@ -37,15 +36,11 @@ _STUB_PARSERS: list[GameYearParser] = [
     F12021Parser(),
     F12022Parser(),
     F12023Parser(),
-    # F1 24, 25, 26 deliberately excluded here - registered separately
-    # below as real implementations, not stubs.
+    F12025Parser(),
+    F120252026DLCParser(),
 ]
 
-_REAL_PARSERS: list[GameYearParser] = [
-    F1_2024Parser(),
-    F1_2025Parser(),
-    F1_2026Parser(),
-]
+_REAL_PARSERS: list[GameYearParser] = []
 
 
 def register_all(router: PacketRouter) -> None:

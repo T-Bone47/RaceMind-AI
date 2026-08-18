@@ -8,14 +8,12 @@ Transactions are NOT committed here - see `database/session.py` for why.
 from __future__ import annotations
 
 import uuid
-from typing import TypeVar
+from typing import Generic, TypeVar
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.base import Base
-
-from typing import Generic, TypeVar
 
 ModelType = TypeVar("ModelType", bound=Base)
 

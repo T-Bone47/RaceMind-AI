@@ -62,7 +62,7 @@ class UDPProvider(TelemetryProvider):
         self,
         host: str = "0.0.0.0",
         port: int = 20777,
-        game: GameTitle = GameTitle.F1_26,
+        game: GameTitle = GameTitle.F1_25_2026_DLC,
         router: PacketRouter | None = None,
     ) -> None:
         super().__init__()

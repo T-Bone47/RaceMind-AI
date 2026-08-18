@@ -1,3 +1,4 @@
+# ruff: noqa: E402
 """Shared pytest fixtures.
 
 Defaults to in-memory SQLite (fast, zero external dependencies) so
@@ -10,7 +11,19 @@ schema; this is just for exercising application code quickly.
 from __future__ import annotations
 
 import os
+import sys
 from collections.abc import AsyncIterator
+from unittest.mock import MagicMock
+
+
+# Mock sounddevice globally to prevent PortAudio crashes in CI environments
+class PortAudioError(Exception): pass
+class CallbackStop(Exception): pass
+
+sd_mock = MagicMock()
+sd_mock.PortAudioError = PortAudioError
+sd_mock.CallbackStop = CallbackStop
+sys.modules["sounddevice"] = sd_mock
 
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient

@@ -1,8 +1,9 @@
 import socket
-import time
 import sys
+import time
 
 from tests.test_f1_2024_parser import _build_car_telemetry_packet
+
 
 def send_packet(speed, throttle, gear, count=5):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

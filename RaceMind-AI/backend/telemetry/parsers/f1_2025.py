@@ -1,24 +1,24 @@
-"""F1 25 UDP telemetry parser.
+"""Packet parser for F1 2025.
 
-Verified against the official F1 25 UDP specification: the header (29
-bytes) and CarTelemetryData (1352 bytes total, 60 bytes/car, 22 cars)
-are byte-identical to F1 24 - confirmed by cross-checking this file's
-struct math against F1 25's own documented packet sizes, not assumed
-from the version number. Because they're genuinely identical, this
-subclasses F1_2024Parser rather than duplicating the same struct logic;
-if F1 25 diverges in a future patch this can be split into its own
-independent implementation the same way F1 26 already needed to be
-(F1 26 changed engineTemperature's type and the max car count - see
-f1_2026.py - so it could NOT reuse this pattern).
+TODO (future milestone): implement `decode_packet` against the official
+F1 2025 UDP telemetry specification. Every field offset below the
+common header differs release to release, so this stays a registered-but-
+unimplemented stub rather than a guess - see telemetry/packet_router.py
+for why that boundary is deliberate.
 """
 
 from __future__ import annotations
 
-from telemetry.models import GameTitle
-from telemetry.parsers.f1_2024 import F1_2024Parser
+from telemetry.models import GameTitle, TelemetryMessage
 
 
-class F1_2025Parser(F1_2024Parser):
-    """GameYearParser implementation for F1 25 (see packet_router.GameYearParser)."""
+class F12025Parser:
+    """GameYearParser implementation for F1 2025 (see packet_router.GameYearParser)."""
 
     game = GameTitle.F1_25
+
+    def decode_packet(self, raw: bytes) -> TelemetryMessage | None:
+        raise NotImplementedError(
+            "F1 2025 packet decoding is not implemented yet - "
+            "register the real parser here once the wire format is confirmed."
+        )

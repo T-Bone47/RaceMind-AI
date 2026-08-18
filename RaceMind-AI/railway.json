@@ -8,6 +8,7 @@
     "startCommand": "cd backend && uv run uvicorn api.main:app --host 0.0.0.0 --port $PORT",
     "releaseCommand": "cd backend && uv run alembic upgrade head",
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
+    "restartPolicyMaxRetries": 10,
+    "healthcheckPath": "/health"
   }
 }

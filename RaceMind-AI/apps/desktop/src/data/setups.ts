@@ -10,9 +10,8 @@ export interface GameTitle {
 }
 
 export const games: GameTitle[] = [
-{ id: 'f126', name: 'EA SPORTS F1 26', short: 'F1 26', season: '2026', circuits: 26, status: 'connected', accent: '#00E5FF', build: '1.04 · live telemetry' },
+{ id: 'f125_2026_dlc', name: 'EA SPORTS F1 25: 2026 Season Pack DLC', short: 'F1 25 2026', season: '2026', circuits: 26, status: 'connected', accent: '#00E5FF', build: '1.04 · live telemetry' },
 { id: 'f125', name: 'EA SPORTS F1 25', short: 'F1 25', season: '2025', circuits: 25, status: 'connected', accent: '#00D68F', build: '1.19 · UDP linked' },
-{ id: 'f124', name: 'EA SPORTS F1 24', short: 'F1 24', season: '2024', circuits: 24, status: 'available', accent: '#B15CFF', build: '1.22 · archive' },
 { id: 'f123', name: 'EA SPORTS F1 23', short: 'F1 23', season: '2023', circuits: 23, status: 'available', accent: '#FFC531', build: '1.16 · archive' },
 { id: 'f122', name: 'EA SPORTS F1 22', short: 'F1 22', season: '2022', circuits: 22, status: 'legacy', accent: '#8E99A8', build: '1.18 · read only' }];
 
@@ -277,12 +276,12 @@ export interface SetupDoc {
 }
 
 export const documents: SetupDoc[] = [
-{ id: 'd1', name: 'Bahrain_Race_Setup_v4.pdf', kind: 'PDF', game: 'F1 26', circuit: 'Bahrain', session: 'Race', weather: 'Dry', author: 'A. Shovlin', uploaded: '2h ago', version: 'v4.2', size: '1.8 MB', aiStatus: 'parsed', extracted: 21, summary: 'Long-run focused setup with a softer rear platform to protect the rear-left over 18 lap stints.' },
-{ id: 'd2', name: 'Monaco_Quali_Reference.xlsx', kind: 'XLSX', game: 'F1 26', circuit: 'Monaco', session: 'Qualifying', weather: 'Dry', author: 'Esports Team', uploaded: 'Yesterday', version: 'v2.0', size: '412 KB', aiStatus: 'parsed', extracted: 21, summary: 'Maximum downforce single-lap configuration. Soft springs, high front wing, aggressive kerb usage.' },
-{ id: 'd3', name: 'Wet_Weather_Guide_2026.docx', kind: 'DOCX', game: 'F1 26', circuit: 'All circuits', session: 'Wet Setup', weather: 'Heavy rain', author: 'Performance Group', uploaded: '3 days ago', version: 'v1.1', size: '840 KB', aiStatus: 'analysing', extracted: 14, summary: 'Cross-circuit wet weather principles: raise ride height, soften ARBs, reduce brake pressure by 4%.' },
+{ id: 'd1', name: 'Bahrain_Race_Setup_v4.pdf', kind: 'PDF', game: 'F1 25: 2026 Season Pack DLC', circuit: 'Bahrain', session: 'Race', weather: 'Dry', author: 'A. Shovlin', uploaded: '2h ago', version: 'v4.2', size: '1.8 MB', aiStatus: 'parsed', extracted: 21, summary: 'Long-run focused setup with a softer rear platform to protect the rear-left over 18 lap stints.' },
+{ id: 'd2', name: 'Monaco_Quali_Reference.xlsx', kind: 'XLSX', game: 'F1 25: 2026 Season Pack DLC', circuit: 'Monaco', session: 'Qualifying', weather: 'Dry', author: 'Esports Team', uploaded: 'Yesterday', version: 'v2.0', size: '412 KB', aiStatus: 'parsed', extracted: 21, summary: 'Maximum downforce single-lap configuration. Soft springs, high front wing, aggressive kerb usage.' },
+{ id: 'd3', name: 'Wet_Weather_Guide_2026.docx', kind: 'DOCX', game: 'F1 25: 2026 Season Pack DLC', circuit: 'All circuits', session: 'Wet Setup', weather: 'Heavy rain', author: 'Performance Group', uploaded: '3 days ago', version: 'v1.1', size: '840 KB', aiStatus: 'analysing', extracted: 14, summary: 'Cross-circuit wet weather principles: raise ride height, soften ARBs, reduce brake pressure by 4%.' },
 { id: 'd4', name: 'Suzuka_Telemetry_Stint.csv', kind: 'CSV', game: 'F1 25', circuit: 'Suzuka', session: 'Practice', weather: 'Overcast', author: 'Telemetry Bot', uploaded: '5 days ago', version: 'v1.0', size: '18 MB', aiStatus: 'parsed', extracted: 8, summary: 'Twenty-two lap long run. Front-left surface temperature exceeded the window after lap nine.' },
-{ id: 'd5', name: 'Monza_Lowdrag_Notes.png', kind: 'IMG', game: 'F1 24', circuit: 'Monza', session: 'Race', weather: 'Hot', author: 'Community', uploaded: '1 week ago', version: 'v1.0', size: '2.4 MB', aiStatus: 'queued', extracted: 0, summary: 'Screenshot of a low-drag configuration. Awaiting optical value extraction.' },
-{ id: 'd6', name: 'Spa_Compromise_Study.pdf', kind: 'PDF', game: 'F1 26', circuit: 'Spa', session: 'League Racing', weather: 'Rain risk', author: 'M. Doyle', uploaded: '2 weeks ago', version: 'v3.1', size: '3.1 MB', aiStatus: 'parsed', extracted: 21, summary: 'Sector-by-sector wing level study concluding that rear wing 6 is the optimum compromise.' }];
+{ id: 'd5', name: 'Monza_Lowdrag_Notes.png', kind: 'IMG', game: 'F1 25', circuit: 'Monza', session: 'Race', weather: 'Hot', author: 'Community', uploaded: '1 week ago', version: 'v1.0', size: '2.4 MB', aiStatus: 'queued', extracted: 0, summary: 'Screenshot of a low-drag configuration. Awaiting optical value extraction.' },
+{ id: 'd6', name: 'Spa_Compromise_Study.pdf', kind: 'PDF', game: 'F1 25: 2026 Season Pack DLC', circuit: 'Spa', session: 'League Racing', weather: 'Rain risk', author: 'M. Doyle', uploaded: '2 weeks ago', version: 'v3.1', size: '3.1 MB', aiStatus: 'parsed', extracted: 21, summary: 'Sector-by-sector wing level study concluding that rear wing 6 is the optimum compromise.' }];
 
 
 export const assistantMessages = [

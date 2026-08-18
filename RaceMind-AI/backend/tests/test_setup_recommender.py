@@ -17,7 +17,7 @@ from telemetry.models import GameTitle
 
 def _setup(**overrides: object) -> CircuitSetup:
     defaults: dict[str, object] = dict(
-        game=GameTitle.F1_26,
+        game=GameTitle.F1_25_2026_DLC,
         track_name="Monaco",
         session_type=SessionType.RACE,
         weather=SetupWeather.DRY,
@@ -58,7 +58,7 @@ async def test_exact_match_is_preferred(db_session):
 
     recommender = SetupRecommender(repo)
     result = await recommender.recommend(
-        game=GameTitle.F1_26,
+        game=GameTitle.F1_25_2026_DLC,
         track_name="Monaco",
         session_type=SessionType.RACE,
         weather=SetupWeather.DRY,
@@ -77,7 +77,7 @@ async def test_falls_back_to_another_skill_level_when_no_exact_match(db_session)
 
     recommender = SetupRecommender(repo)
     result = await recommender.recommend(
-        game=GameTitle.F1_26,
+        game=GameTitle.F1_25_2026_DLC,
         track_name="Monaco",
         session_type=SessionType.RACE,
         weather=SetupWeather.DRY,
@@ -100,7 +100,7 @@ async def test_falls_back_to_other_input_device_when_skill_level_also_missing(db
 
     recommender = SetupRecommender(repo)
     result = await recommender.recommend(
-        game=GameTitle.F1_26,
+        game=GameTitle.F1_25_2026_DLC,
         track_name="Monaco",
         session_type=SessionType.RACE,
         weather=SetupWeather.DRY,
@@ -118,7 +118,7 @@ async def test_raises_when_absolutely_nothing_matches(db_session):
 
     with pytest.raises(NoSetupAvailableError):
         await recommender.recommend(
-            game=GameTitle.F1_26,
+            game=GameTitle.F1_25_2026_DLC,
             track_name="Nonexistent Circuit",
             session_type=SessionType.RACE,
             weather=SetupWeather.DRY,

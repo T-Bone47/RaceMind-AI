@@ -2,20 +2,6 @@ import { useMemo, useRef } from 'react';
 import { Panel } from '../ui/Panel';
 import { Trace } from '../ui/Trace';
 import { useSessionStore } from '../../store/sessionStore';
-import {
-  brake as mockBrake,
-  battery,
-  delta,
-  drs,
-  ers,
-  fuelFlow,
-  gear as mockGear,
-  refSpeed,
-  rpm,
-  speed as mockSpeed,
-  steering,
-  throttle as mockThrottle } from
-'../../data/telemetry';
 import { trackCorners } from '../../data/track';
 
 interface Channel {
@@ -38,41 +24,20 @@ interface Props {
   compare: string[];
 }
 
-const rivalTraces: Record<string, {color: string;values: number[];}> = {
-  LEC: { color: '#E10600', values: mockSpeed.map((v, i) => v - Math.sin(i / 6) * 9 - 3) },
-  VER: { color: '#3D8BFF', values: mockSpeed.map((v, i) => v + Math.cos(i / 7) * 8 - 1) },
-  NOR: { color: '#FF7A29', values: mockSpeed.map((v, i) => v + Math.sin(i / 5) * 7 + 2) }
-};
+const emptyHistory = Array.from({ length: 60 }, () => 0);
 
 export function ChannelStack({ cursor, onCursor, compare }: Props) {
   const store = useSessionStore();
   const ref = useRef<HTMLDivElement>(null);
 
   const channels: Channel[] = useMemo(() => [
-    { key: 'speed', label: 'Speed', unit: 'kph', color: '#00E5FF', values: store.speedHistory.some(v => v > 0) ? store.speedHistory : mockSpeed, ghost: refSpeed, height: 108, min: 40, max: 350 },
-    { key: 'delta', label: 'Delta to ref', unit: 's', color: '#00D68F', values: delta, height: 62, baseline: 0, decimals: 3 },
-    { key: 'pedals', label: 'Throttle', unit: '%', color: '#00D68F', values: store.throttleHistory.some(v => v > 0) ? store.throttleHistory : mockThrottle, height: 58, min: 0, max: 100 },
-    { key: 'brake', label: 'Brake', unit: '%', color: '#E10600', values: store.brakeHistory.some(v => v > 0) ? store.brakeHistory : mockBrake, height: 58, min: 0, max: 100 },
-    { key: 'gear', label: 'Gear', unit: '', color: '#B15CFF', values: store.gearHistory.some(v => v > 0) ? store.gearHistory : mockGear, height: 48, min: 0, max: 8 },
-    { key: 'rpm', label: 'RPM', unit: '', color: '#FFC531', values: rpm, height: 52, min: 5000, max: 12500 },
-    { key: 'steering', label: 'Steering', unit: '°', color: '#F3F7FB', values: steering, height: 52, min: -130, max: 130, baseline: 0 },
-    { key: 'ers', label: 'ERS deploy', unit: 'kW', color: '#00E5FF', values: ers, height: 52, min: 0, max: 170 },
-    { key: 'battery', label: 'Battery', unit: '%', color: '#B15CFF', values: battery, height: 48, min: 0, max: 100 },
-    { key: 'fuel', label: 'Fuel flow', unit: 'kg/h', color: '#FF7A29', values: fuelFlow, height: 48, min: 0, max: 100 }
+    { key: 'speed', label: 'Speed', unit: 'kph', color: '#00E5FF', values: store.speedHistory, height: 108, min: 40, max: 350 },
+    { key: 'pedals', label: 'Throttle', unit: '%', color: '#00D68F', values: store.throttleHistory, height: 58, min: 0, max: 100 },
+    { key: 'brake', label: 'Brake', unit: '%', color: '#E10600', values: store.brakeHistory, height: 58, min: 0, max: 100 },
+    { key: 'gear', label: 'Gear', unit: '', color: '#B15CFF', values: store.gearHistory, height: 48, min: 0, max: 8 },
   ], [store.speedHistory, store.throttleHistory, store.brakeHistory, store.gearHistory]);
 
-  const drsZones = useMemo(() => {
-    const zones: {start: number;end: number;}[] = [];
-    let start: number | null = null;
-    drs.forEach((v, i) => {
-      if (v === 1 && start === null) start = i;
-      if (v === 0 && start !== null) {
-        zones.push({ start: start / drs.length, end: i / drs.length });
-        start = null;
-      }
-    });
-    return zones;
-  }, []);
+  const drsZones: {start: number;end: number;}[] = [];
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -133,22 +98,7 @@ export function ChannelStack({ cursor, onCursor, compare }: Props) {
               <div className="relative">
                 {ch.key === 'speed' &&
                 compare.map((code) => {
-                  const rival = rivalTraces[code];
-                  if (!rival) return null;
-                  return (
-                    <div key={code} className="absolute inset-0 opacity-70">
-                        <Trace
-                        values={rival.values}
-                        color={rival.color}
-                        height={ch.height}
-                        width={900}
-                        fill={false}
-                        min={ch.min}
-                        max={ch.max}
-                        strokeWidth={1} />
-                      
-                      </div>);
-
+                  return null;
                 })}
                 {ch.ghost &&
                 <div className="absolute inset-0 opacity-40">

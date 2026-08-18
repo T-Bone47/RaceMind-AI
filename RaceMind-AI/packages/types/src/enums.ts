@@ -14,9 +14,8 @@ export type GameTitle =
   | "f1_21"
   | "f1_22"
   | "f1_23"
-  | "f1_24"
   | "f1_25"
-  | "f1_26"
+  | "f1_25_2026_dlc"
   | "assetto_corsa"
   | "acc"
   | "iracing"
@@ -45,9 +44,8 @@ export const GAME_TITLE_LABELS: Record<GameTitle, string> = {
   f1_21: "F1 2021",
   f1_22: "F1 2022",
   f1_23: "F1 23",
-  f1_24: "F1 24",
   f1_25: "F1 25",
-  f1_26: "F1 26",
+  f1_25_2026_dlc: "F1 25: 2026 DLC",
   assetto_corsa: "Assetto Corsa",
   acc: "Assetto Corsa Competizione",
   iracing: "iRacing",

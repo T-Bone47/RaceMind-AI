@@ -33,6 +33,8 @@ interface SessionState {
   trackName: string;
   currentLap: number;
   totalLaps: number;
+  lapDistance: number;
+  trackLength: number;
   position: number;
   lastLapMs: number;
   bestLapMs: number;
@@ -68,6 +70,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   trackName: "--",
   currentLap: 0,
   totalLaps: 0,
+  lapDistance: 0,
+  trackLength: 5000,
   position: 0,
   lastLapMs: 0,
   bestLapMs: 0,
@@ -154,6 +158,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
           // Update flat session metadata
           currentLap: frame.current_lap ?? state.currentLap,
           totalLaps: frame.total_laps ?? state.totalLaps,
+          lapDistance: frame.lap_distance_m ?? state.lapDistance,
+          trackLength: frame.track_length_m ?? state.trackLength,
           position: frame.position ?? state.position,
           lastLapMs: frame.last_lap_ms ?? state.lastLapMs,
           bestLapMs: frame.best_lap_ms ?? state.bestLapMs,

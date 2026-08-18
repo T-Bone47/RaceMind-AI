@@ -15,7 +15,7 @@ reaches here.
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
 import bcrypt
@@ -49,7 +49,7 @@ TokenType = Literal["access", "refresh"]
 
 def _create_token(subject: str, token_type: TokenType, expires_delta: timedelta) -> str:
     settings = get_settings()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     payload: dict[str, Any] = {
         "sub": subject,
         "type": token_type,

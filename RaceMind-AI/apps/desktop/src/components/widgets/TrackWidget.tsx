@@ -9,8 +9,8 @@ const TRACK_PATH =
   "M20,70 L20,40 Q20,25 35,25 L60,25 Q75,25 75,10 L90,10 Q100,10 100,20 L100,45 Q100,55 90,55 L55,55 Q45,55 45,65 L45,75 Q45,85 35,85 L20,85 Q10,85 10,75 Z";
 
 export function TrackWidget() {
-  const { trackName, currentLap, totalLaps } = useSessionStore((s) => s);
-  const progress = (currentLap % 1 === 0 ? 0.4 : currentLap % 1) + 0.1; // mock position along the lap
+  const { trackName, currentLap, totalLaps, lapDistance, trackLength } = useSessionStore((s) => s);
+  const progress = trackLength > 0 ? (lapDistance / trackLength) : 0; // use real lap position
 
   return (
     <Card>

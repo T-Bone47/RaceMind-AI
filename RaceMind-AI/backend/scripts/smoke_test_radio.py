@@ -11,16 +11,15 @@ radio/delivery.py -> TTS -> Speaker), not the driver-question path.
 """
 
 import asyncio
-import os
 
-from voice.audio.microphone import Microphone
-from voice.audio.speaker import Speaker
-from voice.service import VoiceService
-from voice.pipeline import VoicePipeline
-from radio.queue import RadioMessageQueue
+from database.models.enums import TyreCompound
 from engineer import tyre_advisor
 from engineer.models import TyreState
-from database.models.enums import TyreCompound
+from radio.queue import RadioMessageQueue
+from voice.audio.microphone import Microphone
+from voice.audio.speaker import Speaker
+from voice.pipeline import VoicePipeline
+from voice.service import VoiceService
 
 
 async def main() -> None:

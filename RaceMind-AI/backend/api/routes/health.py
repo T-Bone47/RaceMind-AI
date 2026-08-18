@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import APIRouter
 from sqlalchemy import text
@@ -18,7 +18,7 @@ async def health_check() -> dict[str, str]:
         "status": "ok",
         "app": settings.app_name,
         "version": settings.app_version,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 

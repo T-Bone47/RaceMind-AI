@@ -26,8 +26,6 @@ from config.settings import get_settings
 from database.session import engine
 from reference.fastf1_client import configure_cache as configure_fastf1_cache
 
-
-
 settings = get_settings()
 
 

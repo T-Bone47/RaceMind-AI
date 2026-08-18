@@ -10,7 +10,7 @@ needs to know which sim or which game year produced the data.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
@@ -33,7 +33,7 @@ class GameTitle(str, Enum):
     F1_23 = "f1_23"
     F1_24 = "f1_24"
     F1_25 = "f1_25"
-    F1_26 = "f1_26"
+    F1_25_2026_DLC = "f1_25_2026_dlc"
     F2_25 = "f2_25"
     ASSETTO_CORSA = "assetto_corsa"
     ACC = "acc"
@@ -54,7 +54,7 @@ class TelemetryEventType(str, Enum):
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class TelemetryFrame(BaseModel):

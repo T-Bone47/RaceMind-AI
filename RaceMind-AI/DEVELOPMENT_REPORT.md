@@ -46,11 +46,11 @@ or a data-richness-based confidence where one exists. This is mechanical, not a 
   → AI Engineer fails closed correctly with no API key configured
 
 ### Telemetry (`telemetry/`)
-- Real, byte-verified UDP parsing for **F1 24, F1 25, F1 26** (not stubs) — every struct format
+- Real, byte-verified UDP parsing for **F1 25** and **F1 25: 2026 Season Pack DLC** (not stubs) — every struct format
   was cross-checked against the official spec's stated packet sizes before being trusted
-  (F1 26 in particular: 22→24 car cap increase, `engineTemperature` uint16→uint8, both verified
-  to compute the exact documented byte totals). F1 15-23 remain honest, registered-but-
-  unimplemented stubs — never guessed at.
+  (2026 DLC in particular: 22→24 car cap increase, `engineTemperature` uint16→uint8, both verified
+  to compute the exact documented byte totals). Old F1 24 support was migrated to F1 25 base game binary compatibility.
+  F1 15-23 remain honest, registered-but-unimplemented stubs — never guessed at.
 - Real asyncio UDP transport, replay/recorder pair, pub/sub provider abstraction
 - `docs/TELEMETRY_SETUP.md` — real PC/Xbox/PlayStation network configuration guide
 

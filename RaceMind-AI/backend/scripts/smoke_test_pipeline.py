@@ -14,15 +14,17 @@ import asyncio
 import os
 import uuid
 
+from radio.queue import RadioMessageQueue
+from tests.engineer_state_fixtures import (
+    build_state,  # dev-only import, fine for a throwaway script
+)
 from voice.audio.microphone import Microphone
 from voice.audio.speaker import Speaker
-from voice.service import VoiceService
-from voice.intents.router import OllieRouter
 from voice.intents.context import ConversationContext
 from voice.intents.models import HandlerContext
+from voice.intents.router import OllieRouter
 from voice.pipeline import VoicePipeline
-from radio.queue import RadioMessageQueue
-from tests.engineer_state_fixtures import build_state  # dev-only import, fine for a throwaway script
+from voice.service import VoiceService
 
 
 async def main() -> None:

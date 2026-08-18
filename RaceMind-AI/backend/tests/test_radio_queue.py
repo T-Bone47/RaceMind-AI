@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from common.confidence import fixed
 from engineer.models import Recommendation, RecommendationCategory, RecommendationPriority
@@ -28,7 +28,7 @@ def _rec(
 
 
 def _t(seconds: float) -> datetime:
-    return datetime(2026, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=seconds)
+    return datetime(2026, 1, 1, tzinfo=UTC) + timedelta(seconds=seconds)
 
 
 # --- Conversion ---

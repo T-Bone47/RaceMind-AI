@@ -244,9 +244,9 @@ class TestXlsxImporterIntegration:
         assert len(all_records) == 109
 
     async def test_f1_26_game_title(self, importer) -> None:
-        records = await importer.fetch(GameTitle.F1_26, "Australia")
+        records = await importer.fetch(GameTitle.F1_25_2026_DLC, "Australia")
         assert len(records) == 1
-        assert records[0].game == GameTitle.F1_26
+        assert records[0].game == GameTitle.F1_25_2026_DLC
 
     async def test_f1_25_game_title(self, importer) -> None:
         records = await importer.fetch(GameTitle.F1_25, "Australia")
@@ -281,7 +281,7 @@ class TestXlsxImporterIntegration:
             assert r.session_type == SessionType.RACE
 
     async def test_source_attribution(self, importer) -> None:
-        records = await importer.fetch(GameTitle.F1_26, "Monaco")
+        records = await importer.fetch(GameTitle.F1_25_2026_DLC, "Monaco")
         assert records[0].source_attribution is not None
         assert "Matt212" in records[0].source_attribution
 
@@ -300,7 +300,7 @@ class TestXlsxImporterIntegration:
 
     async def test_spot_check_australia_f1_26(self, importer) -> None:
         """Verify a single setup against the known XLSX values."""
-        records = await importer.fetch(GameTitle.F1_26, "Australia")
+        records = await importer.fetch(GameTitle.F1_25_2026_DLC, "Australia")
         r = records[0]
         assert r.front_wing == 21
         assert r.rear_wing == 17
@@ -325,13 +325,13 @@ class TestXlsxImporterIntegration:
 
     async def test_notes_contain_track_guide(self, importer) -> None:
         """F1 26/25 dry sheets have reference link columns → track_guide_video_url."""
-        records = await importer.fetch(GameTitle.F1_26, "Australia")
+        records = await importer.fetch(GameTitle.F1_25_2026_DLC, "Australia")
         assert records[0].track_guide_video_url is not None
         assert "http" in records[0].track_guide_video_url or records[0].track_guide_video_url != ""
 
     async def test_notes_contain_race_strategy(self, importer) -> None:
         """F1 26/25 dry sheets include Race Strategy 50% → race_strategy_notes."""
-        records = await importer.fetch(GameTitle.F1_26, "Australia")
+        records = await importer.fetch(GameTitle.F1_25_2026_DLC, "Australia")
         assert records[0].race_strategy_notes is not None
 
     async def test_wet_sheet_no_strategy_columns(self, importer) -> None:
@@ -343,7 +343,7 @@ class TestXlsxImporterIntegration:
 
     async def test_data_quality_las_vegas_f1_26(self, importer) -> None:
         """Las Vegas F1 26 has a missing-slash tyres cell."""
-        records = await importer.fetch(GameTitle.F1_26, "Las Vegas (USA)")
+        records = await importer.fetch(GameTitle.F1_25_2026_DLC, "Las Vegas (USA)")
         r = records[0]
         assert r.tyre_pressure_fl == 24.7
         assert r.tyre_pressure_fr == 24.7
@@ -377,7 +377,7 @@ class TestXlsxImporterIntegration:
 
     async def test_fetch_nonexistent_track(self, importer) -> None:
         """Fetching a track that doesn't exist returns an empty list."""
-        records = await importer.fetch(GameTitle.F1_26, "Nonexistent Track")
+        records = await importer.fetch(GameTitle.F1_25_2026_DLC, "Nonexistent Track")
         assert records == []
 
 
@@ -391,7 +391,7 @@ class TestXlsxImportPipeline:
 
     def _make_record(self, **overrides: Any) -> SetupImportRecord:
         defaults: dict[str, Any] = dict(
-            game=GameTitle.F1_26,
+            game=GameTitle.F1_25_2026_DLC,
             track_name="Australia",
             session_type=SessionType.RACE,
             weather=SetupWeather.DRY,
@@ -442,7 +442,7 @@ class TestXlsxImportPipeline:
         repo = CircuitSetupRepository(db_session)
         service = SetupService(repo)
         created = await service.import_from(
-            importer, GameTitle.F1_26, "Australia",
+            importer, GameTitle.F1_25_2026_DLC, "Australia",
             source=SetupSource.COMMUNITY_IMPORT,
         )
 
@@ -465,7 +465,7 @@ class TestXlsxImportPipeline:
         from setups.recommender import SetupRecommender
 
         setup = CircuitSetup(
-            game=GameTitle.F1_26,
+            game=GameTitle.F1_25_2026_DLC,
             track_name="Australia",
             session_type=SessionType.RACE,
             weather=SetupWeather.DRY,
@@ -489,7 +489,7 @@ class TestXlsxImportPipeline:
 
         recommender = SetupRecommender(repo)
         result = await recommender.recommend(
-            game=GameTitle.F1_26,
+            game=GameTitle.F1_25_2026_DLC,
             track_name="Australia",
             session_type=SessionType.RACE,
             weather=SetupWeather.DRY,

@@ -60,7 +60,7 @@ def _baseline(
     rationale: str,
 ) -> SetupImportRecord:
     return SetupImportRecord(
-        game=GameTitle.F1_26,
+        game=GameTitle.F1_25_2026_DLC,
         track_name=track_name,
         session_type=session_type,
         weather=SetupWeather.DRY,
@@ -102,7 +102,7 @@ class SeedDataImporter:
     source_name = "racemind_baseline"
 
     async def fetch(self, game: GameTitle, track_name: str) -> list[SetupImportRecord]:
-        if game != GameTitle.F1_26:
+        if game != GameTitle.F1_25_2026_DLC:
             return []
 
         records: list[SetupImportRecord] = []

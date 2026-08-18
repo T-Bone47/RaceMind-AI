@@ -28,7 +28,7 @@ const FEATURES = [
   },
 ];
 
-const GAMES = ["F1 23", "F1 24", "F1 25", "F1 26"];
+const GAMES = ["F1 23", "F1 25", "F1 25: 2026 DLC"];
 const COMING_SOON = ["Assetto Corsa", "ACC", "iRacing", "Le Mans Ultimate", "rFactor 2"];
 
 export default function HomePage() {
@@ -40,7 +40,7 @@ export default function HomePage() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-graphite px-3 py-1 text-xs text-ink-secondary">
               <span className="h-1.5 w-1.5 rounded-full bg-signal-green" />
-              Open source - F1 23 through F1 26 today
+              Open source - F1 23 through F1 25: 2026 DLC today
             </div>
 
             <h1 className="mt-6 text-4xl font-bold leading-[1.05] tracking-tight text-ink-primary sm:text-5xl md:text-6xl">

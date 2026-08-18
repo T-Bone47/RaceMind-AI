@@ -36,4 +36,31 @@ class ConnectionManager:
                 self.disconnect(session_id, websocket)
 
 
+class IngestManager:
+    """Tracks active telemetry ingestion connections from desktop agents.
+    Ensures that only one connection per agent ID is active at a time.
+    """
+
+    def __init__(self) -> None:
+        self._agents: dict[str, WebSocket] = {}
+
+    async def connect(self, agent_id: str, websocket: WebSocket) -> None:
+        if agent_id in self._agents:
+            logger.warning(f"Agent {agent_id} re-connected, terminating old connection.")
+            try:
+                # 1008 is Policy Violation
+                await self._agents[agent_id].close(code=1008, reason="Duplicate connection")
+            except Exception:
+                pass
+        
+        await websocket.accept()
+        self._agents[agent_id] = websocket
+
+    def disconnect(self, agent_id: str, websocket: WebSocket) -> None:
+        if self._agents.get(agent_id) == websocket:
+            del self._agents[agent_id]
+
+
 manager = ConnectionManager()
+ingest_manager = IngestManager()
+

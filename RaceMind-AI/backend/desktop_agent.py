@@ -1,17 +1,17 @@
 import asyncio
+import logging
 import os
 import sys
 from pathlib import Path
+
 import websockets
-import json
-import logging
 
 # Ensure the backend directory is in the PYTHONPATH so we can import modules
 sys.path.append(str(Path(__file__).parent.absolute()))
 
-from telemetry.udp_listener import UDPProvider
-from telemetry.models import GameTitle
 from config.settings import get_settings
+from telemetry.models import GameTitle
+from telemetry.udp_listener import UDPProvider
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("desktop_agent")
@@ -20,7 +20,9 @@ async def run_bridge():
     settings = get_settings()
     
     # Configuration
-    cloud_wss_url = os.environ.get("CLOUD_WSS_URL", f"ws://localhost:8000/ws/telemetry/ingest")
+    import uuid
+    agent_id = os.environ.get("AGENT_ID", str(uuid.uuid4()))
+    cloud_wss_url = os.environ.get("CLOUD_WSS_URL", f"ws://localhost:8000/ws/telemetry/ingest?agent_id={agent_id}")
     agent_secret = os.environ.get("AGENT_SECRET", settings.agent_secret)
     udp_port = int(os.environ.get("UDP_PORT", settings.udp_default_port))
     

@@ -47,7 +47,7 @@ class _SheetConfig:
 
 _SHEET_MAP: dict[str, _SheetConfig] = {
     "F1 26": _SheetConfig(
-        game=GameTitle.F1_26, weather=SetupWeather.DRY, has_strategy_columns=True,
+        game=GameTitle.F1_25_2026_DLC, weather=SetupWeather.DRY, has_strategy_columns=True,
     ),
     "F1 25": _SheetConfig(
         game=GameTitle.F1_25, weather=SetupWeather.DRY, has_strategy_columns=True,

@@ -1,7 +1,7 @@
 # Connecting a Live Game Session
 
 RaceMind AI listens for UDP telemetry broadcast by the F1 game (`telemetry/udp_listener.py`).
-Real parsing is implemented for **F1 24** today (see `telemetry/parsers/f1_2024.py`); every
+Real parsing is implemented for **F1 25** and the **F1 25: 2026 Season Pack DLC** today (see `telemetry/parsers/`); every
 other supported year is wired up architecturally but not decoding packet bodies yet - see
 `backend/README.md`'s "What's architecture-only right now" section.
 
@@ -17,7 +17,7 @@ Settings** (bottom of the Settings menu). You need:
 | UDP IP Address | The IP of the machine running RaceMind AI's backend (only used when Broadcast Mode is Off) |
 | UDP Port | `20777` (RaceMind AI's default - configurable via `UDP_DEFAULT_PORT` in `backend/.env`) |
 | UDP Send Rate | 20-60Hz; higher = smoother telemetry, more bandwidth/CPU |
-| UDP Format | Match your game version (e.g. "2024" for F1 24) |
+| UDP Format | Match your game version (e.g. "2025" for F1 25 Base Game, or the "2026" option for the DLC) |
 
 ## Same PC (PC gaming)
 

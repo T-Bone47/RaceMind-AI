@@ -80,7 +80,11 @@ class TestSettingsDefaults:
         assert s.api_v1_prefix.startswith("/")
 
     def test_is_production_property(self) -> None:
-        s = Settings(environment="production")
+        s = Settings(
+            environment="production",
+            secret_key="valid-prod-secret-key-that-is-long-enough",
+            agent_secret="valid-prod-agent-secret"
+        )
         assert s.is_production is True
 
         s2 = Settings(environment="development")

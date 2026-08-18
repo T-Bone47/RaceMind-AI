@@ -15,7 +15,7 @@ Two deliberately separate mechanisms, not one:
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from engineer.models import (
     Recommendation,
@@ -37,7 +37,7 @@ DEFAULT_MAX_QUEUE_SIZE = 50
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class RadioMessageQueue:

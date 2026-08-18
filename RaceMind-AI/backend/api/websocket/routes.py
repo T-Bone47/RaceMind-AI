@@ -26,12 +26,14 @@ async def telemetry_socket(websocket: WebSocket, session_id: uuid.UUID) -> None:
 
 
 @router.websocket("/ws/telemetry/ingest")
-async def telemetry_ingest(websocket: WebSocket) -> None:
+async def telemetry_ingest(websocket: WebSocket, agent_id: str = "") -> None:
     """The Desktop Companion (Telemetry Agent) connects here to stream
     decoded UDP packets into the cloud backend.
     """
-    from config.settings import get_settings
     import json
+
+    from api.websocket.manager import ingest_manager
+    from config.settings import get_settings
     
     settings = get_settings()
     
@@ -41,7 +43,11 @@ async def telemetry_ingest(websocket: WebSocket) -> None:
         await websocket.close(code=1008, reason="Invalid Agent Secret")
         return
 
-    await websocket.accept()
+    if not agent_id:
+        await websocket.close(code=1008, reason="Missing agent_id")
+        return
+
+    await ingest_manager.connect(agent_id, websocket)
     live_session_id = uuid.UUID(int=0)
     try:
         while True:
@@ -53,4 +59,4 @@ async def telemetry_ingest(websocket: WebSocket) -> None:
             except json.JSONDecodeError:
                 pass
     except WebSocketDisconnect:
-        pass
+        ingest_manager.disconnect(agent_id, websocket)
