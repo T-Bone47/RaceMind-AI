@@ -105,7 +105,9 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     set({ activeSessionId: sessionId, connected: false });
     
     // Create new WebSocket
-    ws = new WebSocket(`ws://localhost:8000/api/v1/ws/telemetry/${sessionId}`);
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const wsUrl = apiUrl.replace('http://', 'ws://').replace('https://', 'wss://');
+    ws = new WebSocket(`${wsUrl}/ws/telemetry/${sessionId}`);
     
     ws.onopen = () => {
       set({ connected: true });
