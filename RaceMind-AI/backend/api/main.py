@@ -70,7 +70,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         pass
     
     await engine.dispose()
-
+    # Trigger hot-reload test
 
 def create_app() -> FastAPI:
     app = FastAPI(

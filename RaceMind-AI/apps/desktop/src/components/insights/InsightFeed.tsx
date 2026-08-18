@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { insights, severityMeta, type Insight, type Severity } from '../../data/insights';
+import { severityMeta, type Insight, type Severity } from '../../data/insights';
 import { Panel } from '../ui/Panel';
 import { EmptyState } from '../ui/EmptyState';
 
@@ -7,9 +7,10 @@ interface Props {
   filter: Severity | 'all';
   selectedId: string;
   onSelect: (id: string) => void;
+  insights: Insight[];
 }
 
-export function InsightFeed({ filter, selectedId, onSelect }: Props) {
+export function InsightFeed({ filter, selectedId, onSelect, insights }: Props) {
   const visible = insights.filter((i) => filter === 'all' || i.severity === filter);
 
   return (

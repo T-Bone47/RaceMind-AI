@@ -5,9 +5,10 @@ import { HistoryToolbar } from '../components/history/HistoryToolbar';
 import { SessionTable, type SortKey } from '../components/history/SessionTable';
 import { SessionDetail } from '../components/history/SessionDetail';
 import { ComparePanel } from '../components/history/ComparePanel';
-import { sessions, type SessionType } from '../data/sessions';
+import { sessions as mockSessions, type SessionType, type SessionRecord } from '../data/sessions';
+import { useSessions } from '../lib/api/session';
 
-const initialBookmarks = sessions.reduce<Record<string, boolean>>((acc, s) => {
+const initialBookmarks = mockSessions.reduce<Record<string, boolean>>((acc, s) => {
   acc[s.id] = s.bookmarked;
   return acc;
 }, {});
@@ -30,12 +31,38 @@ function Block({ index, className, children }: {index: number;className?: string
 }
 
 export function History() {
+  const { data: serverSessions } = useSessions();
+  
+  const sessions: SessionRecord[] = useMemo(() => {
+    if (!serverSessions || serverSessions.length === 0) return mockSessions.slice(0, 0); // Empty or fallback to mock
+
+    return serverSessions.map(s => ({
+      id: s.id,
+      event: 'Session', // Use placeholder or map if available
+      circuit: s.track_name || 'Unknown',
+      country: 'Unknown',
+      type: (s.session_type as SessionType) || 'SIM',
+      date: s.started_at ? new Date(s.started_at).toISOString().split('T')[0]! : '2026-01-01',
+      laps: s.total_laps || 0,
+      bestLap: 0,
+      avgLap: 0,
+      position: 0,
+      compoundsUsed: [],
+      distanceKm: 0,
+      sizeGb: 0,
+      conditions: (s.weather as 'Dry' | 'Damp' | 'Wet') || 'Dry',
+      rating: 0,
+      bookmarked: false,
+      note: 'Loaded from telemetry.'
+    }));
+  }, [serverSessions]);
+
   const [query, setQuery] = useState('');
   const [types, setTypes] = useState<SessionType[]>([]);
   const [bookmarksOnly, setBookmarksOnly] = useState(false);
   const [bookmarks, setBookmarks] = useState(initialBookmarks);
-  const [selectedId, setSelectedId] = useState(sessions[0]!.id);
-  const [compareIds, setCompareIds] = useState<string[]>(['s01', 's10']);
+  const [selectedId, setSelectedId] = useState(sessions.length > 0 ? sessions[0].id : "");
+  const [compareIds, setCompareIds] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<SortKey>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
@@ -57,10 +84,10 @@ export function History() {
     });
   }, [query, types, bookmarksOnly, bookmarks, sortKey, sortDir]);
 
-  const selected = sessions.find((s) => s.id === selectedId) ?? sessions[0]!;
+  const selected = sessions.find((s) => s.id === selectedId) ?? sessions[0];
   const compared = compareIds.
   map((id) => sessions.find((s) => s.id === id)).
-  filter((s): s is (typeof sessions)[number] => Boolean(s));
+  filter((s): s is SessionRecord => Boolean(s));
 
   const toggleType = (t: SessionType) =>
   setTypes((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]);
@@ -121,7 +148,9 @@ export function History() {
       </div>
 
       <Block index={3}>
-        <SessionDetail session={selected} starred={!!bookmarks[selected.id]} onToggleBookmark={toggleBookmark} />
+        {selected ? (
+          <SessionDetail session={selected} starred={!!bookmarks[selected.id]} onToggleBookmark={toggleBookmark} />
+        ) : null}
       </Block>
 
       <p className="pb-2 pt-1 text-center font-mono text-[8.5px] uppercase tracking-[0.2em] text-silver/25">

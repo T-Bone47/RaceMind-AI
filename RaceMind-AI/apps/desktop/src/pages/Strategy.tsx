@@ -10,6 +10,8 @@ import { OpponentGrid } from '../components/strategy/OpponentGrid';
 import { RiskMatrix } from '../components/strategy/RiskMatrix';
 import type { SimInputs } from '../data/strategy';
 import { simulate } from '../utils/strategySim';
+import { useSessionStore } from '../store/sessionStore';
+import { useActiveStrategy, useRecomputeStrategy } from '../lib/api/strategy';
 
 const fade = {
   hidden: { opacity: 0, y: 14 },
@@ -29,6 +31,11 @@ function Block({ index, className, children }: {index: number;className?: string
 }
 
 export function Strategy() {
+  const sessionId = useSessionStore(s => s.activeSessionId);
+  const currentLap = useSessionStore(s => s.currentLap);
+  const { data: activeStrategy } = useActiveStrategy(sessionId || "");
+  const { mutate: recompute } = useRecomputeStrategy();
+
   const [inputs, setInputs] = useState<SimInputs>({
     pitLap: 45,
     compound: 'SOFT',
@@ -37,8 +44,24 @@ export function Strategy() {
     aggression: 64
   });
 
+  // If backend strategy is available, override the default pit lap and compound
+  useMemo(() => {
+    if (activeStrategy?.recommended_pit_lap) {
+      setInputs(prev => ({
+        ...prev,
+        pitLap: activeStrategy.recommended_pit_lap!,
+        compound: (activeStrategy.recommended_compound as any) || prev.compound
+      }));
+    }
+  }, [activeStrategy]);
+
   const result = useMemo(() => simulate(inputs), [inputs]);
-  const patch = useCallback((p: Partial<SimInputs>) => setInputs((prev) => ({ ...prev, ...p })), []);
+  const patch = useCallback((p: Partial<SimInputs>) => {
+    setInputs((prev) => ({ ...prev, ...p }));
+    if (p.pitLap && sessionId) {
+      recompute({ sessionId, payload: { current_lap: currentLap }});
+    }
+  }, [sessionId, currentLap, recompute]);
 
   return (
     <div className="mx-auto w-full max-w-[2100px] space-y-3 p-3 xl:p-4">
