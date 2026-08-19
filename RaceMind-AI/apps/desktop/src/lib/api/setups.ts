@@ -42,7 +42,9 @@ export function useSetupRecommendation(payload: unknown) {
 export function useCircuitSetups(circuitId?: string) {
   return useQuery({
     queryKey: ['circuitSetups', circuitId],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     queryFn: () => apiClient.get<{ items: any[] }>(`/api/v1/setups`)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then(res => circuitId ? res.data.items.filter((item: any) => item.track_name === circuitId) : res.data.items),
   });
 }

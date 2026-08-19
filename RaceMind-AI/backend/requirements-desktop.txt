@@ -1,0 +1,5 @@
+faster-whisper>=1.2,<2.0
+piper-tts>=1.6,<2.0
+sounddevice>=0.5,<0.6
+soundfile>=0.14,<0.15
+pydub>=0.25,<0.26

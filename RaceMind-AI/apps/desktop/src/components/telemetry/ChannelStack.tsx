@@ -21,12 +21,9 @@ interface Channel {
 interface Props {
   cursor: number;
   onCursor: (c: number) => void;
-  compare: string[];
 }
 
-const emptyHistory = Array.from({ length: 60 }, () => 0);
-
-export function ChannelStack({ cursor, onCursor, compare }: Props) {
+export function ChannelStack({ cursor, onCursor }: Props) {
   const store = useSessionStore();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -96,10 +93,6 @@ export function ChannelStack({ cursor, onCursor, compare }: Props) {
                 </span>
               </div>
               <div className="relative">
-                {ch.key === 'speed' &&
-                compare.map((code) => {
-                  return null;
-                })}
                 {ch.ghost &&
                 <div className="absolute inset-0 opacity-40">
                     <Trace

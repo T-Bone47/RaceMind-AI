@@ -14,6 +14,7 @@ export function TopBar({ onOpenCommand }: TopBarProps) {
   const tick = useLiveTick(1000);
   const elapsed = session.elapsed + tick;
   const store = useSessionStore();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tyre = compoundOf((store.tyres.compound || focusDriver.compound).toUpperCase() as any);
 
   return (

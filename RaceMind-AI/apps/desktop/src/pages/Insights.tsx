@@ -8,7 +8,7 @@ import { PredictionBoard } from '../components/insights/PredictionBoard';
 import { ModelTelemetry } from '../components/insights/ModelTelemetry';
 import { type Severity, type Insight } from '../data/insights';
 import { useSessionStore } from '../store/sessionStore';
-import { useCoachingReport, type CoachingReportRead } from '../lib/api/coaching';
+import { useCoachingReport } from '../lib/api/coaching';
 
 const fade = {
   hidden: { opacity: 0, y: 14 },
@@ -103,7 +103,7 @@ export function Insights() {
     return mapped;
   }, [report]);
 
-  const defaultId = activeInsights.length > 0 ? activeInsights[0].id : "";
+  const defaultId = activeInsights.length > 0 ? activeInsights[0]?.id ?? "" : "";
   const [selectedId, setSelectedId] = useState(defaultId);
 
   const selected = useMemo(

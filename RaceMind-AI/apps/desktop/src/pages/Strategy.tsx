@@ -50,6 +50,7 @@ export function Strategy() {
       setInputs(prev => ({
         ...prev,
         pitLap: activeStrategy.recommended_pit_lap!,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         compound: (activeStrategy.recommended_compound as any) || prev.compound
       }));
     }

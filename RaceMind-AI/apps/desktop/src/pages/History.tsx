@@ -6,28 +6,7 @@ import { SessionDetail } from '../components/history/SessionDetail';
 import { ComparePanel } from '../components/history/ComparePanel';
 import { useSessions } from '../lib/api/session';
 
-// Use basic string for SessionType instead of importing from mock
-type SessionType = 'P1' | 'P2' | 'P3' | 'Q1' | 'Q2' | 'Q3' | 'SPRINT' | 'RACE' | 'SIM';
-
-export interface SessionRecord {
-  id: string;
-  event: string;
-  circuit: string;
-  country: string;
-  type: SessionType;
-  date: string;
-  laps: number;
-  bestLap: number;
-  avgLap: number;
-  position: number;
-  compoundsUsed: string[];
-  distanceKm: number;
-  sizeGb: number;
-  conditions: 'Dry' | 'Damp' | 'Wet';
-  rating: number;
-  bookmarked: boolean;
-  note: string;
-}
+import { type SessionType, type SessionRecord } from '../data/sessions';
 
 const fade = {
   hidden: { opacity: 0, y: 14 },
@@ -77,7 +56,7 @@ export function History() {
   const [types, setTypes] = useState<SessionType[]>([]);
   const [bookmarksOnly, setBookmarksOnly] = useState(false);
   const [bookmarks, setBookmarks] = useState<Record<string, boolean>>({});
-  const [selectedId, setSelectedId] = useState(sessions.length > 0 ? sessions[0].id : "");
+  const [selectedId, setSelectedId] = useState(sessions.length > 0 ? sessions[0]?.id ?? "" : "");
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<SortKey>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');

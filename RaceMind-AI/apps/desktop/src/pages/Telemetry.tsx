@@ -27,8 +27,6 @@ function Block({ index, className, children }: {index: number;className?: string
 export function Telemetry() {
   const [cursor, setCursor] = useState(0.42);
   const [playing, setPlaying] = useState(true);
-  const [selectedLap, setSelectedLap] = useState(43);
-  const [compare, setCompare] = useState<string[]>(['LEC']);
   const frame = useRef<number>();
 
   useEffect(() => {
@@ -51,18 +49,10 @@ export function Telemetry() {
     setCursor(c);
   }, []);
 
-  const toggleCompare = useCallback((code: string) => {
-    setCompare((prev) => prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]);
-  }, []);
-
   return (
     <div className="mx-auto w-full max-w-[2100px] space-y-3 p-3 xl:p-4">
       <Block index={0}>
         <TelemetryToolbar
-          selectedLap={selectedLap}
-          onSelectLap={setSelectedLap}
-          compare={compare}
-          onToggleCompare={toggleCompare}
           playing={playing}
           onTogglePlay={() => setPlaying((p) => !p)}
           onReset={() => {
@@ -75,7 +65,7 @@ export function Telemetry() {
 
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
         <Block index={1} className="xl:col-span-8">
-          <ChannelStack cursor={cursor} onCursor={handleCursor} compare={compare} />
+          <ChannelStack cursor={cursor} onCursor={handleCursor} />
         </Block>
 
         <div className="space-y-3 xl:col-span-4">
@@ -85,14 +75,14 @@ export function Telemetry() {
             </div>
           </Block>
           <Block index={3}>
-            <DynamicsPanel cursor={cursor} />
+            <DynamicsPanel />
           </Block>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
         <Block index={4} className="xl:col-span-8">
-          <CornerAnalysis cursor={cursor} onCursor={handleCursor} />
+          <CornerAnalysis />
         </Block>
         <Block index={5} className="xl:col-span-4">
           <LoadsPanel />
