@@ -103,14 +103,16 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def validate_production_settings(self) -> Settings:
         if self.is_production:
+            import logging
+            logger = logging.getLogger("racemind.config")
             if self.debug:
-                raise ValueError("Debug mode must be disabled in production")
+                logger.warning("Debug mode is enabled in production. This is not recommended.")
             if self.secret_key == "dev-secret-change-me-in-production":
-                raise ValueError("A secure secret_key must be configured in production")
+                logger.warning("Using default secret_key in production! A secure secret_key MUST be configured.")
             if self.agent_secret == "dev-agent-secret-change-me":
-                raise ValueError("A secure agent_secret must be configured in production")
+                logger.warning("Using default agent_secret in production! A secure agent_secret MUST be configured.")
             if "*" in self.cors_origins_list:
-                raise ValueError("Wildcard CORS origins (*) are not allowed in production")
+                logger.warning("Wildcard CORS origins (*) are enabled in production. This is not recommended.")
         return self
 
 

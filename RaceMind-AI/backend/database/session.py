@@ -21,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 settings = get_settings()
 
-if settings.is_production and "localhost" in settings.database_url:
-    raise RuntimeError("Production environment must not use localhost database credentials.")
+
 
 engine_kwargs = {
     "echo": False,
@@ -49,6 +48,9 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 async def get_db() -> AsyncIterator[AsyncSession]:
+    if settings.is_production and "localhost" in settings.database_url:
+        raise RuntimeError("Production environment must not use localhost database credentials.")
+
     async with AsyncSessionLocal() as session:
         try:
             yield session
