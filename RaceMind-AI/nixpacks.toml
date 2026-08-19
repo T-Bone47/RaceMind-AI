@@ -1,0 +1,15 @@
+[providers]
+python = true
+node = false
+
+[phases.setup]
+nixPkgs = ["python312"]
+
+[phases.install]
+cmds = [
+    "curl -LsSf https://astral.sh/uv/install.sh | sh",
+    "cd backend && $HOME/.cargo/bin/uv sync --frozen"
+]
+
+[start]
+cmd = "cd backend && $HOME/.cargo/bin/uv run python -m uvicorn api.main:app --host 0.0.0.0"
