@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 import { buttonVariants, cn } from "@racemind/ui";
@@ -20,13 +21,15 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/5 bg-carbon/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-7 w-7 items-center justify-center rounded bg-electric text-xs font-bold text-carbon shadow-[0_0_15px_rgba(0,229,255,0.4)]">
-            R
-          </div>
-          <span className="font-mono text-sm font-bold tracking-tight text-white uppercase">
-            RaceMind <span className="text-electric font-medium">AI</span>
-          </span>
+        <Link href="/" className="flex items-center">
+          <Image 
+            src="/logo.png" 
+            alt="RaceMind AI" 
+            width={200} 
+            height={40} 
+            className="h-10 w-auto object-contain"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

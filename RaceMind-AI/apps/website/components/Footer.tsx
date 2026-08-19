@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const FOOTER_LINKS = {
   Product: [
@@ -20,14 +21,15 @@ export function Footer() {
     <footer className="border-t border-white/5 bg-carbon-lighter pt-16">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-16 md:grid-cols-[2fr_1fr_1fr_1fr]">
         <div className="max-w-xs">
-          <div className="flex items-center gap-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded bg-electric text-xs font-bold text-carbon">
-              R
-            </div>
-            <span className="font-mono text-sm font-bold tracking-tight text-white uppercase">
-              RaceMind <span className="text-electric font-medium">AI</span>
-            </span>
-          </div>
+          <Link href="/" className="flex items-center">
+            <Image 
+              src="/logo.png" 
+              alt="RaceMind AI" 
+              width={200} 
+              height={40} 
+              className="h-10 w-auto object-contain"
+            />
+          </Link>
           <p className="mt-4 font-mono text-xs font-medium uppercase tracking-widest text-electric">
             AI Race Engineer OS
           </p>
