@@ -4,8 +4,8 @@
     "builder": "nixpacks"
   },
   "deploy": {
-    "startCommand": "cd backend && ~/.cargo/bin/uv run python -m uvicorn api.main:app --host 0.0.0.0",
-    "releaseCommand": "cd backend && ~/.cargo/bin/uv run python -m alembic upgrade head",
+    "startCommand": "cd backend && /root/.local/bin/uv run python -m uvicorn api.main:app --host 0.0.0.0",
+    "releaseCommand": "cd backend && /root/.local/bin/uv run python -m alembic upgrade head",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10,
     "healthcheckPath": "/health"
