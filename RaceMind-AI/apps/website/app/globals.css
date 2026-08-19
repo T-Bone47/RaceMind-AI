@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700;800&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,11 +9,13 @@
 
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-carbon text-ink-primary antialiased;
     font-feature-settings: "cv11", "ss01";
+    background-image: var(--bg-tech-grid);
   }
 
   ::selection {
@@ -25,6 +25,18 @@
   /* Visible keyboard focus everywhere, not just on components that opt in */
   :focus-visible {
     @apply outline-none ring-2 ring-electric ring-offset-2 ring-offset-carbon;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-br from-white to-ink-muted bg-clip-text text-transparent;
+  }
+  .text-gradient-electric {
+    @apply bg-gradient-to-br from-electric to-electric-dim bg-clip-text text-transparent;
+  }
+  .glass-panel {
+    @apply bg-graphite/40 backdrop-blur-md border border-white/5 shadow-2xl;
   }
 }
 
