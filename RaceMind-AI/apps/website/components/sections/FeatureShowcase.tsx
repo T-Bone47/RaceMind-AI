@@ -6,32 +6,39 @@ import { cn } from "@racemind/ui";
 
 const FEATURES = [
   {
+    title: "Ollie: AI Race Engineer",
+    subtitle: "Conversational voice intelligence",
+    description: "Talk to your race engineer in real time. Ollie parses your intent, cross-references telemetry, evaluates setup levers, and composes recommendations instantly over the radio.",
+    image: "/features/5-ollie-ai.png",
+    reversed: false,
+  },
+  {
     title: "Track Map & Traffic",
     subtitle: "GPS positioning in real-time",
     description: "Visualise the entire field. Spot the gaps to drop into after a pitstop, monitor blue flags, and see where your rivals are losing time. Full track maps for all official circuits.",
     image: "/features/2-dashboard.png",
-    reversed: false,
+    reversed: true,
   },
   {
     title: "Setup Optimizer",
     subtitle: "Data-driven car setup",
     description: "Compare your telemetry against optimal laps to fine-tune aerodynamics, suspension, and tyre pressures. Stop guessing and let the data dictate your wings.",
     image: "/features/9-setup-library.png",
-    reversed: true,
+    reversed: false,
   },
   {
     title: "Pit Stop Predictor",
     subtitle: "Never get undercut again",
     description: "AI calculates the exact lap you need to pit to jump the car ahead or defend against an undercut, factoring in pit lane time loss, out-lap pace, and tyre warm-up.",
     image: "/features/4-race-strategy.png",
-    reversed: false,
+    reversed: true,
   },
   {
     title: "Race Session Config",
     subtitle: "Customise for any league",
     description: "Configure race distance, tyre allocation, weather forecasts, and safety car probability before the lights go out. RaceMind adapts its models based on your specific session rules.",
     image: "/features/8-session-history.png",
-    reversed: true,
+    reversed: false,
   },
 ];
 
