@@ -83,7 +83,8 @@ class TestSettingsDefaults:
         s = Settings(
             environment="production",
             secret_key="valid-prod-secret-key-that-is-long-enough",
-            agent_secret="valid-prod-agent-secret"
+            agent_secret="valid-prod-agent-secret",
+            debug=False
         )
         assert s.is_production is True
 
