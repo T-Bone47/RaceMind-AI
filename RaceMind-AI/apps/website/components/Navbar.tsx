@@ -7,9 +7,9 @@ import { Menu, X } from "lucide-react";
 import { buttonVariants, cn } from "@racemind/ui";
 
 const NAV_LINKS = [
-  { href: "#features", label: "Features" },
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#technology", label: "Technology" },
+  { href: "/#features", label: "Features" },
+  { href: "/#how-it-works", label: "How It Works" },
+  { href: "/#technology", label: "Technology" },
   { href: "/download", label: "Download" },
   { href: "/docs", label: "Docs" },
 ];

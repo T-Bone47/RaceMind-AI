@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const FOOTER_LINKS = {
   Product: [
-    { href: "#features", label: "Features" },
+    { href: "/#features", label: "Features" },
     { href: "/download", label: "Download" },
     { href: "/docs", label: "Documentation" },
   ],
