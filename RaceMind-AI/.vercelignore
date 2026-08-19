@@ -1,0 +1,4 @@
+apps/desktop
+backend
+node_modules
+.agents

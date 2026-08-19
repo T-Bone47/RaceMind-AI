@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "RaceMind AI - Your race engineer, never misses a delta",
@@ -13,8 +20,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
-      <body className="flex min-h-screen flex-col">
+    <html lang="en" className={`dark ${inter.variable}`}>
+      <body className="flex min-h-screen flex-col font-sans">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

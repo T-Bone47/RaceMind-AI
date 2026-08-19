@@ -10,42 +10,62 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        carbon: "#0A0B0D",
+        carbon: {
+          DEFAULT: "#050608",
+          light: "#0b0d12",
+          lighter: "#13161c",
+        },
         graphite: {
           DEFAULT: "#17191D",
           light: "#212429",
         },
-        border: "#2A2D33",
+        border: "#1f242e",
         electric: {
-          DEFAULT: "#2F7FFF",
-          dim: "#1B4FB0",
+          DEFAULT: "#00E5FF",
+          dim: "#00b2cc",
+          glow: "rgba(0, 229, 255, 0.15)",
         },
         signal: {
-          green: "#22D67A",
+          green: "#00FF66",
           amber: "#FFB020",
-          red: "#FF4D4D",
+          red: "#FF3333",
         },
         ink: {
-          primary: "#F5F6F7",
-          secondary: "#9CA3AF",
-          muted: "#6B7280",
+          primary: "#FFFFFF",
+          secondary: "#A1A1AA",
+          muted: "#71717A",
         },
       },
       fontFamily: {
-        sans: ["'Fira Sans'", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["'Fira Code'", "ui-monospace", "'SFMono-Regular'", "monospace"],
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["ui-monospace", "'SFMono-Regular'", "monospace"],
       },
       backgroundImage: {
         "grid-fade":
-          "linear-gradient(to bottom, rgba(47,127,255,0.08), transparent 60%), radial-gradient(ellipse 80% 50% at 50% -10%, rgba(47,127,255,0.15), transparent)",
+          "linear-gradient(to bottom, rgba(0,229,255,0.03), transparent 80%), radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,229,255,0.1), transparent)",
+        "tech-grid":
+          "linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)",
+      },
+      backgroundSize: {
+        "grid-size": "40px 40px",
       },
       animation: {
-        "flicker-in": "flicker-in 0.6s ease-out",
+        "flicker-in": "flicker-in 0.6s ease-out forwards",
+        "pulse-slow": "pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "scanline": "scanline 8s linear infinite",
       },
       keyframes: {
         "flicker-in": {
           "0%": { opacity: "0", transform: "translateY(4px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "pulse-slow": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
+        "scanline": {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(100%)" },
         },
       },
     },

@@ -2,9 +2,9 @@ import { Card } from "@racemind/ui";
 import { Apple, MonitorDown, Terminal } from "lucide-react";
 
 const PLATFORMS = [
-  { icon: MonitorDown, name: "Windows", note: "Windows 10/11, 64-bit", cta: "Download .exe" },
-  { icon: Apple, name: "macOS", note: "Apple Silicon and Intel", cta: "Download .dmg" },
-  { icon: Terminal, name: "Linux", note: "AppImage, most distros", cta: "Download .AppImage" },
+  { icon: MonitorDown, name: "Windows", note: "Windows 10/11, 64-bit", cta: "Download .exe", href: "/RaceMind-AI-Setup.exe" },
+  { icon: Apple, name: "macOS", note: "Apple Silicon and Intel", cta: "Download .dmg", href: "#" },
+  { icon: Terminal, name: "Linux", note: "AppImage, most distros", cta: "Download .AppImage", href: "#" },
 ];
 
 export default function DownloadPage() {
@@ -23,12 +23,13 @@ export default function DownloadPage() {
             <platform.icon className="h-6 w-6 text-electric" strokeWidth={1.75} />
             <h3 className="mt-4 text-lg font-medium text-ink-primary">{platform.name}</h3>
             <p className="mt-1 text-sm text-ink-muted">{platform.note}</p>
-            <button
-              type="button"
-              className="mt-6 w-full rounded-md border border-border bg-graphite-light px-4 py-2 text-sm font-medium text-ink-primary transition-colors hover:border-electric/60"
+            <a
+              href={platform.href}
+              download={platform.href !== "#"}
+              className="mt-6 w-full text-center block rounded-md border border-border bg-graphite-light px-4 py-2 text-sm font-medium text-ink-primary transition-colors hover:border-electric/60"
             >
               {platform.cta}
-            </button>
+            </a>
           </Card>
         ))}
       </div>
