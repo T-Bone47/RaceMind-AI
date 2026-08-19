@@ -7,19 +7,19 @@ const INTRO_CARDS = [
   {
     title: "Live Telemetry Analysis",
     description: "Monitor real-time data from F1 games. Throttle, braking, tyre temps, and wear delta compared to your benchmark.",
-    image: "/features/telemetry.png",
+    image: "/features/3-live-telemetry.png",
     accent: "electric", // Cyan
   },
   {
     title: "AI Strategy Caller",
     description: "Calculates optimal pit windows, undercuts, and overcuts on the fly based on traffic, tyre deg, and weather.",
-    image: "/features/race-strategy.png",
+    image: "/features/4-race-strategy.png",
     accent: "signal", // Orange/Red
   },
   {
     title: "Post-Race Debrief",
     description: "Detailed breakdown of your stint performance. Where you lost time, where you gained, and how to improve.",
-    image: "/features/performance-analysis.png",
+    image: "/features/6-driver-analytics.png",
     accent: "ink", // White/Gray
   },
 ];

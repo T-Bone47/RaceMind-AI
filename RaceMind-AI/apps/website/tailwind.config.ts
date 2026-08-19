@@ -21,9 +21,9 @@ const config: Config = {
         },
         border: "#1f242e",
         electric: {
-          DEFAULT: "#00E5FF",
-          dim: "#00b2cc",
-          glow: "rgba(0, 229, 255, 0.15)",
+          DEFAULT: "#FF3300",
+          dim: "#CC2900",
+          glow: "rgba(255, 51, 0, 0.15)",
         },
         signal: {
           green: "#00FF66",
@@ -42,7 +42,7 @@ const config: Config = {
       },
       backgroundImage: {
         "grid-fade":
-          "linear-gradient(to bottom, rgba(0,229,255,0.03), transparent 80%), radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,229,255,0.1), transparent)",
+          "linear-gradient(to bottom, rgba(255,51,0,0.03), transparent 80%), radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255,51,0,0.1), transparent)",
         "tech-grid":
           "linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)",
       },

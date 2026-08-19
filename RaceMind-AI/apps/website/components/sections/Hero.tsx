@@ -90,7 +90,7 @@ export function Hero() {
             </div>
             <div className="relative aspect-[16/9] w-full bg-carbon">
               <Image
-                src="/features/telemetry.png"
+                src="/features/1-overview.png"
                 alt="RaceMind AI Live Telemetry Interface"
                 fill
                 className="object-cover object-top"
