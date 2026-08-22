@@ -25,13 +25,8 @@ async def run_bridge():
     cloud_wss_url = os.environ.get("CLOUD_WSS_URL", f"wss://racemind-ai-backend.up.railway.app/ws/telemetry/ingest?agent_id={agent_id}")
     agent_secret = os.environ.get("AGENT_SECRET", settings.agent_secret)
     udp_port = int(os.environ.get("UDP_PORT", settings.udp_default_port))
-    forward_port = os.environ.get("UDP_FORWARD_PORT")
-    if forward_port:
-        forward_port = int(forward_port)
-    else:
-        forward_port = 20778 # Default forward port for Pits n' Giggles Option A
     
-    udp_provider = UDPProvider(host="0.0.0.0", port=udp_port, game=GameTitle.F1_25, forward_port=forward_port)
+    udp_provider = UDPProvider(host="0.0.0.0", port=udp_port, game=GameTitle.F1_25)
     await udp_provider.connect()
     
     # Wait briefly for connection state to resolve
@@ -63,8 +58,7 @@ async def run_bridge():
                                 await ws.send(json.dumps({
                                     "type": "agent_status",
                                     "status": udp_provider.state.name,
-                                    "port": udp_port,
-                                    "forward_port": forward_port
+                                    "port": udp_port
                                 }))
                                 last_state = udp_provider.state.name
                             except Exception:

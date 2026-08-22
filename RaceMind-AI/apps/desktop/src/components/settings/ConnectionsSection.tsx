@@ -23,7 +23,6 @@ export function ConnectionsSection({ settings, onChange }: Props) {
 
   const agentStatus = useSessionStore((s) => s.agentStatus);
   const agentUdpPort = useSessionStore((s) => s.agentUdpPort) || 20777;
-  const agentForwardPort = useSessionStore((s) => s.agentForwardPort);
 
   const gameConnected = now - lastTelemetryAt < 2000;
   // Fallback to time-based if we don't have agentStatus, otherwise prefer agentStatus
@@ -98,7 +97,7 @@ export function ConnectionsSection({ settings, onChange }: Props) {
             <div className="min-w-0 flex-1">
               <p className="truncate text-[11.5px] text-f1-white">F1 Game Telemetry</p>
               <p className="truncate font-mono text-[8.5px] uppercase tracking-[0.1em] text-silver/45">
-                UDP Port {agentUdpPort} {agentForwardPort ? `(Fwd: ${agentForwardPort})` : ''}
+                UDP Port {agentUdpPort}
               </p>
             </div>
             <div className="shrink-0 text-right">

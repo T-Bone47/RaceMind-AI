@@ -65,25 +65,16 @@ class UDPProvider(TelemetryProvider):
         port: int = 20777,
         game: GameTitle = GameTitle.F1_25_2026_DLC,
         router: PacketRouter | None = None,
-        forward_port: int | None = None,
     ) -> None:
         super().__init__()
         self.host = host
         self.port = port
         self.game = game
-        self.forward_port = forward_port
         self.router = router or _default_router()
         self.state = ConnectionState.DISCONNECTED
         self._transport: asyncio.DatagramTransport | None = None
         self._connection_task: asyncio.Task[None] | None = None
         self._packet_queue: asyncio.Queue[bytes] = asyncio.Queue(maxsize=_PACKET_QUEUE_SIZE)
-        
-        import socket
-        if self.forward_port:
-            self._forward_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self._forward_socket.setblocking(False)
-        else:
-            self._forward_socket = None
 
     async def connect(self) -> None:
         """Start the background maintenance loop to bind the UDP port.
@@ -107,8 +98,6 @@ class UDPProvider(TelemetryProvider):
                     )
                     self.state = ConnectionState.CONNECTED
                     logger.info("UDPProvider listening on %s:%d for %s", self.host, self.port, self.game.value)
-                    if self.forward_port:
-                        logger.info("UDPProvider forwarding telemetry to 127.0.0.1:%d", self.forward_port)
                 except OSError as e:
                     # 10048 is WSAEADDRINUSE (Address already in use) on Windows
                     # 98 is EADDRINUSE on Linux
@@ -135,20 +124,10 @@ class UDPProvider(TelemetryProvider):
             self._transport.close()
             self._transport = None
             
-        if self._forward_socket is not None:
-            self._forward_socket.close()
-            self._forward_socket = None
-            
         self.state = ConnectionState.DISCONNECTED
         logger.info("UDPProvider disconnected")
 
     def _on_packet(self, data: bytes) -> None:
-        if self._forward_socket is not None:
-            try:
-                self._forward_socket.sendto(data, ('127.0.0.1', self.forward_port))
-            except Exception as e:
-                pass # Ignore forwarding errors so we don't spam logs
-                
         try:
             self._packet_queue.put_nowait(data)
         except asyncio.QueueFull:

@@ -60,9 +60,8 @@ interface SessionState {
   setActiveSessionId: (id: string | null) => void;
   lastTelemetryAt: number;
   
-  agentStatus: string | null;
+  agentStatus: "DISCONNECTED" | "CONNECTED" | "RECEIVING" | "FAILED" | "PORT_CONFLICT";
   agentUdpPort: number | null;
-  agentForwardPort: number | null;
 }
 
 const MAX_SPEED_HISTORY = 60;
@@ -73,9 +72,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   activeSessionId: null,
   connected: false,
   lastTelemetryAt: 0,
-  agentStatus: null,
+  agentStatus: "DISCONNECTED",
   agentUdpPort: null,
-  agentForwardPort: null,
   trackName: "--",
   currentLap: 0,
   totalLaps: 0,
@@ -158,13 +156,12 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         const frame = JSON.parse(event.data);
         const state = get();
         
-        if (frame.type === "agent_status") {
-            set({
-                agentStatus: frame.status,
-                agentUdpPort: frame.port,
-                agentForwardPort: frame.forward_port
-            });
-            return;
+        if (frame.type === 'agent_status') {
+          set({
+            agentStatus: frame.status,
+            agentUdpPort: frame.port || 20777,
+          });
+          return;
         }
         
         // Update histories
