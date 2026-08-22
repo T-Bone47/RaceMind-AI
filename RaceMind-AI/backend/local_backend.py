@@ -47,7 +47,10 @@ def run_migrations():
         logger.error(f"Failed to run migrations: {e}")
         raise
 
-@app.on_event("startup")
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from api.main import lifespan as original_lifespan
+
 async def start_udp_listener():
     """Start the native UDP listener as part of the FastAPI process."""
     settings = get_settings()
@@ -82,7 +85,6 @@ async def start_udp_listener():
     app.state.udp_task = asyncio.create_task(udp_provider.run())
     app.state.bridge_task = asyncio.create_task(bridge_telemetry())
 
-@app.on_event("shutdown")
 async def stop_udp_listener():
     if hasattr(app.state, "udp_provider"):
         await app.state.udp_provider.stop()
@@ -90,6 +92,17 @@ async def stop_udp_listener():
         app.state.bridge_task.cancel()
     if hasattr(app.state, "udp_task"):
         app.state.udp_task.cancel()
+
+@asynccontextmanager
+async def local_lifespan(_app: FastAPI):
+    async with original_lifespan(_app):
+        await start_udp_listener()
+        try:
+            yield
+        finally:
+            await stop_udp_listener()
+
+app.router.lifespan_context = local_lifespan
 
 def main():
     logger.info("Starting RaceMind Local Backend...")
