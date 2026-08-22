@@ -1,4 +1,4 @@
-import { Plug, Wifi, Server, RefreshCw } from 'lucide-react';
+import { Wifi, Server } from 'lucide-react';
 import { useSessionStore } from '../../store/sessionStore';
 import { Panel } from '../ui/Panel';
 import { useEffect, useState } from 'react';
@@ -53,17 +53,17 @@ export function ConnectionsSection({ settings, onChange }: Props) {
         bodyClassName="p-3">
         <div className="mb-4">
           <label className="mb-1.5 block font-mono text-[9.5px] uppercase tracking-[0.14em] text-silver/60">
-            Backend URL
+            Gemini API Key
           </label>
           <input
-            type="text"
-            value={settings.backendUrl}
-            onChange={(e) => onChange({ backendUrl: e.target.value })}
-            placeholder="https://racemind-ai-backend.up.railway.app"
+            type="password"
+            value={settings.geminiApiKey || ''}
+            onChange={(e) => onChange({ geminiApiKey: e.target.value })}
+            placeholder="AI_..."
             className="w-full rounded-md border border-white/[0.08] bg-black/40 px-3 py-2 text-sm text-f1-white placeholder-silver/30 outline-none focus:border-f1-cyan/50 focus:bg-black/60"
           />
           <p className="mt-1.5 font-mono text-[8.5px] uppercase tracking-[0.1em] text-silver/40">
-            Configure this to your local testing URL (e.g. http://localhost:8000) if the cloud uplink is offline.
+            Required for Ollie AI Race Engineer (Stored locally)
           </p>
         </div>
         <ul className="grid gap-1.5 lg:grid-cols-2">
@@ -75,7 +75,7 @@ export function ConnectionsSection({ settings, onChange }: Props) {
               <Server className="h-3 w-3" />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[11.5px] text-f1-white">RaceMind Cloud Uplink</p>
+              <p className="truncate text-[11.5px] text-f1-white">RaceMind Local Backend</p>
               <p className="truncate font-mono text-[8.5px] uppercase tracking-[0.1em] text-silver/45">
                 Authentication & AI Backend
               </p>

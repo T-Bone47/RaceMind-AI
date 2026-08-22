@@ -1,5 +1,4 @@
-const defaultApiUrl = import.meta.env.DEV ? 'http://localhost:8000' : 'https://racemind-ai-production.up.railway.app';
-const BASE_URL = import.meta.env.VITE_API_URL || defaultApiUrl;
+const BASE_URL = 'http://127.0.0.1:8000';
 
 class ApiClient {
   async get<T>(path: string, options?: { params?: Record<string, unknown> }): Promise<{ data: T }> {

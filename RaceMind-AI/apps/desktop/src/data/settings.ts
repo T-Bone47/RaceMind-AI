@@ -34,8 +34,8 @@ export interface SettingsState {
   notifyWeather: boolean;
   notifyRadio: boolean;
   quietPractice: boolean;
-  // Network
-  backendUrl: string;
+  // Integrations
+  geminiApiKey: string;
 }
 
 export const defaultSettings: SettingsState = {
@@ -69,7 +69,7 @@ export const defaultSettings: SettingsState = {
   notifyWeather: true,
   notifyRadio: false,
   quietPractice: false,
-  backendUrl: 'https://racemind-ai-production.up.railway.app'
+  geminiApiKey: ''
 };
 
 export const accentOptions = [

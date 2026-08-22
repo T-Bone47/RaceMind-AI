@@ -114,18 +114,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     
     // Create new WebSocket
     const loadBackendUrl = () => {
-        try {
-            const settings = JSON.parse(localStorage.getItem('racemind_settings') || '{}');
-            if (settings.backendUrl) {
-                // If it was wrongly migrated to production, revert to backend
-                if (typeof settings.backendUrl === 'string' && settings.backendUrl.includes('racemind-ai-production')) {
-                    return 'https://racemind-ai-backend.up.railway.app';
-                }
-                return settings.backendUrl;
-            }
-        } catch (e) {}
-        const defaultApiUrl = import.meta.env.DEV ? 'http://localhost:8000' : 'https://racemind-ai-backend.up.railway.app';
-        return import.meta.env.VITE_API_URL || defaultApiUrl;
+        return 'http://127.0.0.1:8000';
     };
     
     const apiUrl = loadBackendUrl();

@@ -1,5 +1,5 @@
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SettingsNav } from '../components/settings/SettingsNav';
 import { ProfileSection } from '../components/settings/ProfileSection';
@@ -16,10 +16,7 @@ const loadSettings = (): SettingsState => {
     const saved = localStorage.getItem('racemind_settings');
     if (saved) {
       const parsed = JSON.parse(saved);
-      // Migrate wrongly set frontend URL back to the backend URL
-      if (typeof parsed.backendUrl === 'string' && parsed.backendUrl.includes('racemind-ai-production')) {
-        parsed.backendUrl = 'https://racemind-ai-backend.up.railway.app';
-      }
+
       return { ...defaultSettings, ...parsed };
     }
   } catch (e) {
@@ -40,18 +37,7 @@ export function Settings() {
     setSettings((prev) => ({ ...prev, ...p }));
   }, []);
 
-  // Ensure migration is persisted immediately
-  useEffect(() => {
-    const savedStr = localStorage.getItem('racemind_settings');
-    if (savedStr) {
-      try {
-        const saved = JSON.parse(savedStr);
-        if (typeof saved.backendUrl === 'string' && saved.backendUrl.includes('racemind-ai-production')) {
-          localStorage.setItem('racemind_settings', JSON.stringify(settings));
-        }
-      } catch (e) {}
-    }
-  }, [settings]);
+
 
   const changedCount = useMemo(
     () =>
@@ -61,11 +47,11 @@ export function Settings() {
 
   const handleSave = () => {
     localStorage.setItem('racemind_settings', JSON.stringify(settings));
-    if (settings.backendUrl !== baseline.backendUrl) {
-      window.dispatchEvent(new CustomEvent('racemind-backend-changed', { detail: settings.backendUrl }));
-      if (window.racemind?.restartAgent) {
-        window.racemind.restartAgent(settings.backendUrl);
-      }
+    if (settings.geminiApiKey !== baseline.geminiApiKey) {
+        import('../lib/api/client').then(({ apiClient }) => {
+            apiClient.post('/api/v1/settings/gemini-key', { api_key: settings.geminiApiKey })
+              .catch(e => console.error("Failed to push gemini key on save", e));
+        });
     }
     setBaseline(settings);
     setSaved(true);

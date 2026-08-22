@@ -20,6 +20,8 @@ from api.routes import (
     users,
     voice,
 )
+from api.routes.voice import router as voice_router
+from api.routes.settings import router as settings_router
 from api.websocket.routes import router as websocket_router
 from config.logging_config import configure_logging
 from config.settings import get_settings
@@ -65,7 +67,8 @@ def create_app() -> FastAPI:
     app.include_router(strategy.router, prefix=settings.api_v1_prefix)
     app.include_router(coaching.router, prefix=settings.api_v1_prefix)
     app.include_router(ai.router, prefix=settings.api_v1_prefix)
-    app.include_router(voice.router, prefix=settings.api_v1_prefix)
+    app.include_router(voice_router, prefix=settings.api_v1_prefix)
+    app.include_router(settings_router, prefix=settings.api_v1_prefix)
     app.include_router(reference.router, prefix=settings.api_v1_prefix)
     app.include_router(circuit_setup.router, prefix=settings.api_v1_prefix)
     app.include_router(websocket_router)

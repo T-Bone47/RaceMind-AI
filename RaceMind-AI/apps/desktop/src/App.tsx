@@ -2,6 +2,8 @@ import { lazy, Suspense, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { AppShell } from './components/layout/AppShell';
 import { useSessionStore } from './store/sessionStore';
+import { apiClient } from './lib/api/client';
+import { defaultSettings } from './data/settings';
 
 const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
 const Telemetry = lazy(() => import('./pages/Telemetry').then(m => ({ default: m.Telemetry })));
@@ -26,6 +28,15 @@ export function App() {
   useEffect(() => {
     // Connect to the generic live UDP session broadcasted by the backend
     useSessionStore.getState().connectWebSocket('00000000-0000-0000-0000-000000000000');
+    
+    // Push the locally stored Gemini API key to the backend
+    const saved = localStorage.getItem('racemind_settings');
+    const settings = saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
+    if (settings.geminiApiKey) {
+        apiClient.post('/api/v1/settings/gemini-key', { api_key: settings.geminiApiKey })
+          .catch(e => console.error("Failed to push gemini key", e));
+    }
+
     return () => {
       useSessionStore.getState().disconnectWebSocket();
     };

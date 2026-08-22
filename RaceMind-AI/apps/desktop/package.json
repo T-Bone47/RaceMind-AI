@@ -5,11 +5,12 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build:agent": "uvx --from pyinstaller pyinstaller --noconfirm --onefile --distpath release/agent --name desktop_agent ../../backend/desktop_agent.py",
+    "build:agent": "cd ../../backend && uv run pyinstaller --noconfirm --distpath ../apps/desktop/release/agent ../apps/desktop/local_backend.spec",
     "build": "npm run build:agent && vite build && tsc -p electron/tsconfig.json",
     "type-check": "tsc -b --noEmit && tsc -p electron/tsconfig.json --noEmit",
     "lint": "eslint .",
-    "electron:pack": "electron-builder"
+    "electron:pack": "electron-builder",
+    "package:win": "electron-builder --win"
   },
   "dependencies": {
     "@racemind/types": "workspace:*",

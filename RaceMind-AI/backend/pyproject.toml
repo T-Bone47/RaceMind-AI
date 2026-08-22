@@ -20,7 +20,9 @@ dependencies = [
     "fastf1>=3.8,<4.0",
     "openai>=2.53,<3.0",
     "elevenlabs>=2.61,<3.0",
-    "openpyxl>=3.1.5,<4.0"
+    "openpyxl>=3.1.5,<4.0",
+    "aiosqlite>=0.22.1",
+    "pyinstaller>=6.22.2",
 ]
 
 [tool.ruff]

@@ -29,14 +29,11 @@ else {
             agentProcess = null;
         }
         if (electron_1.app.isPackaged) {
-            // In production, run the bundled desktop_agent.exe
-            const agentPath = node_path_1.default.join(process.resourcesPath, "agent", "desktop_agent.exe");
+            // In production, run the bundled local_backend.exe
+            const agentPath = node_path_1.default.join(process.resourcesPath, "agent", "local_backend.exe");
             const env = { ...process.env };
             if (customWssUrl) {
                 env.CLOUD_WSS_URL = customWssUrl;
-            }
-            else if (!env.CLOUD_WSS_URL) {
-                env.CLOUD_WSS_URL = "wss://racemind-ai-production.up.railway.app/ws/telemetry/ingest";
             }
             agentProcess = (0, node_child_process_1.spawn)(agentPath, [], { env });
         }
@@ -47,7 +44,7 @@ else {
             if (customWssUrl) {
                 env.CLOUD_WSS_URL = customWssUrl;
             }
-            agentProcess = (0, node_child_process_1.spawn)("uv", ["run", "python", "desktop_agent.py"], {
+            agentProcess = (0, node_child_process_1.spawn)("uv", ["run", "python", "local_backend.py"], {
                 cwd: backendDir,
                 env
             });
