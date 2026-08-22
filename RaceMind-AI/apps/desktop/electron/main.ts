@@ -39,7 +39,7 @@ if (!gotTheLock) {
       agentProcess = spawn(agentPath, [], { env });
     } else {
       // In dev, we assume uv run python from the backend dir
-      const backendDir = path.join(__dirname, "../../backend");
+      const backendDir = path.join(__dirname, "../../../backend");
       const env = { ...process.env };
       if (customWssUrl) {
         env.CLOUD_WSS_URL = customWssUrl;

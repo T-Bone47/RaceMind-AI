@@ -39,7 +39,7 @@ else {
         }
         else {
             // In dev, we assume uv run python from the backend dir
-            const backendDir = node_path_1.default.join(__dirname, "../../backend");
+            const backendDir = node_path_1.default.join(__dirname, "../../../backend");
             const env = { ...process.env };
             if (customWssUrl) {
                 env.CLOUD_WSS_URL = customWssUrl;
