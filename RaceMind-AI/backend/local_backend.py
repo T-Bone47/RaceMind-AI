@@ -59,7 +59,7 @@ async def start_udp_listener():
     logger.info(f"Starting embedded UDP listener on port {udp_port}")
     
     # Create the UDP provider
-    udp_provider = UDPProvider(host="0.0.0.0", port=udp_port, game=GameTitle.F1_25)
+    udp_provider = UDPProvider(host="0.0.0.0", port=udp_port, game=GameTitle.F1_25_2026_DLC)
     await udp_provider.connect()
     
     # In order to route telemetry directly from UDP into the Websocket manager,
@@ -80,16 +80,33 @@ async def start_udp_listener():
         except Exception as e:
             logger.error(f"Telemetry bridging stopped: {e}")
 
+    async def broadcast_agent_status():
+        last_state = None
+        while True:
+            current_state = udp_provider.state.value
+            if current_state != last_state:
+                last_state = current_state
+                payload = {
+                    "type": "agent_status",
+                    "status": current_state,
+                    "port": udp_port
+                }
+                await manager.broadcast(live_session_id, payload)
+            await asyncio.sleep(1)
+
     # Keep track of it
     app.state.udp_provider = udp_provider
     app.state.udp_task = asyncio.create_task(udp_provider.run())
     app.state.bridge_task = asyncio.create_task(bridge_telemetry())
+    app.state.status_task = asyncio.create_task(broadcast_agent_status())
 
 async def stop_udp_listener():
     if hasattr(app.state, "udp_provider"):
         await app.state.udp_provider.stop()
     if hasattr(app.state, "bridge_task"):
         app.state.bridge_task.cancel()
+    if hasattr(app.state, "status_task"):
+        app.state.status_task.cancel()
     if hasattr(app.state, "udp_task"):
         app.state.udp_task.cancel()
 
