@@ -54,11 +54,15 @@ class F120252026DLCParser:
             }
             return None
             
-        elif packet_id == 6:  # CarTelemetry
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        if packet_id == 6:  # CarTelemetry
             # 29 byte header, 24 cars * 59 bytes per car in 2026 DLC
             # (engine_temperature is byte instead of ushort)
             offset = 29 + (player_car_index * 59)
             if len(raw) < offset + 59:
+                logger.warning(f"CarTelemetry packet too short! len={len(raw)}, expected at least {offset + 59}. packet_format={header[0]}")
                 return None
             
             # Speed: ushort (0), Throttle: float (2), Steer: float (6), Brake: float (10),

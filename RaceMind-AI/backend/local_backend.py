@@ -59,7 +59,7 @@ async def start_udp_listener():
     logger.info(f"Starting embedded UDP listener on port {udp_port}")
     
     # Create the UDP provider
-    udp_provider = UDPProvider(host="0.0.0.0", port=udp_port, game=GameTitle.F1_25_2026_DLC)
+    udp_provider = UDPProvider(host="127.0.0.1", port=udp_port, game=GameTitle.F1_25_2026_DLC)
     
     # In order to route telemetry directly from UDP into the Websocket manager,
     # we can start a task that reads from the udp_provider stream and broadcasts it.
