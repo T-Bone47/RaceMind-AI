@@ -93,7 +93,10 @@ if (!gotTheLock) {
     });
 
     if (isDev) {
-      void mainWindow.loadURL(VITE_DEV_SERVER_URL);
+      mainWindow.loadURL(VITE_DEV_SERVER_URL).catch(() => {
+        // Fallback to built files if Vite is not running
+        void mainWindow?.loadFile(path.join(__dirname, "../dist/index.html"));
+      });
       mainWindow.webContents.openDevTools({ mode: "detach" });
     } else {
       void mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));

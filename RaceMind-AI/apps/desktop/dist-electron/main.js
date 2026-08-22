@@ -86,7 +86,10 @@ else {
             return { action: "deny" };
         });
         if (isDev) {
-            void mainWindow.loadURL(VITE_DEV_SERVER_URL);
+            mainWindow.loadURL(VITE_DEV_SERVER_URL).catch(() => {
+                // Fallback to built files if Vite is not running
+                void mainWindow?.loadFile(node_path_1.default.join(__dirname, "../dist/index.html"));
+            });
             mainWindow.webContents.openDevTools({ mode: "detach" });
         }
         else {
