@@ -1,4 +1,4 @@
-import { Cpu, Database, Monitor, UserCog, type LucideIcon } from 'lucide-react';
+import { Cpu, Database, Monitor, UserCog, Wifi, type LucideIcon } from 'lucide-react';
 import { sections, type SectionId } from '../../data/settings';
 import { Panel } from '../ui/Panel';
 
@@ -6,7 +6,8 @@ const icons: Record<SectionId, LucideIcon> = {
   profile: UserCog,
   intelligence: Cpu,
   interface: Monitor,
-  system: Database
+  system: Database,
+  connections: Wifi
 };
 
 interface Props {

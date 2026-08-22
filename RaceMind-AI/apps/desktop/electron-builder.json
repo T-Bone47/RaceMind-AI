@@ -9,6 +9,13 @@
     "dist/**/*",
     "dist-electron/**/*"
   ],
+  "extraResources": [
+    {
+      "from": "release/agent",
+      "to": "agent",
+      "filter": ["desktop_agent.exe"]
+    }
+  ],
   "extraMetadata": {
     "main": "dist-electron/main.js"
   },

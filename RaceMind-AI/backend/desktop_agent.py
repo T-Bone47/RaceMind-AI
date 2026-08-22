@@ -22,12 +22,22 @@ async def run_bridge():
     # Configuration
     import uuid
     agent_id = os.environ.get("AGENT_ID", str(uuid.uuid4()))
-    cloud_wss_url = os.environ.get("CLOUD_WSS_URL", f"ws://localhost:8000/ws/telemetry/ingest?agent_id={agent_id}")
+    cloud_wss_url = os.environ.get("CLOUD_WSS_URL", f"wss://racemind-ai-backend.up.railway.app/ws/telemetry/ingest?agent_id={agent_id}")
     agent_secret = os.environ.get("AGENT_SECRET", settings.agent_secret)
     udp_port = int(os.environ.get("UDP_PORT", settings.udp_default_port))
+    forward_port = os.environ.get("UDP_FORWARD_PORT")
+    if forward_port:
+        forward_port = int(forward_port)
+    else:
+        forward_port = 20778 # Default forward port for Pits n' Giggles Option A
     
-    udp_provider = UDPProvider(host="0.0.0.0", port=udp_port, game=GameTitle.F1_25)
+    udp_provider = UDPProvider(host="0.0.0.0", port=udp_port, game=GameTitle.F1_25, forward_port=forward_port)
     await udp_provider.connect()
+    
+    # Wait briefly for connection state to resolve
+    await asyncio.sleep(0.5)
+    
+    # We no longer exit on FAILED/PORT_CONFLICT immediately, because we want to tell the cloud our state.
     
     logger.info("WAITING FOR F1")
     logger.info(f"Listening on UDP port {udp_port}")
@@ -43,15 +53,41 @@ async def run_bridge():
             async with websockets.connect(cloud_wss_url, additional_headers=headers) as ws:
                 logger.info("CLOUD CONNECTED")
                 
+                # We need a task to periodically send the agent status
+                async def send_status():
+                    import json
+                    last_state = None
+                    while True:
+                        if udp_provider.state.name != last_state:
+                            try:
+                                await ws.send(json.dumps({
+                                    "type": "agent_status",
+                                    "status": udp_provider.state.name,
+                                    "port": udp_port,
+                                    "forward_port": forward_port
+                                }))
+                                last_state = udp_provider.state.name
+                            except Exception:
+                                pass
+                        await asyncio.sleep(1)
+                        
+                status_task = asyncio.create_task(send_status())
+                
                 # Stream packets as they arrive
-                async for packet in udp_provider.stream():
-                    # The stream yields validated Pydantic models from the parsers
-                    try:
-                        logger.debug("TELEMETRY ACTIVE")
-                        await ws.send(packet.model_dump_json())
-                    except websockets.exceptions.ConnectionClosed:
-                        logger.warning("CLOUD DISCONNECTED")
-                        break
+                try:
+                    async for packet in udp_provider.stream():
+                        try:
+                            # Also reset status if we are receiving data so UI shows "RECEIVING"
+                            if udp_provider.state.name == "CONNECTED":
+                                udp_provider.state.name = "RECEIVING"
+                                
+                            logger.debug("TELEMETRY ACTIVE")
+                            await ws.send(packet.model_dump_json())
+                        except websockets.exceptions.ConnectionClosed:
+                            logger.warning("CLOUD DISCONNECTED")
+                            break
+                finally:
+                    status_task.cancel()
         except Exception as e:
             logger.error(f"Connection failed: {e}. Retrying in 5 seconds...")
             await asyncio.sleep(5)

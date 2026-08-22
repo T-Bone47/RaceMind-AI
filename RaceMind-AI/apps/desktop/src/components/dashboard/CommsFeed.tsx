@@ -29,7 +29,7 @@ export function CommsFeed() {
       className="flex h-full flex-col"
       bodyClassName="flex-1 min-h-0"
       actions={
-      <div className="flex overflow-hidden rounded-md border border-white/[0.08]">
+      <div className="flex overflow-hidden rounded border border-white/[0.08]">
           {(['radio', 'control'] as const).map((t) =>
         <button
           key={t}
@@ -61,7 +61,7 @@ export function CommsFeed() {
             return (
               <li
                 key={m.id}
-                className="group rounded-lg border border-white/[0.06] bg-black/25 p-2.5 transition-colors hover:border-white/[0.13]">
+                className="group rounded border border-white/[0.06] bg-black/25 p-2 transition-colors hover:border-white/[0.13]">
                 
                     <div className="flex items-center gap-2">
                       <span
@@ -107,7 +107,7 @@ export function CommsFeed() {
             return (
               <li
                 key={m.id}
-                className="flex items-start gap-2.5 rounded-lg border border-white/[0.06] bg-black/25 p-2.5 transition-colors hover:border-white/[0.13]">
+                className="flex items-start gap-2 rounded border border-white/[0.06] bg-black/25 p-2 transition-colors hover:border-white/[0.13]">
                 
                     <span
                   className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md"

@@ -33,7 +33,7 @@ export function CircuitMap() {
       bodyClassName="h-[calc(100%-45px)]"
       actions={
       <>
-          <div className="flex overflow-hidden rounded-md border border-white/[0.08]">
+          <div className="flex overflow-hidden rounded border border-white/[0.08]">
             {(['positions', 'grip', 'speed'] as const).map((l) =>
           <button
             key={l}
@@ -50,7 +50,7 @@ export function CircuitMap() {
           <button
           type="button"
           aria-label="Expand circuit map"
-          className="grid h-6 w-6 place-items-center rounded-md border border-white/[0.08] text-silver transition-colors hover:text-f1-white">
+          className="grid h-6 w-6 place-items-center rounded border border-white/[0.08] text-silver transition-colors hover:text-f1-white">
           
             <Maximize2 className="h-3 w-3" />
           </button>
@@ -140,7 +140,7 @@ export function CircuitMap() {
           {cars.map((c) =>
           <span
             key={c.code}
-            className="flex items-center gap-1.5 rounded-md border border-white/[0.07] bg-black/50 px-1.5 py-1 font-mono text-[9px] tracking-[0.12em] text-silver-light backdrop-blur">
+            className="flex items-center gap-1.5 rounded border border-white/[0.07] bg-black/50 px-1.5 py-1 font-mono text-[9px] tracking-[0.12em] text-silver-light backdrop-blur">
             
               <span className="h-1.5 w-1.5 rounded-full" style={{ background: c.color }} />
               {c.code}
@@ -152,7 +152,7 @@ export function CircuitMap() {
           <PanelChip color="#00D68F" active>
             Track clear
           </PanelChip>
-          <span className="flex items-center gap-1 rounded-md border border-white/[0.07] bg-black/50 px-1.5 py-1 font-mono text-[9px] text-silver backdrop-blur">
+          <span className="flex items-center gap-1 rounded border border-white/[0.07] bg-black/50 px-1.5 py-1 font-mono text-[9px] text-silver backdrop-blur">
             <MapPin className="h-2.5 w-2.5 text-f1-cyan" /> Sector 2 · fastest RUS
           </span>
         </div>

@@ -1,26 +1,57 @@
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SettingsNav } from '../components/settings/SettingsNav';
 import { ProfileSection } from '../components/settings/ProfileSection';
 import { IntelligenceSection } from '../components/settings/IntelligenceSection';
 import { InterfaceSection } from '../components/settings/InterfaceSection';
 import { SystemSection } from '../components/settings/SystemSection';
+import { ConnectionsSection } from '../components/settings/ConnectionsSection';
 import { SaveBar } from '../components/settings/SaveBar';
 import { defaultSettings, sections, type SectionId, type SettingsState } from '../data/settings';
 import { useScreenInit } from '../useScreenInit';
 
+const loadSettings = (): SettingsState => {
+  try {
+    const saved = localStorage.getItem('racemind_settings');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Migrate wrongly set frontend URL back to the backend URL
+      if (typeof parsed.backendUrl === 'string' && parsed.backendUrl.includes('racemind-ai-production')) {
+        parsed.backendUrl = 'https://racemind-ai-backend.up.railway.app';
+      }
+      return { ...defaultSettings, ...parsed };
+    }
+  } catch (e) {
+    console.warn('Failed to parse settings', e);
+  }
+  return defaultSettings;
+};
+
 export function Settings() {
   const screenInit = useScreenInit<{ active: string }>();
   const [active, setActive] = useState<SectionId>(screenInit.active as SectionId ?? 'profile');
-  const [settings, setSettings] = useState<SettingsState>(defaultSettings);
-  const [baseline, setBaseline] = useState<SettingsState>(defaultSettings);
+  const [settings, setSettings] = useState<SettingsState>(loadSettings());
+  const [baseline, setBaseline] = useState<SettingsState>(loadSettings());
   const [saved, setSaved] = useState(false);
 
   const patch = useCallback((p: Partial<SettingsState>) => {
     setSaved(false);
     setSettings((prev) => ({ ...prev, ...p }));
   }, []);
+
+  // Ensure migration is persisted immediately
+  useEffect(() => {
+    const savedStr = localStorage.getItem('racemind_settings');
+    if (savedStr) {
+      try {
+        const saved = JSON.parse(savedStr);
+        if (typeof saved.backendUrl === 'string' && saved.backendUrl.includes('racemind-ai-production')) {
+          localStorage.setItem('racemind_settings', JSON.stringify(settings));
+        }
+      } catch (e) {}
+    }
+  }, [settings]);
 
   const changedCount = useMemo(
     () =>
@@ -29,6 +60,13 @@ export function Settings() {
   );
 
   const handleSave = () => {
+    localStorage.setItem('racemind_settings', JSON.stringify(settings));
+    if (settings.backendUrl !== baseline.backendUrl) {
+      window.dispatchEvent(new CustomEvent('racemind-backend-changed', { detail: settings.backendUrl }));
+      if (window.racemind?.restartAgent) {
+        window.racemind.restartAgent(settings.backendUrl);
+      }
+    }
     setBaseline(settings);
     setSaved(true);
     window.setTimeout(() => setSaved(false), 2600);
@@ -73,6 +111,7 @@ export function Settings() {
               {active === 'intelligence' && <IntelligenceSection settings={settings} onChange={patch} />}
               {active === 'interface' && <InterfaceSection settings={settings} onChange={patch} />}
               {active === 'system' && <SystemSection settings={settings} onChange={patch} />}
+              {active === 'connections' && <ConnectionsSection settings={settings} onChange={patch} />}
             </motion.div>
           </AnimatePresence>
         </div>

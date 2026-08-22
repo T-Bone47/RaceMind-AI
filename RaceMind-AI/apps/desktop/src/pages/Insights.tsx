@@ -118,12 +118,12 @@ export function Insights() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[2100px] space-y-3 p-3 xl:p-4">
+    <div className="mx-auto w-full max-w-[2100px] space-y-2 p-2 xl:p-3">
       <Block index={0}>
         <InsightsHeader filter={filter} onFilter={handleFilter} />
       </Block>
 
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
         <Block index={1} className="xl:col-span-3">
           <div className="h-[640px]">
             {activeInsights.length > 0 ? (
@@ -140,7 +140,7 @@ export function Insights() {
           {selected ? <InsightDetail insight={selected} /> : null}
         </Block>
 
-        <div className="space-y-3 xl:col-span-3">
+        <div className="space-y-2 xl:col-span-3">
           <Block index={3}>
             <ModelTelemetry />
           </Block>

@@ -13,8 +13,8 @@ export function Voice() {
   const [muted, setMuted] = useState(false);
 
   return (
-    <div className="mx-auto w-full max-w-[2100px] p-3 xl:p-4">
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+    <div className="mx-auto w-full max-w-[2100px] p-2 xl:p-3">
+      <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
         <motion.div
           initial={{ opacity: 0, x: -12 }}
           animate={{ opacity: 1, x: 0 }}
@@ -46,7 +46,7 @@ export function Voice() {
           initial={{ opacity: 0, x: 12 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col gap-3 xl:col-span-3">
+          className="flex flex-col gap-2 xl:col-span-3">
           
           <div className="min-h-[340px] flex-1">
             <ConversationLog />

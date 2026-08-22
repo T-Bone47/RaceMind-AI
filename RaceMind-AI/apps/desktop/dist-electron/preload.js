@@ -9,5 +9,6 @@ const electron_1 = require("electron");
 const racemindBridge = {
     getVersion: () => electron_1.ipcRenderer.invoke("app:get-version"),
     getPlatform: () => electron_1.ipcRenderer.invoke("app:get-platform"),
+    restartAgent: (url) => electron_1.ipcRenderer.invoke("agent:restart", url),
 };
 electron_1.contextBridge.exposeInMainWorld("racemind", racemindBridge);

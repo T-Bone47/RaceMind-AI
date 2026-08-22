@@ -100,11 +100,11 @@ function TimingRow({ driver, mode, index }: {driver: DriverEntry;mode: 'gap' | '
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.022, duration: 0.32 }}
-      className={`relative grid grid-cols-[22px_1fr_58px_46px_40px] items-center gap-2 border-b border-white/[0.035] px-3 py-[7px] transition-colors ${
-      isFocus ? 'bg-f1-cyan/[0.07]' : 'hover:bg-white/[0.03]'}`
+      className={`relative grid grid-cols-[22px_1fr_58px_46px_40px] items-center gap-2 border-b border-white/[0.035] px-3 py-1 transition-colors ${
+      isFocus ? 'bg-f1-cyan/[0.04]' : 'hover:bg-white/[0.03]'}`
       }>
       
-      {isFocus && <span className="absolute inset-y-0 left-0 w-[2px] bg-f1-cyan shadow-[0_0_10px_#00E5FF]" />}
+      {isFocus && <span className="absolute inset-y-0 left-0 w-[1.5px] bg-f1-cyan shadow-[0_0_4px_rgba(0,229,255,0.4)]" />}
       <span className="font-mono text-[11px] font-semibold text-f1-white tabular">{driver.pos}</span>
 
       <div className="flex min-w-0 items-center gap-2">

@@ -58,6 +58,11 @@ interface SessionState {
   setConnected: (connected: boolean) => void;
   activeSessionId: string | null;
   setActiveSessionId: (id: string | null) => void;
+  lastTelemetryAt: number;
+  
+  agentStatus: string | null;
+  agentUdpPort: number | null;
+  agentForwardPort: number | null;
 }
 
 const MAX_SPEED_HISTORY = 60;
@@ -67,6 +72,10 @@ let ws: WebSocket | null = null;
 export const useSessionStore = create<SessionState>((set, get) => ({
   activeSessionId: null,
   connected: false,
+  lastTelemetryAt: 0,
+  agentStatus: null,
+  agentUdpPort: null,
+  agentForwardPort: null,
   trackName: "--",
   currentLap: 0,
   totalLaps: 0,
@@ -106,7 +115,22 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     set({ activeSessionId: sessionId, connected: false });
     
     // Create new WebSocket
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const loadBackendUrl = () => {
+        try {
+            const settings = JSON.parse(localStorage.getItem('racemind_settings') || '{}');
+            if (settings.backendUrl) {
+                // If it was wrongly migrated to production, revert to backend
+                if (typeof settings.backendUrl === 'string' && settings.backendUrl.includes('racemind-ai-production')) {
+                    return 'https://racemind-ai-backend.up.railway.app';
+                }
+                return settings.backendUrl;
+            }
+        } catch (e) {}
+        const defaultApiUrl = import.meta.env.DEV ? 'http://localhost:8000' : 'https://racemind-ai-backend.up.railway.app';
+        return import.meta.env.VITE_API_URL || defaultApiUrl;
+    };
+    
+    const apiUrl = loadBackendUrl();
     const wsUrl = apiUrl.replace('http://', 'ws://').replace('https://', 'wss://');
     ws = new WebSocket(`${wsUrl}/ws/telemetry/${sessionId}`);
     
@@ -134,6 +158,15 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         const frame = JSON.parse(event.data);
         const state = get();
         
+        if (frame.type === "agent_status") {
+            set({
+                agentStatus: frame.status,
+                agentUdpPort: frame.port,
+                agentForwardPort: frame.forward_port
+            });
+            return;
+        }
+        
         // Update histories
         let nextSpeedHistory = state.speedHistory;
         let nextThrottleHistory = state.throttleHistory;
@@ -155,6 +188,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
         // Apply incoming frame data to state
         set({
+          lastTelemetryAt: Date.now(),
+          
           // Update flat session metadata
           currentLap: frame.current_lap ?? state.currentLap,
           totalLaps: frame.total_laps ?? state.totalLaps,
@@ -226,4 +261,12 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   setActiveSessionId: (activeSessionId: string | null) => set({ activeSessionId }),
 }));
 
-
+// Reconnect automatically if backend URL is updated via settings
+if (typeof window !== 'undefined') {
+  window.addEventListener('racemind-backend-changed', () => {
+    const { activeSessionId, connectWebSocket } = useSessionStore.getState();
+    if (activeSessionId) {
+      connectWebSocket(activeSessionId);
+    }
+  });
+}

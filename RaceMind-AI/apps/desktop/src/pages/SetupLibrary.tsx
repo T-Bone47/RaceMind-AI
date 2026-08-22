@@ -86,7 +86,7 @@ export function SetupLibrary() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-[2100px] space-y-3 p-3 xl:p-4">
+    <div className="mx-auto w-full max-w-[2100px] space-y-2 p-2 xl:p-3">
       <SetupContextBar
         game={game}
         circuit={circuit}
@@ -110,7 +110,7 @@ export function SetupLibrary() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          className="space-y-3">
+          className="space-y-2">
           
           {tab === 'library' &&
           <>
@@ -120,8 +120,8 @@ export function SetupLibrary() {
           }
 
           {tab === 'setup' &&
-          <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
-              <div className="grid gap-3 md:grid-cols-2 xl:col-span-8">
+          <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
+              <div className="grid gap-2 md:grid-cols-2 xl:col-span-8">
                 {paramGroups.map((g) =>
               <SetupCategory
                 key={g.id}
@@ -164,7 +164,7 @@ export function SetupLibrary() {
           }
 
           {tab === 'documents' &&
-          <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+          <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
               <div className="xl:col-span-8">
                 <DocumentLibrary selectedId={docId} onSelect={setDocId} />
               </div>

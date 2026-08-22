@@ -34,6 +34,8 @@ export interface SettingsState {
   notifyWeather: boolean;
   notifyRadio: boolean;
   quietPractice: boolean;
+  // Network
+  backendUrl: string;
 }
 
 export const defaultSettings: SettingsState = {
@@ -66,7 +68,8 @@ export const defaultSettings: SettingsState = {
   notifyReliability: true,
   notifyWeather: true,
   notifyRadio: false,
-  quietPractice: false
+  quietPractice: false,
+  backendUrl: 'https://racemind-ai-production.up.railway.app'
 };
 
 export const accentOptions = [
@@ -104,7 +107,8 @@ export const sections = [
 { id: 'profile', label: 'Profile & Team', hint: 'Identity, units, session defaults' },
 { id: 'intelligence', label: 'AI & Voice', hint: 'Autonomy, reasoning, persona' },
 { id: 'interface', label: 'Interface', hint: 'Appearance, motion, accessibility' },
-{ id: 'system', label: 'Data & System', hint: 'Telemetry, alerts, integrations' }] as
+{ id: 'system', label: 'Data & System', hint: 'Telemetry, alerts, integrations' },
+{ id: 'connections', label: 'Connections', hint: 'Game and Cloud Uplink status' }] as
 const;
 
 export type SectionId = (typeof sections)[number]['id'];

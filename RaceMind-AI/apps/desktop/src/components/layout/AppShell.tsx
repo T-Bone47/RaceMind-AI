@@ -25,12 +25,12 @@ export function AppShell() {
     <div className="relative flex h-full w-full overflow-hidden bg-carbon-900 text-foreground">
       <div className="pointer-events-none absolute inset-0 grid-lines opacity-40" aria-hidden="true" />
       <div
-        className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full opacity-[0.16] blur-[120px]"
+        className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full opacity-[0.05] blur-[120px]"
         style={{ background: '#00E5FF' }}
         aria-hidden="true" />
       
       <div
-        className="pointer-events-none absolute -bottom-52 right-[-10%] h-[560px] w-[560px] rounded-full opacity-[0.12] blur-[130px]"
+        className="pointer-events-none absolute -bottom-52 right-[-10%] h-[560px] w-[560px] rounded-full opacity-[0.03] blur-[130px]"
         style={{ background: '#E10600' }}
         aria-hidden="true" />
       

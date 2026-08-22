@@ -30,12 +30,12 @@ function Block({ index, className, children }: {index: number;className?: string
 
 export function Dashboard() {
   return (
-    <div className="mx-auto w-full max-w-[2100px] space-y-3 p-3 xl:p-4">
+    <div className="mx-auto w-full max-w-[2100px] space-y-2 p-2 xl:p-3">
       <Block index={0}>
         <RaceHeader />
       </Block>
 
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
         <Block index={1} className="xl:col-span-3">
           <div className="h-[520px]">
             <TimingTower />
@@ -55,7 +55,7 @@ export function Dashboard() {
         </Block>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-12">
         <Block index={4} className="xl:col-span-4">
           <StrategyPanel />
         </Block>
@@ -67,7 +67,7 @@ export function Dashboard() {
         </Block>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
         <Block index={7} className="xl:col-span-8">
           <TelemetryStrip />
         </Block>
@@ -78,7 +78,7 @@ export function Dashboard() {
         </Block>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
         <Block index={9} className="xl:col-span-7">
           <RaceIntel />
         </Block>

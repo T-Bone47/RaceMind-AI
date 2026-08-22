@@ -101,7 +101,7 @@ export function History() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[2100px] space-y-3 p-3 xl:p-4">
+    <div className="mx-auto w-full max-w-[2100px] space-y-2 p-2 xl:p-3">
       <Block index={0}>
         <HistoryToolbar
           query={query}
@@ -119,7 +119,7 @@ export function History() {
         
       </Block>
 
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
         <Block index={1} className="xl:col-span-7">
           <div className="h-[560px]">
             <SessionTable

@@ -20,7 +20,7 @@ export function PowerUnit() {
       subtitle="PU4 · 14 races · deployment map D3"
       accent="#00D68F"
       className="h-full"
-      bodyClassName="p-4"
+      bodyClassName="p-3"
       actions={<span className="font-mono text-[9px] uppercase tracking-[0.14em] text-f1-green">Nominal</span>}>
       
       <div className="flex items-center justify-between gap-2">
@@ -29,12 +29,12 @@ export function PowerUnit() {
         <RingGauge value={87} label="Battery" unit="%" color="#B15CFF" size={86} />
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-2.5">
+      <div className="mt-2 grid grid-cols-2 gap-2">
         <Cell label="Deploy" value={`${focusDriver.ersDeployed} MJ`} sub="of 4.0 MJ per lap" color="#00E5FF" trace={ersTrace} />
         <Cell label="Fuel delta" value={`${focusDriver.fuelDelta}`} sub="laps in hand: 1.4" color="#00D68F" trace={fuelTrace} />
       </div>
 
-      <div className="mt-3 space-y-2">
+      <div className="mt-2 space-y-2">
         <Meter label="MGU-K harvest" value={82} color="#00E5FF" detail="2.0 MJ / lap" />
         <Meter label="MGU-H harvest" value={64} color="#B15CFF" detail="unlimited" />
         <Meter label="Oil temp" value={57} color="#FF7A29" detail="112 °C" />
@@ -58,7 +58,7 @@ function Cell({
 
 }: {label: string;value: string;sub: string;color: string;trace: number[];}) {
   return (
-    <div className="overflow-hidden rounded-lg border border-white/[0.06] bg-black/25 p-2.5">
+    <div className="overflow-hidden rounded border border-white/[0.06] bg-black/25 p-2">
       <span className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-silver/55">{label}</span>
       <p className="mt-1 font-mono text-[16px] font-semibold leading-none tabular" style={{ color }}>
         {value}

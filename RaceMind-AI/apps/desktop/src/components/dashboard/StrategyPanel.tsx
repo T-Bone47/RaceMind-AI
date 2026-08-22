@@ -17,7 +17,7 @@ export function StrategyPanel() {
       subtitle="Monte Carlo · 12,000 runs · updated 4s ago"
       accent="#B15CFF"
       className="h-full"
-      bodyClassName="p-4 space-y-4"
+      bodyClassName="p-3 space-y-3"
       actions={
       <span className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.14em] text-silver/60">
           <Timer className="h-3 w-3 text-f1-purple" /> Window opens L45
@@ -29,7 +29,7 @@ export function StrategyPanel() {
           <span>Stint plan</span>
           <span>L1 — L{session.totalLaps}</span>
         </div>
-        <div className="relative h-9 overflow-hidden rounded-lg border border-white/[0.07] bg-black/30">
+        <div className="relative h-7 overflow-hidden rounded border border-white/[0.07] bg-black/30">
           {stints.map((s) => {
             const left = s.from / session.totalLaps * 100;
             const width = (s.to - s.from) / session.totalLaps * 100;
@@ -40,7 +40,7 @@ export function StrategyPanel() {
                 initial={{ opacity: 0, scaleX: 0.7 }}
                 animate={{ opacity: 1, scaleX: 1 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-y-[3px] flex items-center justify-center overflow-hidden rounded-md"
+                className="absolute inset-y-[2px] flex items-center justify-center overflow-hidden rounded-sm"
                 style={{
                   left: `${left}%`,
                   width: `${width}%`,
@@ -79,7 +79,7 @@ export function StrategyPanel() {
               <button
                 type="button"
                 onClick={() => setSelected(opt.id)}
-                className={`w-full rounded-lg border px-3 py-2.5 text-left transition-all duration-200 ${
+                className={`w-full rounded border px-2.5 py-2 text-left transition-all duration-200 ${
                 isSelected ?
                 'border-f1-purple/45 bg-f1-purple/[0.08]' :
                 'border-white/[0.06] bg-white/[0.015] hover:border-white/[0.14]'}`

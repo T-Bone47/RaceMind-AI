@@ -60,8 +60,20 @@ export function ChannelStack({ cursor, onCursor }: Props) {
         className="relative cursor-crosshair select-none"
         role="presentation">
         
+        {!store.connected && (
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-carbon-900/80 backdrop-blur-sm">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-silver/60">
+              Awaiting Telemetry
+            </span>
+            <span className="mt-2 flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.14em] text-f1-amber">
+              <span className="h-1.5 w-1.5 animate-pulseGlow rounded-full bg-f1-amber" />
+              Connecting to timing feed...
+            </span>
+          </div>
+        )}
+        
         {/* corner rails */}
-        <div className="relative h-6 border-b border-white/[0.05]">
+        <div className="relative h-5 border-b border-white/[0.05]">
           {trackCorners.map((c) =>
           <span
             key={c.id}
@@ -85,9 +97,9 @@ export function ChannelStack({ cursor, onCursor }: Props) {
           const current = ch.values[idx]!;
           return (
             <div key={ch.key} className="relative border-b border-white/[0.04] last:border-b-0">
-              <div className="absolute left-3 top-1.5 z-10 flex items-baseline gap-2">
-                <span className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-silver/50">{ch.label}</span>
-                <span className="font-mono text-[13px] font-semibold tabular" style={{ color: ch.color }}>
+              <div className="absolute left-2.5 top-1 z-10 flex items-baseline gap-2">
+                <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-silver/50">{ch.label}</span>
+                <span className="font-mono text-[11.5px] font-semibold tabular" style={{ color: ch.color }}>
                   {ch.decimals ? current.toFixed(ch.decimals) : Math.round(current)}
                   <span className="ml-0.5 text-[8.5px] text-silver/45">{ch.unit}</span>
                 </span>

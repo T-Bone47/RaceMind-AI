@@ -65,17 +65,17 @@ export function Strategy() {
   }, [sessionId, currentLap, recompute]);
 
   return (
-    <div className="mx-auto w-full max-w-[2100px] space-y-3 p-3 xl:p-4">
+    <div className="mx-auto w-full max-w-[2100px] space-y-2 p-2 xl:p-3">
       <Block index={0}>
         <DecisionBar inputs={inputs} result={result} />
       </Block>
 
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-2 xl:grid-cols-12">
         <Block index={1} className="xl:col-span-3">
           <SimulatorControls inputs={inputs} onChange={patch} tyreMargin={result.tyreMargin} />
         </Block>
 
-        <div className="space-y-3 xl:col-span-6">
+        <div className="space-y-2 xl:col-span-6">
           <Block index={2}>
             <PositionProjection inputs={inputs} result={result} />
           </Block>
@@ -89,7 +89,7 @@ export function Strategy() {
         </Block>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-12">
         <Block index={5} className="xl:col-span-4">
           <PitCrewPlanner inputs={inputs} />
         </Block>

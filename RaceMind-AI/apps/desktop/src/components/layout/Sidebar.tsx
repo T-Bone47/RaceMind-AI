@@ -55,7 +55,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       }>
       
       <div className="flex h-14 items-center gap-2.5 border-b border-white/[0.06] px-4">
-        <div className="relative grid h-7 w-7 shrink-0 place-items-center rounded-md bg-f1-red shadow-[0_0_18px_-4px_#E10600]">
+        <div className="relative grid h-7 w-7 shrink-0 place-items-center rounded-md bg-f1-red shadow-[0_2_8px_-2px_rgba(225,6,0,0.4)]">
           <span className="font-mono text-[11px] font-bold text-white">R</span>
           <span className="absolute inset-0 rounded-md ring-1 ring-white/20" />
         </div>
@@ -116,7 +116,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                         {({ isActive }) =>
                     <>
                             {isActive &&
-                      <span className="absolute left-0 top-1/2 h-4 w-[2px] -translate-y-1/2 rounded-full bg-f1-red shadow-[0_0_10px_#E10600]" />
+                      <span className="absolute left-0 top-1/2 h-3.5 w-[2px] -translate-y-1/2 rounded-full bg-f1-cyan shadow-[0_0_6px_rgba(0,229,255,0.4)]" />
                       }
                             <Icon
                         className={`h-[15px] w-[15px] shrink-0 ${isActive ? 'text-f1-cyan' : ''}`}
@@ -141,21 +141,21 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       <div className="border-t border-white/[0.06] p-2.5">
         {!collapsed &&
-        <div className="mb-2.5 rounded-lg border border-white/[0.06] bg-white/[0.02] p-2.5">
+          <div className="mb-2.5 rounded border border-white/[0.04] bg-carbon-800/50 p-2">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-[8.5px] uppercase tracking-[0.16em] text-silver/60">Uplink</span>
-              <span className="flex items-center gap-1 font-mono text-[8.5px] text-f1-green">
-                <span className="h-1.5 w-1.5 animate-pulseGlow rounded-full bg-f1-green" />
+              <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-silver/50">Uplink</span>
+              <span className="flex items-center gap-1 font-mono text-[8.5px] font-bold text-f1-cyan">
+                <span className="h-1.5 w-1.5 rounded-sm bg-f1-cyan opacity-80" />
                 LIVE
               </span>
             </div>
-            <div className="mt-1.5 flex items-end justify-between">
-              <span className="font-mono text-[15px] font-semibold text-f1-white tabular">
-                12<span className="text-[9px] text-silver">ms</span>
+            <div className="mt-2 flex items-end justify-between">
+              <span className="font-mono text-[13px] font-semibold text-f1-white tabular">
+                12<span className="text-[9px] text-silver/50 ml-0.5">ms</span>
               </span>
-              <div className="flex h-4 items-end gap-[2px]">
+              <div className="flex h-3 items-end gap-[1.5px] opacity-70">
                 {[3, 6, 4, 9, 7, 11, 8].map((h, i) =>
-              <span key={i} className="w-[2px] rounded-sm bg-f1-cyan/70" style={{ height: h }} />
+              <span key={i} className="w-[1.5px] rounded-sm bg-f1-cyan" style={{ height: h }} />
               )}
               </div>
             </div>

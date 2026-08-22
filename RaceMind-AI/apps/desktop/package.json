@@ -5,7 +5,8 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc -p electron/tsconfig.json",
+    "build:agent": "uvx --from pyinstaller pyinstaller --noconfirm --onefile --distpath release/agent --name desktop_agent ../../backend/desktop_agent.py",
+    "build": "npm run build:agent && vite build && tsc -p electron/tsconfig.json",
     "type-check": "tsc -b --noEmit && tsc -p electron/tsconfig.json --noEmit",
     "lint": "eslint .",
     "electron:pack": "electron-builder"

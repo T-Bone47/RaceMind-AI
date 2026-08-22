@@ -20,10 +20,10 @@ export function TyreThermal() {
       subtitle={`${focusDriver.compound} · ${focusDriver.tyreAge} laps · cliff projected L49`}
       accent="#FFC531"
       className="h-full"
-      bodyClassName="p-4"
+      bodyClassName="p-3"
       actions={<StatusBadge color={worstBand.color}>{worstBand.label} {worst.label}</StatusBadge>}>
       
-      <div className="mb-3 flex items-center justify-between rounded-lg border border-white/[0.06] bg-black/25 px-3 py-2.5">
+      <div className="mb-2 flex items-center justify-between rounded border border-white/[0.06] bg-black/25 px-2.5 py-2">
         <TyreCompound
           compound={focusDriver.compound}
           life={100 - focusDriver.tyreAge * 2.4}
@@ -44,7 +44,7 @@ export function TyreThermal() {
           return (
             <div
               key={t.label}
-              className="group relative overflow-hidden rounded-lg border border-white/[0.06] bg-black/25 p-2.5 transition-colors hover:border-white/[0.14]">
+              className="group relative overflow-hidden rounded border border-white/[0.06] bg-black/25 p-2 transition-colors hover:border-white/[0.14]">
               
               <div className="flex items-start justify-between gap-2">
                 <span className="font-mono text-[9.5px] font-semibold uppercase tracking-[0.16em] text-silver-light">
@@ -77,7 +77,7 @@ export function TyreThermal() {
         })}
       </div>
 
-      <div className="mt-3 rounded-lg border border-white/[0.06] bg-black/25 p-3">
+      <div className="mt-2 rounded border border-white/[0.06] bg-black/25 p-2.5">
         <div className="flex items-center justify-between">
           <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-silver/55">Remaining life</span>
           <span className="font-mono text-[11px] font-semibold text-f1-amber tabular">38%</span>

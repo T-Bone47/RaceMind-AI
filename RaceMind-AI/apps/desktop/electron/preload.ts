@@ -8,6 +8,7 @@ import { contextBridge, ipcRenderer } from "electron";
 const racemindBridge = {
   getVersion: (): Promise<string> => ipcRenderer.invoke("app:get-version"),
   getPlatform: (): Promise<NodeJS.Platform> => ipcRenderer.invoke("app:get-platform"),
+  restartAgent: (url: string): Promise<void> => ipcRenderer.invoke("agent:restart", url),
 };
 
 contextBridge.exposeInMainWorld("racemind", racemindBridge);

@@ -35,7 +35,7 @@ export function TopBar({ onOpenCommand }: TopBarProps) {
 
       <div className="mx-1 hidden h-7 w-px bg-white/[0.07] xl:block" />
 
-      <div className="hidden items-center gap-4 xl:flex">
+      <div className="hidden items-center gap-3 xl:flex">
         <Readout label="Lap" value={`${store.currentLap}/${store.totalLaps}`} hint="Current lap of total race distance" />
         <Readout label="Elapsed" value={formatClock(elapsed)} hint="Time since lights out" />
         <div className="flex items-center gap-1.5" title={`Running the ${tyre.name} compound, ${store.tyres.ageLaps} laps old`}>
@@ -60,13 +60,12 @@ export function TopBar({ onOpenCommand }: TopBarProps) {
           color="#3D8BFF"
           icon={CloudRain}
           hint="Probability of rain within the next 30 minutes" />
-        
       </div>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-1.5">
         <span
           title="This build runs on a simulated Monaco race session — no live timing feed is connected."
-          className="hidden items-center gap-1.5 rounded-md border border-f1-amber/30 bg-f1-amber/[0.08] px-2 py-1 font-mono text-[8.5px] uppercase tracking-[0.16em] text-f1-amber lg:flex">
+          className="hidden items-center gap-1.5 rounded border border-f1-amber/30 bg-f1-amber/[0.08] px-1.5 py-1 font-mono text-[8px] uppercase tracking-[0.16em] text-f1-amber lg:flex">
           
           <FlaskConical className="h-2.5 w-2.5" /> Demo session
         </span>
@@ -75,12 +74,12 @@ export function TopBar({ onOpenCommand }: TopBarProps) {
           type="button"
           onClick={onOpenCommand}
           title="Open the command palette"
-          className="group hidden items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] py-1.5 pl-2.5 pr-2 text-silver transition-colors hover:border-f1-cyan/40 hover:text-f1-white md:flex">
+          className="group hidden items-center gap-1.5 rounded border border-white/[0.07] bg-white/[0.02] py-1 pl-2 pr-1.5 text-silver transition-colors hover:border-f1-cyan/40 hover:text-f1-white md:flex">
           
-          <Search className="h-3.5 w-3.5" strokeWidth={1.6} />
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em]">Command</span>
-          <kbd className="flex items-center gap-0.5 rounded border border-white/[0.08] bg-white/[0.03] px-1 py-0.5 font-mono text-[9px] text-silver/70">
-            <Command className="h-2.5 w-2.5" />K
+          <Search className="h-3 w-3" strokeWidth={1.6} />
+          <span className="font-mono text-[9px] uppercase tracking-[0.14em]">Command</span>
+          <kbd className="flex items-center gap-0.5 rounded-sm border border-white/[0.08] bg-white/[0.03] px-1 font-mono text-[8px] text-silver/70">
+            <Command className="h-2 w-2" />K
           </kbd>
         </button>
 
@@ -88,19 +87,19 @@ export function TopBar({ onOpenCommand }: TopBarProps) {
           type="button"
           aria-label="Team radio — 1 unread transmission"
           title="Team radio — 1 unread transmission"
-          className="relative grid h-8 w-8 place-items-center rounded-lg border border-white/[0.07] bg-white/[0.02] text-silver transition-colors hover:border-white/[0.14] hover:text-f1-white">
+          className="relative grid h-7 w-7 place-items-center rounded border border-white/[0.07] bg-white/[0.02] text-silver transition-colors hover:border-white/[0.14] hover:text-f1-cyan">
           
-          <Radio className="h-3.5 w-3.5" strokeWidth={1.6} />
-          <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 animate-pulseGlow rounded-full bg-f1-cyan" />
+          <Radio className="h-3 w-3" strokeWidth={1.6} />
+          <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-sm bg-f1-cyan" />
         </button>
         <button
           type="button"
           aria-label="Notifications — 3 unread"
           title="Notifications — 3 unread"
-          className="relative grid h-8 w-8 place-items-center rounded-lg border border-white/[0.07] bg-white/[0.02] text-silver transition-colors hover:border-white/[0.14] hover:text-f1-white">
+          className="relative grid h-7 w-7 place-items-center rounded border border-white/[0.07] bg-white/[0.02] text-silver transition-colors hover:border-white/[0.14] hover:text-f1-cyan">
           
-          <Bell className="h-3.5 w-3.5" strokeWidth={1.6} />
-          <span className="absolute -right-0.5 -top-0.5 grid h-3 w-3 place-items-center rounded-full bg-f1-red font-mono text-[7px] font-bold text-white">
+          <Bell className="h-3 w-3" strokeWidth={1.6} />
+          <span className="absolute -right-1 -top-1 grid h-3.5 w-3.5 place-items-center rounded bg-f1-red font-mono text-[7px] font-bold text-white">
             3
           </span>
         </button>
