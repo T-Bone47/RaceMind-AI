@@ -46,7 +46,8 @@ if (!gotTheLock) {
       }
       agentProcess = spawn("uv", ["run", "python", "local_backend.py"], { 
         cwd: backendDir,
-        env
+        env,
+        shell: process.platform === "win32"
       });
     }
 
