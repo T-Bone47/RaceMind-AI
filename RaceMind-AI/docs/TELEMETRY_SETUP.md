@@ -17,13 +17,16 @@ Settings** (bottom of the Settings menu). You need:
 | UDP IP Address | The IP of the machine running RaceMind AI's backend (only used when Broadcast Mode is Off) |
 | UDP Port | `20777` (RaceMind AI's default - configurable via `UDP_DEFAULT_PORT` in `backend/.env`) |
 | UDP Send Rate | 20-60Hz; higher = smoother telemetry, more bandwidth/CPU |
-| UDP Format | Match your game version (e.g. "2025" for F1 25 Base Game, or the "2026" option for the DLC) |
+| UDP Format | Either "2025" or "2026" - RaceMind auto-detects which one you're sending from each packet's header, so this no longer has to match a specific RaceMind setting. It still has to match what your *game* actually is (2026 option only applies with the 2026 Season Pack DLC installed). |
 
 ## Same PC (PC gaming)
 
 If the game and RaceMind AI's backend run on the same machine, leave **Broadcast Mode off**
-and set **UDP IP Address** to `127.0.0.1`. Start the backend before starting `UDPProvider`
-(it binds `0.0.0.0:20777` by default, which also accepts `127.0.0.1` traffic):
+and set **UDP IP Address** to `127.0.0.1`. Bind the listener to `127.0.0.1` specifically
+rather than `0.0.0.0` - on Windows, a socket bound to `0.0.0.0` can get silently dropped by
+Windows Firewall or intercepted by another process watching that port, where a loopback-only
+bind reliably receives same-machine traffic (this is what `local_backend.py`'s embedded
+listener does today). Start the backend before starting the game:
 
 ```bash
 cd backend
@@ -32,7 +35,7 @@ import asyncio
 from telemetry.udp_listener import UDPProvider
 
 async def main():
-    provider = UDPProvider(host='0.0.0.0', port=20777)
+    provider = UDPProvider(host='127.0.0.1', port=20777)
     await provider.start()
 
 asyncio.run(main())

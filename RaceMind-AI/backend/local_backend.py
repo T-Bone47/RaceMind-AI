@@ -79,6 +79,45 @@ async def start_udp_listener():
         except Exception as e:
             logger.error(f"Telemetry bridging stopped: {e}")
 
+    async def bridge_telemetry_to_cloud() -> None:
+        """Forward telemetry to Railway for remote/spectator viewing.
+
+        Subscribes to udp_provider immediately - not gated behind a
+        successful cloud connection - and retries forever on failure.
+        Runs as its own task with its own subscriber queue (see
+        TelemetryProvider._publish: each subscriber is independent and
+        non-blocking), so a Railway outage, timeout, or bad URL can
+        never stall or stop local UDP reception or the local broadcast
+        above.
+        """
+        import websockets
+
+        agent_id = os.environ.get("AGENT_ID", "local")
+        agent_secret = os.environ.get("AGENT_SECRET", "")
+        cloud_wss_url = os.environ.get(
+            "CLOUD_WSS_URL",
+            f"wss://racemind-ai-backend.up.railway.app/ws/telemetry/ingest?agent_id={agent_id}",
+        )
+        headers = {"X-Agent-Secret": agent_secret}
+        queue = udp_provider.subscribe()
+
+        while True:
+            try:
+                logger.info(f"[TELEMETRY] Connecting cloud uplink: {cloud_wss_url}")
+                async with websockets.connect(cloud_wss_url, additional_headers=headers) as ws:
+                    logger.info("[TELEMETRY] Cloud uplink connected")
+                    while True:
+                        packet = await queue.get()
+                        await ws.send(packet.model_dump_json())
+            except asyncio.CancelledError:
+                raise
+            except Exception as e:
+                logger.warning(
+                    f"[TELEMETRY] Cloud uplink unavailable: {e}. "
+                    "Retrying in 5s (local telemetry is unaffected)..."
+                )
+                await asyncio.sleep(5)
+
     async def broadcast_agent_status():
         last_state = None
         while True:
@@ -97,6 +136,7 @@ async def start_udp_listener():
     app.state.udp_provider = udp_provider
     app.state.udp_task = asyncio.create_task(udp_provider.start())
     app.state.bridge_task = asyncio.create_task(bridge_telemetry())
+    app.state.cloud_bridge_task = asyncio.create_task(bridge_telemetry_to_cloud())
     app.state.status_task = asyncio.create_task(broadcast_agent_status())
 
 async def stop_udp_listener():
@@ -104,6 +144,8 @@ async def stop_udp_listener():
         await app.state.udp_provider.stop()
     if hasattr(app.state, "bridge_task"):
         app.state.bridge_task.cancel()
+    if hasattr(app.state, "cloud_bridge_task"):
+        app.state.cloud_bridge_task.cancel()
     if hasattr(app.state, "status_task"):
         app.state.status_task.cancel()
     if hasattr(app.state, "udp_task"):

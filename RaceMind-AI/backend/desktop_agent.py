@@ -1,3 +1,15 @@
+"""Standalone UDP-to-cloud telemetry bridge.
+
+NOT currently launched by the Electron app - apps/desktop/electron/main.ts
+spawns local_backend.py/.exe, which owns UDP reception, the local
+FastAPI backend, and cloud forwarding (see local_backend.py's
+bridge_telemetry_to_cloud) directly. This file (and desktop_agent.spec,
+which still builds it into desktop_agent.exe) is kept in case a
+lightweight standalone agent - without the local backend/database - is
+useful again in the future, but as of this writing running it does
+nothing for the shipped product; edit local_backend.py instead.
+"""
+
 import asyncio
 import logging
 import os

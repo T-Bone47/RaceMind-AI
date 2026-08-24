@@ -27,7 +27,10 @@ a = Analysis(
         'alembic.config',
         'fastapi',
         'pydantic',
-        'sqlalchemy'
+        'sqlalchemy',
+        'websockets',
+        'websockets.asyncio',
+        'websockets.asyncio.client'
     ],
     hookspath=[],
     hooksconfig={},

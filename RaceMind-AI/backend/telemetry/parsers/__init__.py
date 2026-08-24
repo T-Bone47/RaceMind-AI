@@ -4,11 +4,11 @@
 transport layer always has *something* registered - years without real
 parsing yet just return None (see packet_router.py).
 
-Real, verified parsing exists for F1 24, F1 25, and F1 26 (see each
-module's docstring for exactly what was verified and against what
-source). Every other year's `decode_packet` raises NotImplementedError,
-which the router already handles by treating it as "nothing to publish
-this packet."
+Real, verified parsing exists for F1 25 and the F1 25: 2026 Season Pack
+DLC (see each module's docstring for exactly what's decoded). There is
+no F1 24 parser - RaceMind doesn't target that year. Every other listed
+year's `decode_packet` raises NotImplementedError, which the router
+already handles by treating it as "nothing to publish this packet."
 """
 
 from __future__ import annotations
@@ -26,6 +26,11 @@ from telemetry.parsers.f1_2023 import F12023Parser
 from telemetry.parsers.f1_2025 import F12025Parser
 from telemetry.parsers.f1_2025_2026_dlc import F120252026DLCParser
 
+_REAL_PARSERS: list[GameYearParser] = [
+    F12025Parser(),
+    F120252026DLCParser(),
+]
+
 _STUB_PARSERS: list[GameYearParser] = [
     F12015Parser(),
     F12016Parser(),
@@ -36,15 +41,11 @@ _STUB_PARSERS: list[GameYearParser] = [
     F12021Parser(),
     F12022Parser(),
     F12023Parser(),
-    F12025Parser(),
-    F120252026DLCParser(),
 ]
-
-_REAL_PARSERS: list[GameYearParser] = []
 
 
 def register_all(router: PacketRouter) -> None:
-    """Registers every year - F1 24/25/26 with real parsing, every other
+    """Registers every year - F1 25/26 with real parsing, every other
     year as its documented stub. Safe to call once at startup."""
     for parser in _REAL_PARSERS:
         router.register(parser)

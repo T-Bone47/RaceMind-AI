@@ -60,7 +60,7 @@ interface SessionState {
   setActiveSessionId: (id: string | null) => void;
   lastTelemetryAt: number;
   
-  agentStatus: "DISCONNECTED" | "CONNECTED" | "RECEIVING" | "FAILED" | "PORT_CONFLICT";
+  agentStatus: "DISCONNECTED" | "CONNECTING" | "CONNECTED" | "RECEIVING" | "STOPPING" | "FAILED" | "PORT_CONFLICT";
   agentUdpPort: number | null;
 }
 
