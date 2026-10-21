@@ -1,0 +1,82 @@
+[project]
+name = "racemind-ai"
+version = "0.1.0"
+description = "RaceMind AI Backend"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115,<1.0",
+    "uvicorn[standard]>=0.32,<1.0",
+    "pydantic>=2.9,<3.0",
+    "pydantic-settings>=2.6,<3.0",
+    "email-validator>=2.2,<3.0",
+    "sqlalchemy>=2.0.36,<2.1",
+    "asyncpg>=0.30,<0.31",
+    "alembic>=1.14,<2.0",
+    "pyjwt>=2.9,<3.0",
+    "bcrypt>=4.2,<5.0",
+    "python-multipart>=0.0.12",
+    "google-genai>=0.2.0,<1.0",
+    "fastf1>=3.8,<4.0",
+    "openai>=2.53,<3.0",
+    "elevenlabs>=2.61,<3.0",
+    "openpyxl>=3.1.5,<4.0",
+    "aiosqlite>=0.22.1",
+    "pyinstaller>=6.22.2",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+explicit_package_bases = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_defs = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "jwt.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "fastf1.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "faster_whisper.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "sounddevice.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "soundfile.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Test functions/fixtures are pytest-driven and don't gain much from
+# explicit annotations the way application code does; application code
+# stays fully strict above.
+module = "tests.*"
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "mypy>=2.3.1",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "ruff>=0.16.4",
+]

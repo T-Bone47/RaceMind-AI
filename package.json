@@ -1,0 +1,25 @@
+{
+  "name": "racemind-ai",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AI-powered race engineering assistant for sim racing telemetry",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0",
+    "prettier": "^3.4.0"
+  }
+}

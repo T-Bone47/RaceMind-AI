@@ -1,0 +1,1 @@
+query { project(id: "ca3ec9c6-dba7-41d6-b862-a78c11c856a3") { services { edges { node { id name serviceInstances { edges { node { startCommand rootDirectory builder } } } } } } } }

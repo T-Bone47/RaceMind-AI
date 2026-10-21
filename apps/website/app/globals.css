@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-carbon text-ink-primary antialiased;
+    font-feature-settings: "cv11", "ss01";
+    background-image: var(--bg-tech-grid);
+  }
+
+  ::selection {
+    @apply bg-electric/30 text-white;
+  }
+
+  /* Visible keyboard focus everywhere, not just on components that opt in */
+  :focus-visible {
+    @apply outline-none ring-2 ring-electric ring-offset-2 ring-offset-carbon;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-br from-white to-ink-muted bg-clip-text text-transparent;
+  }
+  .text-gradient-electric {
+    @apply bg-gradient-to-br from-electric to-electric-dim bg-clip-text text-transparent;
+  }
+  .glass-panel {
+    @apply bg-graphite/40 backdrop-blur-md border border-white/5 shadow-2xl;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

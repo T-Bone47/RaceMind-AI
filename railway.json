@@ -1,0 +1,13 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "nixpacks"
+  },
+  "deploy": {
+    "startCommand": "cd backend && /root/.local/bin/uv run python -m uvicorn api.main:app --host 0.0.0.0 --port $PORT",
+    "releaseCommand": "cd backend && /root/.local/bin/uv run python -m alembic upgrade head",
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10,
+    "healthcheckPath": "/health"
+  }
+}
