@@ -1,0 +1,8 @@
+# Limitations
+
+- Qualitative coverage is partial even for extensively documented drivers. Some interviews and technical analyses describe a specific corner, car or event. The dataset leaves unknowns explicit and records competing context when verified. Forty profiles have career metadata only in the qualitative library. Seven evidence records have no verified publication date.
+- Real public feeds lack continuous brake pressure, fine steering input and validated slip and yaw for these comparisons. Public throttle semantics and cross-domain control mapping remain unresolved. Undocumented brake states and packet gaps reduce availability.
+- The telemetry pilot measures one feature at whole-lap or sector scale. No named-corner numerical reference or season-wide normalized signature was established. Timing and tyre/energy state confounds remain. Coverage differs substantially between years and selection of passing windows can bias aggregates.
+- Track IDs and numbered corners are metadata. Exact gates and cross-version geometry registration require game recordings. No player traces, setups, input device details or matched professional/player cohorts were supplied.
+- Historical chassis lists are contextual candidates where a precise entrant join is unavailable. No instrumentation measurements are inferred from reputation, results or footage.
+- Feature thresholds and model support gates are proposed engineering values. Held-out cross-domain reliability, score calibration, demographic/device fairness and live UDP capture remain open. All current numeric rows have benchmark_eligible=false.

@@ -1,0 +1,170 @@
+{
+  "release_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "research_as_of": "2026-11-12",
+  "timezone": "Asia/Kolkata",
+  "last_2026_race": "2026-11-08",
+  "release_status": "research",
+  "architecture_revision": "850d3c97e4fdf4aa37112efdde2e1eb7bfbd992d",
+  "counts": {
+    "drivers": 90,
+    "evidence": 106,
+    "driver_seasons": 684,
+    "corners": 7,
+    "historical_index": 794,
+    "features": 71,
+    "source_registry": 101,
+    "numeric_research_rows": 95,
+    "eligible_numeric_rows": 0
+  },
+  "files": {
+    "case_studies.md": {
+      "bytes": 22385,
+      "sha256": "899ee56c17dc0ba815503c9105cfcc9e7165f5b70beb289c1426b5fa7488c4a9"
+    },
+    "circuits_and_corner_classes.csv": {
+      "bytes": 15756,
+      "sha256": "3719a3c0b14ec33048ed9e30c9f7a8152f794d9e7a6cc27bad94a6c15b08122f"
+    },
+    "coverage_and_quality_report.csv": {
+      "bytes": 261191,
+      "sha256": "1f060945d2617370be19eecc287059344f12174cc9276f1497adc877005382bf"
+    },
+    "data_dictionary.md": {
+      "bytes": 2911,
+      "sha256": "cf0d81ced18229f158d6ed2f84ca72c4084fe49906d3fedce72d0b2ea82674d9"
+    },
+    "driver_corner_profiles.csv": {
+      "bytes": 2680,
+      "sha256": "da73bc4edcc90ded927c4d5f8f1934f171b5ef5594222976fecee613743025b2"
+    },
+    "driver_evidence.csv": {
+      "bytes": 70362,
+      "sha256": "de525ce8ffc440bdcaf1e6413db7aa06b2d69908524ee0f42b594f8d441abebf"
+    },
+    "driver_season_profiles.csv": {
+      "bytes": 276428,
+      "sha256": "89846309485fcedc0650849ff51540d3c408a65f25b555269b1179b10ad7a74d"
+    },
+    "driver_style_features.csv": {
+      "bytes": 861624,
+      "sha256": "8c63c1956ffaf10261b8904bfccea212bc9729920e05f637da47785c705aa3a5"
+    },
+    "driver_style_ontology.json": {
+      "bytes": 18787,
+      "sha256": "81e7ff0c7585c996437042f4cadd89a0dc6bdaa462dcacdca0ebf925c93a15a2"
+    },
+    "driver_style_profiles.json": {
+      "bytes": 1154390,
+      "sha256": "eec8af226bc77834aaa1b349f0fd0a7d1e13a44749a888af7e448c025ec4a739"
+    },
+    "drivers_master.csv": {
+      "bytes": 43666,
+      "sha256": "60a1d943c86444321b755636e943a08f3389fd1ee803c77a8fea19bd9366c70c"
+    },
+    "driving_archetypes.json": {
+      "bytes": 8701,
+      "sha256": "3ff41c2c012d73d29446fd12d0259542a82e6f7828aa4c28deb412e86505c213"
+    },
+    "integration_specification.md": {
+      "bytes": 26680,
+      "sha256": "e6c454c85464300b0cf3dd4dc3396b1fb0019f05c9a8db6cce7a8d4e56b715bb"
+    },
+    "limitations.md": {
+      "bytes": 1607,
+      "sha256": "fc524badc9f1b2a8f94756c8e9a1f24349d6f6b163a309d7d43cf06be7e0d080"
+    },
+    "matching_model.md": {
+      "bytes": 7075,
+      "sha256": "0f89859936b74d753f3fd1ecd3925d9698bda65d848173b89cf04e4a3785a1a9"
+    },
+    "methodology.md": {
+      "bytes": 4810,
+      "sha256": "fc6ad687b18638c19583267cc29aa43d0def8a3fb475c726bceaaa44363677bd"
+    },
+    "README.md": {
+      "bytes": 4800,
+      "sha256": "5304695db0fe1dd1d70060a0d7109c211d5ca7b2c4c195909a9a4c5b0f4a828b"
+    },
+    "real_f1_game_compatibility.csv": {
+      "bytes": 13353,
+      "sha256": "aa738ecc95b3d4895799a5a8bf867f5ec32c54c7480fa02144e880224220c36a"
+    },
+    "research/circuit_layouts.json": {
+      "bytes": 18260,
+      "sha256": "d768332859cb0bcc81f3d74c23ca9869b2e5e33ce37820871c877c8936f13a77"
+    },
+    "research/empirical_features.json": {
+      "bytes": 134085,
+      "sha256": "84f766b90857623a389afd3691faab3e959e11de28db9a14539b26eeb884f6e2"
+    },
+    "research/evidence.json": {
+      "bytes": 104939,
+      "sha256": "f77fe420e6fb55775df52052dea89a02271954fa73bdc96fe7dbe1a1ac233551"
+    },
+    "research/historical_driver_index.csv": {
+      "bytes": 107041,
+      "sha256": "c4bb245793a2bd494e9ea8440daaccb79111661804d0837521825b685a0ab3c2"
+    },
+    "research/pilot_audit.md": {
+      "bytes": 1738,
+      "sha256": "b696c682dffe5604f65ee84408ae842b83c91dfc4d71029c335410b573fc19ad"
+    },
+    "research/roster.json": {
+      "bytes": 689054,
+      "sha256": "f194e421a0067b69fb46397b26e41f814887c235fc55f5507916c685520975a1"
+    },
+    "research/roster_audit.md": {
+      "bytes": 5179,
+      "sha256": "7c6ff1f529dfee3f55c1f46b40efd1902cb06842b2aab943e69edc3f870fe767"
+    },
+    "research/roster_sources.json": {
+      "bytes": 10132,
+      "sha256": "da5d658ffe937095a63ac97bc52d71bb41cc4bcd5c5708bea1c09fe09f4f8cba"
+    },
+    "scripts/build_feature_dictionary.py": {
+      "bytes": 24227,
+      "sha256": "82da746a9c566b442ce03730b6c30b916c29091255bbf8486c4f01956d7c6d36"
+    },
+    "scripts/build_ontology.py": {
+      "bytes": 11617,
+      "sha256": "2f7c318c3d78f4430cb187e92747ab9f71884308fdc5684a612c8cad5df9d5aa"
+    },
+    "scripts/build_release.py": {
+      "bytes": 29785,
+      "sha256": "909ae88e31ff3516d6926cbcfffd1490f4c97ef7e062c640ceb80649418e0840"
+    },
+    "scripts/build_roster.py": {
+      "bytes": 14457,
+      "sha256": "0b8fb1f3bc70c7805a99dfeecacff27c920e5f21268a5c8696228492c5f1579c"
+    },
+    "scripts/fetch_openf1_pilot.py": {
+      "bytes": 2682,
+      "sha256": "8b61108b19dc0fd30d19a44483efe2757982852bf57978e282ecd0997e13fac6"
+    },
+    "scripts/process_openf1_pilot.py": {
+      "bytes": 14110,
+      "sha256": "65e2c24678fce693d12ca580133e915c582896e44e499ec96529bd9227c879d1"
+    },
+    "scripts/validate_release.py": {
+      "bytes": 5447,
+      "sha256": "68b34c0f54e8c301fd9d903ce4570508a952b2693aa46ab3f1ac66295fc40338"
+    },
+    "source_licensing.md": {
+      "bytes": 2086,
+      "sha256": "aafef82e60b87cb1b42361096a5ed492853802e1e4b7f03ef2382adf0fb4797c"
+    },
+    "source_registry.csv": {
+      "bytes": 62537,
+      "sha256": "c1d0ca1f9fd099adc738e1ded6790cd654a0475429d94db48df14295206c61d5"
+    },
+    "telemetry_feature_dictionary.json": {
+      "bytes": 61806,
+      "sha256": "0c8cf9eb89765254e2a6130fbf9d7ba2a345b47cbf56bb8dc2971c7bf3c48918"
+    },
+    "validation_report.md": {
+      "bytes": 2522,
+      "sha256": "0c6f9f9a720d61da2e33a7ba98c4ac40320d0e8bee9ce983c4d2c202f2f56776"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+feature_id,group,units,real_f1_compatibility,game_observability,required_channels,known_confounders,source_ids
+braking_onset_distance,braking,m,comparable_with_caveats,derived,t|s|B,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+braking_onset_speed,braking,m/s,comparable_with_caveats,derived,t|v|B,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+braking_duration,braking,s,comparable_with_caveats,derived,t|B,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+brake_activation_fraction,braking,fraction,comparable_with_caveats,derived,t|B,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+initial_brake_command,braking,fraction,not_currently_comparable,derived,t|B|b,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+brake_application_rate,braking,fraction/s,not_currently_comparable,derived,t|b|B,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+brake_release_duration,braking,s,not_currently_comparable,derived,t|b|B,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+max_deceleration,braking,m/s^2,comparable_with_caveats,derived,t|v|B,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+mean_deceleration,braking,m/s^2,comparable_with_caveats,derived,t|v|B,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+trail_braking_fraction,braking,fraction,not_currently_comparable,proxy,t|s|b|B|q,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+brake_steer_overlap,braking,fraction,not_currently_comparable,derived,t|B|q,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+brake_throttle_overlap,braking,fraction,not_currently_comparable,derived,t|B|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+braking_point_variability,braking,m,comparable_with_caveats,derived,reference|context,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+braking_consistency_by_class,braking,dimensionless,comparable_with_caveats,derived,reference|context,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+braking_lateral_load_share,braking,fraction,not_currently_comparable,derived,t|B|gy,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+steer_rate,steering,fraction/s,not_currently_comparable,derived,t|q,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+steer_rate_variability,steering,fraction/s,not_currently_comparable,derived,t|q,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+turn_in_distance,steering,m,qualitative_resemblance_only,derived,t|s|q,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+steer_correction_count,steering,count,not_currently_comparable,proxy,t|q|s,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+steer_correction_magnitude,steering,fraction,not_currently_comparable,proxy,t|q|s,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+steering_smoothness,steering,fraction/s^2,qualitative_resemblance_only,derived,t|q,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+steer_unwind_duration,steering,s,not_currently_comparable,derived,t|q|s,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+steer_brake_overlap,steering,fraction,not_currently_comparable,derived,t|q|B,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+steer_throttle_overlap,steering,fraction,not_currently_comparable,derived,t|q|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+steer_under_lateral_load,steering,fraction,not_currently_comparable,derived,t|q|gy|v|context,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+first_throttle_after_apex,throttle,m,not_currently_comparable,derived,t|s|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+throttle_progression_rate,throttle,fraction/s,not_currently_comparable,derived,t|s|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+throttle_50_distance,throttle,m,not_currently_comparable,derived,t|s|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+throttle_95_distance,throttle,m,not_currently_comparable,derived,t|s|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+throttle_95_time,throttle,s,not_currently_comparable,derived,t|s|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+throttle_oscillation_count,throttle,count,not_currently_comparable,proxy,t|s|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+throttle_lift_duration,throttle,s,qualitative_resemblance_only,derived,t|s|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+coasting_duration,mid_corner,s,not_currently_comparable,derived,t|s|B|u,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+exit_acceleration,exit,m/s^2,comparable_with_caveats,derived,t|s|v,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+traction_slip_share,exit,fraction,not_currently_comparable,proxy,t|s|v|u|wheel_slip|surface,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+entry_speed,entry,m/s,comparable_with_caveats,derived,t|s|v,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+exit_speed,exit,m/s,comparable_with_caveats,derived,t|s|v,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+minimum_speed,apex,m/s,comparable_with_caveats,derived,t|s|v,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+minimum_speed_ratio,apex,fraction,comparable_with_caveats,derived,t|s|v,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+minimum_speed_position,apex,m,comparable_with_caveats,derived,t|s|v,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+corner_elapsed_time,timing,s,comparable_with_caveats,derived,t|s,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+following_straight_elapsed_time,timing,s,comparable_with_caveats,derived,t|s,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+braking_zone_delta,timing,s,comparable_with_caveats,derived,t|s|reference,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+entry_to_apex_delta,timing,s,comparable_with_caveats,derived,t|s|reference,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+apex_to_exit_delta,timing,s,comparable_with_caveats,derived,t|s|reference,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+corner_to_next_braking_delta,timing,s,comparable_with_caveats,derived,t|s|reference,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+time_loss_distribution,timing,s,comparable_with_caveats,derived,t|s|reference,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+distance_aligned_time_delta,timing,s,comparable_with_caveats,derived,t|s|reference,"Gate alignment, corner layout, grip, car, setup, load, assists and session task.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+official_sector_elapsed_time,timing,s,directly_comparable,derived,lap|context,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+lap_elapsed_time,timing,s,directly_comparable,derived,lap,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+sector_consistency,consistency,s,comparable_with_caveats,derived,lap|context,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+lap_time_dispersion,consistency,s,comparable_with_caveats,derived,lap|context,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+track_limits_incidents,errors,count,comparable_with_caveats,derived,lap|context,"Rule geometry, enforcement, event coverage, settings and scope.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+valid_invalid_window_delta,errors,s,not_currently_comparable,derived,lap|context|reference,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26
+longitudinal_g,dynamics,g,not_currently_comparable,game_reported,t|gx,"Axis conventions, gradient, bumps and combined load.",EA_UDP_25_26
+lateral_g,dynamics,g,not_currently_comparable,game_reported,t|gy,"Banking, axis conventions, bumps and combined load.",EA_UDP_25_26
+heading,dynamics,rad,not_currently_comparable,game_reported,t|yaw|pose,Map convention and yaw wrapping.,EA_UDP_25_26
+yaw_rate,rotation,rad/s,not_currently_comparable,reported_or_derived,t|yaw_rate,"Game basis, bank, spins and threshold choice.",EA_UDP_25_26
+entry_rotation_fraction,rotation,fraction,qualitative_resemblance_only,proxy,t|s|q|yaw_rate,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+world_position,dynamics,m,comparable_with_caveats,game_reported,t|pose,"Coordinate conventions, world scale, different racing lines and topology.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+vehicle_speed,dynamics,m/s,directly_comparable,game_reported,t|v,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+wheel_slip_ratio,dynamics,fraction,not_currently_comparable,game_reported,t|wheel_slip|v,"Low speeds, tyre radius, surface and ABS/TC interventions.",EA_UDP_25_26
+surface_contact,dynamics,category,not_currently_comparable,game_reported,t|surface,Packet format and surface classifications.,EA_UDP_25_26
+gear_changes,dynamics,count,comparable_with_caveats,derived,t|gear,"Automatic gears, vehicle ratios and source cadence.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+motion_stability,dynamics,rad/s,not_currently_comparable,proxy,t|s|v|yaw_rate|pose,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26
+sideslip_proxy,dynamics,rad,not_currently_comparable,proxy,t|v|pose,"Banking, map basis, yaw reversals, velocity noise and game build.",EA_UDP_25_26
+balance_response_proxy,rotation,rad/s,qualitative_resemblance_only,proxy,t|s|v|q|gy|yaw_rate|pose|wheel_slip,"Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+stint_degradation_slope,tyre_management,s/lap,comparable_with_caveats,derived,lap|context|reference,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+context_adaptation_shift,adaptability,normalized units,comparable_with_caveats,derived,context|reference,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+wet_brake_shift,wet_weather,m,comparable_with_caveats,derived,context|reference,"Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA
+traffic_entry_shift,racecraft,m,comparable_with_caveats,derived,context|reference,"Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",EA_UDP_25_26|OPENF1_DOCS|FASTF1_DATA

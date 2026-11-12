@@ -1,0 +1,876 @@
+[
+  {
+    "circuit_id": "austin",
+    "circuit_name": "Circuit of the Americas",
+    "layout_id": "austin-1",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 5513,
+    "turn_count": 20,
+    "course_lengths_m_in_modern_results": [
+      5513
+    ],
+    "first_observed_year": 2012,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "bahrain",
+    "circuit_name": "Bahrain International Circuit",
+    "layout_id": "bahrain-1",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "length_m": 5412,
+    "turn_count": 15,
+    "course_lengths_m_in_modern_results": [
+      5412
+    ],
+    "first_observed_year": 2004,
+    "last_observed_year": 2025,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "bahrain",
+    "circuit_name": "Bahrain International Circuit",
+    "layout_id": "bahrain-3",
+    "event_seasons": [
+      2020
+    ],
+    "length_m": 3543,
+    "turn_count": 11,
+    "course_lengths_m_in_modern_results": [
+      3543
+    ],
+    "first_observed_year": 2020,
+    "last_observed_year": 2020,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "baku",
+    "circuit_name": "Baku City Circuit",
+    "layout_id": "baku-1",
+    "event_seasons": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 6003,
+    "turn_count": 20,
+    "course_lengths_m_in_modern_results": [
+      6003
+    ],
+    "first_observed_year": 2016,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "catalunya",
+    "circuit_name": "Circuit de Barcelona-Catalunya",
+    "layout_id": "catalunya-4",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "length_m": 4655,
+    "turn_count": 16,
+    "course_lengths_m_in_modern_results": [
+      4655
+    ],
+    "first_observed_year": 2007,
+    "last_observed_year": 2020,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "catalunya",
+    "circuit_name": "Circuit de Barcelona-Catalunya",
+    "layout_id": "catalunya-5",
+    "event_seasons": [
+      2021,
+      2022
+    ],
+    "length_m": 4675,
+    "turn_count": 16,
+    "course_lengths_m_in_modern_results": [
+      4675
+    ],
+    "first_observed_year": 2021,
+    "last_observed_year": 2022,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "catalunya",
+    "circuit_name": "Circuit de Barcelona-Catalunya",
+    "layout_id": "catalunya-6",
+    "event_seasons": [
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 4657,
+    "turn_count": 14,
+    "course_lengths_m_in_modern_results": [
+      4657
+    ],
+    "first_observed_year": 2023,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "hockenheimring",
+    "circuit_name": "Hockenheimring",
+    "layout_id": "hockenheimring-4",
+    "event_seasons": [
+      2014,
+      2016,
+      2018,
+      2019
+    ],
+    "length_m": 4574,
+    "turn_count": 17,
+    "course_lengths_m_in_modern_results": [
+      4574
+    ],
+    "first_observed_year": 2002,
+    "last_observed_year": 2019,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "hungaroring",
+    "circuit_name": "Hungaroring",
+    "layout_id": "hungaroring-3",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 4381,
+    "turn_count": 14,
+    "course_lengths_m_in_modern_results": [
+      4381
+    ],
+    "first_observed_year": 2003,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "imola",
+    "circuit_name": "Autodromo Internazionale Enzo e Dino Ferrari",
+    "layout_id": "imola-3",
+    "event_seasons": [
+      2020,
+      2021,
+      2022,
+      2024,
+      2025
+    ],
+    "length_m": 4909,
+    "turn_count": 19,
+    "course_lengths_m_in_modern_results": [
+      4909
+    ],
+    "first_observed_year": 2020,
+    "last_observed_year": 2025,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "interlagos",
+    "circuit_name": "Autódromo José Carlos Pace",
+    "layout_id": "interlagos-2",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 4309,
+    "turn_count": 15,
+    "course_lengths_m_in_modern_results": [
+      4309
+    ],
+    "first_observed_year": 1990,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "istanbul",
+    "circuit_name": "TOSFED İstanbul Park",
+    "layout_id": "istanbul-1",
+    "event_seasons": [
+      2020,
+      2021
+    ],
+    "length_m": 5338,
+    "turn_count": 14,
+    "course_lengths_m_in_modern_results": [
+      5338
+    ],
+    "first_observed_year": 2005,
+    "last_observed_year": 2021,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "jeddah",
+    "circuit_name": "Jeddah Corniche Circuit",
+    "layout_id": "jeddah-1",
+    "event_seasons": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "length_m": 6174,
+    "turn_count": 27,
+    "course_lengths_m_in_modern_results": [
+      6174
+    ],
+    "first_observed_year": 2021,
+    "last_observed_year": 2025,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "las-vegas",
+    "circuit_name": "Las Vegas Street Circuit",
+    "layout_id": "las-vegas-1",
+    "event_seasons": [
+      2023,
+      2024,
+      2025
+    ],
+    "length_m": 6201,
+    "turn_count": 17,
+    "course_lengths_m_in_modern_results": [
+      6201
+    ],
+    "first_observed_year": 2023,
+    "last_observed_year": 2025,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "lusail",
+    "circuit_name": "Lusail International Circuit",
+    "layout_id": "lusail-1",
+    "event_seasons": [
+      2021,
+      2023,
+      2024,
+      2025
+    ],
+    "length_m": 5419,
+    "turn_count": 16,
+    "course_lengths_m_in_modern_results": [
+      5380,
+      5419
+    ],
+    "first_observed_year": 2021,
+    "last_observed_year": 2025,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "madring",
+    "circuit_name": "Circuito de Madring",
+    "layout_id": "madring-1",
+    "event_seasons": [
+      2026
+    ],
+    "length_m": 5416,
+    "turn_count": 22,
+    "course_lengths_m_in_modern_results": [
+      5416
+    ],
+    "first_observed_year": 2026,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "marina-bay",
+    "circuit_name": "Marina Bay Street Circuit",
+    "layout_id": "marina-bay-2",
+    "event_seasons": [
+      2014
+    ],
+    "length_m": 5065,
+    "turn_count": 23,
+    "course_lengths_m_in_modern_results": [
+      5065
+    ],
+    "first_observed_year": 2013,
+    "last_observed_year": 2014,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "marina-bay",
+    "circuit_name": "Marina Bay Street Circuit",
+    "layout_id": "marina-bay-3",
+    "event_seasons": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2022
+    ],
+    "length_m": 5065,
+    "turn_count": 23,
+    "course_lengths_m_in_modern_results": [
+      5063,
+      5065
+    ],
+    "first_observed_year": 2015,
+    "last_observed_year": 2022,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "marina-bay",
+    "circuit_name": "Marina Bay Street Circuit",
+    "layout_id": "marina-bay-4",
+    "event_seasons": [
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 4927,
+    "turn_count": 19,
+    "course_lengths_m_in_modern_results": [
+      4927,
+      4940
+    ],
+    "first_observed_year": 2023,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "melbourne",
+    "circuit_name": "Albert Park Circuit",
+    "layout_id": "melbourne-1",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019
+    ],
+    "length_m": 5303,
+    "turn_count": 16,
+    "course_lengths_m_in_modern_results": [
+      5303
+    ],
+    "first_observed_year": 1996,
+    "last_observed_year": 2019,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "melbourne",
+    "circuit_name": "Albert Park Circuit",
+    "layout_id": "melbourne-2",
+    "event_seasons": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 5278,
+    "turn_count": 14,
+    "course_lengths_m_in_modern_results": [
+      5278
+    ],
+    "first_observed_year": 2022,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "mexico-city",
+    "circuit_name": "Autódromo Hermanos Rodríguez",
+    "layout_id": "mexico-city-3",
+    "event_seasons": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 4304,
+    "turn_count": 17,
+    "course_lengths_m_in_modern_results": [
+      4304
+    ],
+    "first_observed_year": 2015,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "miami",
+    "circuit_name": "Miami International Autodrome",
+    "layout_id": "miami-1",
+    "event_seasons": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 5412,
+    "turn_count": 19,
+    "course_lengths_m_in_modern_results": [
+      5412
+    ],
+    "first_observed_year": 2022,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "monaco",
+    "circuit_name": "Circuit de Monaco",
+    "layout_id": "monaco-6",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 3337,
+    "turn_count": 19,
+    "course_lengths_m_in_modern_results": [
+      3337,
+      3340
+    ],
+    "first_observed_year": 2003,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "montreal",
+    "circuit_name": "Circuit Gilles Villeneuve",
+    "layout_id": "montreal-6",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 4361,
+    "turn_count": 14,
+    "course_lengths_m_in_modern_results": [
+      4361
+    ],
+    "first_observed_year": 2002,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "monza",
+    "circuit_name": "Autodromo Nazionale Monza",
+    "layout_id": "monza-7",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 5793,
+    "turn_count": 11,
+    "course_lengths_m_in_modern_results": [
+      5793
+    ],
+    "first_observed_year": 2000,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "mugello",
+    "circuit_name": "Autodromo Internazionale del Mugello",
+    "layout_id": "mugello-1",
+    "event_seasons": [
+      2020
+    ],
+    "length_m": 5245,
+    "turn_count": 15,
+    "course_lengths_m_in_modern_results": [
+      5245
+    ],
+    "first_observed_year": 2020,
+    "last_observed_year": 2020,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "nurburgring",
+    "circuit_name": "Nürburgring",
+    "layout_id": "nurburgring-4",
+    "event_seasons": [
+      2020
+    ],
+    "length_m": 5148,
+    "turn_count": 15,
+    "course_lengths_m_in_modern_results": [
+      5148
+    ],
+    "first_observed_year": 2002,
+    "last_observed_year": 2020,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "paul-ricard",
+    "circuit_name": "Circuit Paul Ricard",
+    "layout_id": "paul-ricard-3",
+    "event_seasons": [
+      2018,
+      2019,
+      2021,
+      2022
+    ],
+    "length_m": 5842,
+    "turn_count": 15,
+    "course_lengths_m_in_modern_results": [
+      5842
+    ],
+    "first_observed_year": 2018,
+    "last_observed_year": 2022,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "portimao",
+    "circuit_name": "Algarve International Circuit",
+    "layout_id": "portimao-1",
+    "event_seasons": [
+      2020,
+      2021
+    ],
+    "length_m": 4653,
+    "turn_count": 15,
+    "course_lengths_m_in_modern_results": [
+      4653
+    ],
+    "first_observed_year": 2020,
+    "last_observed_year": 2021,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "sepang",
+    "circuit_name": "Sepang International Circuit",
+    "layout_id": "sepang-1",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2026
+    ],
+    "length_m": 5543,
+    "turn_count": 15,
+    "course_lengths_m_in_modern_results": [
+      5543
+    ],
+    "first_observed_year": 1999,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "shanghai",
+    "circuit_name": "Shanghai International Circuit",
+    "layout_id": "shanghai-1",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 5451,
+    "turn_count": 16,
+    "course_lengths_m_in_modern_results": [
+      5451
+    ],
+    "first_observed_year": 2004,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "silverstone",
+    "circuit_name": "Silverstone Circuit",
+    "layout_id": "silverstone-8",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 5891,
+    "turn_count": 18,
+    "course_lengths_m_in_modern_results": [
+      5891
+    ],
+    "first_observed_year": 2010,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "sirius",
+    "circuit_name": "Sirius Autodrom",
+    "layout_id": "sirius-1",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021
+    ],
+    "length_m": 5848,
+    "turn_count": 18,
+    "course_lengths_m_in_modern_results": [
+      5848
+    ],
+    "first_observed_year": 2014,
+    "last_observed_year": 2021,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "spa-francorchamps",
+    "circuit_name": "Circuit de Spa-Francorchamps",
+    "layout_id": "spa-francorchamps-4",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 7004,
+    "turn_count": 19,
+    "course_lengths_m_in_modern_results": [
+      7004
+    ],
+    "first_observed_year": 2007,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "spielberg",
+    "circuit_name": "Red Bull Ring",
+    "layout_id": "spielberg-3",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 4326,
+    "turn_count": 10,
+    "course_lengths_m_in_modern_results": [
+      4318,
+      4326
+    ],
+    "first_observed_year": 1997,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "suzuka",
+    "circuit_name": "Suzuka Circuit",
+    "layout_id": "suzuka-2",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 5807,
+    "turn_count": 18,
+    "course_lengths_m_in_modern_results": [
+      5807
+    ],
+    "first_observed_year": 2003,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "yas-marina",
+    "circuit_name": "Yas Marina Circuit",
+    "layout_id": "yas-marina-1",
+    "event_seasons": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "length_m": 5554,
+    "turn_count": 21,
+    "course_lengths_m_in_modern_results": [
+      5554
+    ],
+    "first_observed_year": 2009,
+    "last_observed_year": 2020,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "yas-marina",
+    "circuit_name": "Yas Marina Circuit",
+    "layout_id": "yas-marina-2",
+    "event_seasons": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "length_m": 5281,
+    "turn_count": 16,
+    "course_lengths_m_in_modern_results": [
+      5281
+    ],
+    "first_observed_year": 2021,
+    "last_observed_year": 2025,
+    "source_id": "F1DB_2026_20_0"
+  },
+  {
+    "circuit_id": "zandvoort",
+    "circuit_name": "Circuit Zandvoort",
+    "layout_id": "zandvoort-5",
+    "event_seasons": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "length_m": 4259,
+    "turn_count": 14,
+    "course_lengths_m_in_modern_results": [
+      4259
+    ],
+    "first_observed_year": 2021,
+    "last_observed_year": 2026,
+    "source_id": "F1DB_2026_20_0"
+  }
+]
