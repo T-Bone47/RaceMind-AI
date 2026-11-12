@@ -1,0 +1,499 @@
+{
+  "schema_version": "1.0.0",
+  "dimensions": [
+    {
+      "dimension_id": "A",
+      "name": "braking",
+      "definition": "Control and response during speed reduction.",
+      "profile_trait_id": "braking_style",
+      "research_questions": [
+        "Onset timing and placement",
+        "Application aggressiveness and initial intensity",
+        "Command/pressure progression",
+        "Release",
+        "Trail braking",
+        "Brake/steer and brake/throttle overlap",
+        "Onset consistency",
+        "Braking in direction changes",
+        "Braking under lateral load",
+        "Straight versus combined phases",
+        "Low-grip modulation",
+        "Adaptation to tyre age",
+        "Lock-up indicators",
+        "Stability",
+        "Heavy stops versus flowing corners"
+      ],
+      "candidate_feature_ids": [
+        "braking_onset_distance",
+        "initial_brake_command",
+        "brake_application_rate",
+        "brake_release_duration",
+        "trail_braking_fraction",
+        "brake_steer_overlap",
+        "brake_throttle_overlap",
+        "braking_point_variability",
+        "braking_lateral_load_share",
+        "wet_brake_shift",
+        "max_deceleration"
+      ],
+      "game_observability": {
+        "braking_onset_distance": "derived",
+        "initial_brake_command": "derived",
+        "brake_application_rate": "derived",
+        "brake_release_duration": "derived",
+        "trail_braking_fraction": "proxy",
+        "brake_steer_overlap": "derived",
+        "brake_throttle_overlap": "derived",
+        "braking_point_variability": "derived",
+        "braking_lateral_load_share": "derived",
+        "wet_brake_shift": "derived",
+        "max_deceleration": "derived"
+      },
+      "public_compatibility": {
+        "braking_onset_distance": "comparable_with_caveats",
+        "initial_brake_command": "not_currently_comparable",
+        "brake_application_rate": "not_currently_comparable",
+        "brake_release_duration": "not_currently_comparable",
+        "trail_braking_fraction": "not_currently_comparable",
+        "brake_steer_overlap": "not_currently_comparable",
+        "brake_throttle_overlap": "not_currently_comparable",
+        "braking_point_variability": "comparable_with_caveats",
+        "braking_lateral_load_share": "not_currently_comparable",
+        "wet_brake_shift": "comparable_with_caveats",
+        "max_deceleration": "comparable_with_caveats"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "B",
+      "name": "steering",
+      "definition": "Command timing, variability and vehicle response around a turn.",
+      "profile_trait_id": "steering_style",
+      "research_questions": [
+        "Progression and rate",
+        "Smoothness",
+        "Turn-in timing and commitment",
+        "Correction frequency and magnitude",
+        "Reversals",
+        "Release/unwind",
+        "Front response preference",
+        "Rear stability preference",
+        "Tolerance of oversteer/understeer",
+        "Rotation phase",
+        "Steering feedback sensitivity",
+        "Reduced front grip adaptation"
+      ],
+      "candidate_feature_ids": [
+        "steer_rate",
+        "steer_rate_variability",
+        "steering_smoothness",
+        "turn_in_distance",
+        "steer_correction_count",
+        "steer_correction_magnitude",
+        "steer_unwind_duration",
+        "balance_response_proxy",
+        "entry_rotation_fraction"
+      ],
+      "game_observability": {
+        "steer_rate": "derived",
+        "steer_rate_variability": "derived",
+        "steering_smoothness": "derived",
+        "turn_in_distance": "derived",
+        "steer_correction_count": "proxy",
+        "steer_correction_magnitude": "proxy",
+        "steer_unwind_duration": "derived",
+        "balance_response_proxy": "proxy",
+        "entry_rotation_fraction": "proxy"
+      },
+      "public_compatibility": {
+        "steer_rate": "not_currently_comparable",
+        "steer_rate_variability": "not_currently_comparable",
+        "steering_smoothness": "qualitative_resemblance_only",
+        "turn_in_distance": "qualitative_resemblance_only",
+        "steer_correction_count": "not_currently_comparable",
+        "steer_correction_magnitude": "not_currently_comparable",
+        "steer_unwind_duration": "not_currently_comparable",
+        "balance_response_proxy": "qualitative_resemblance_only",
+        "entry_rotation_fraction": "qualitative_resemblance_only"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "C",
+      "name": "corner_entry",
+      "definition": "Strategy from the approach through turn-in to the fixed apex gate.",
+      "profile_trait_id": "corner_entry_style",
+      "research_questions": [
+        "Entry speed",
+        "Braking depth and release relative to turn-in",
+        "Rotation",
+        "Front axle load",
+        "Turn-in timing",
+        "V/U line geometry",
+        "Early/late geometric apex",
+        "Stability and risk",
+        "Balance and chosen trajectory"
+      ],
+      "candidate_feature_ids": [
+        "entry_speed",
+        "braking_onset_distance",
+        "braking_duration",
+        "turn_in_distance",
+        "entry_rotation_fraction",
+        "trail_braking_fraction",
+        "motion_stability"
+      ],
+      "game_observability": {
+        "entry_speed": "derived",
+        "braking_onset_distance": "derived",
+        "braking_duration": "derived",
+        "turn_in_distance": "derived",
+        "entry_rotation_fraction": "proxy",
+        "trail_braking_fraction": "proxy",
+        "motion_stability": "proxy"
+      },
+      "public_compatibility": {
+        "entry_speed": "comparable_with_caveats",
+        "braking_onset_distance": "comparable_with_caveats",
+        "braking_duration": "comparable_with_caveats",
+        "turn_in_distance": "qualitative_resemblance_only",
+        "entry_rotation_fraction": "qualitative_resemblance_only",
+        "trail_braking_fraction": "not_currently_comparable",
+        "motion_stability": "not_currently_comparable"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "D",
+      "name": "mid_corner",
+      "definition": "Strategy around the apex and sustained portion of the corner.",
+      "profile_trait_id": "mid_corner_style",
+      "research_questions": [
+        "Minimum speed",
+        "Steering demand",
+        "Geometric apex",
+        "Vehicle balance",
+        "Throttle carry",
+        "Coasting",
+        "Corrections",
+        "Aero load sensitivity",
+        "Speed-class differences",
+        "Line repeatability"
+      ],
+      "candidate_feature_ids": [
+        "minimum_speed",
+        "minimum_speed_ratio",
+        "minimum_speed_position",
+        "coasting_duration",
+        "steer_correction_count",
+        "motion_stability"
+      ],
+      "game_observability": {
+        "minimum_speed": "derived",
+        "minimum_speed_ratio": "derived",
+        "minimum_speed_position": "derived",
+        "coasting_duration": "derived",
+        "steer_correction_count": "proxy",
+        "motion_stability": "proxy"
+      },
+      "public_compatibility": {
+        "minimum_speed": "comparable_with_caveats",
+        "minimum_speed_ratio": "comparable_with_caveats",
+        "minimum_speed_position": "comparable_with_caveats",
+        "coasting_duration": "not_currently_comparable",
+        "steer_correction_count": "not_currently_comparable",
+        "motion_stability": "not_currently_comparable"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "E",
+      "name": "corner_exit",
+      "definition": "Power application and vehicle response from apex to track-out and the next straight.",
+      "profile_trait_id": "corner_exit_style",
+      "research_questions": [
+        "Throttle onset/progression/full",
+        "Traction use and corrections",
+        "Rear slip management",
+        "Unwind",
+        "Exit speed and acceleration",
+        "Long-straight priority",
+        "Tyre-preserving application"
+      ],
+      "candidate_feature_ids": [
+        "first_throttle_after_apex",
+        "throttle_progression_rate",
+        "throttle_50_distance",
+        "throttle_95_distance",
+        "throttle_oscillation_count",
+        "steer_unwind_duration",
+        "traction_slip_share",
+        "exit_speed",
+        "exit_acceleration",
+        "following_straight_elapsed_time"
+      ],
+      "game_observability": {
+        "first_throttle_after_apex": "derived",
+        "throttle_progression_rate": "derived",
+        "throttle_50_distance": "derived",
+        "throttle_95_distance": "derived",
+        "throttle_oscillation_count": "proxy",
+        "steer_unwind_duration": "derived",
+        "traction_slip_share": "proxy",
+        "exit_speed": "derived",
+        "exit_acceleration": "derived",
+        "following_straight_elapsed_time": "derived"
+      },
+      "public_compatibility": {
+        "first_throttle_after_apex": "not_currently_comparable",
+        "throttle_progression_rate": "not_currently_comparable",
+        "throttle_50_distance": "not_currently_comparable",
+        "throttle_95_distance": "not_currently_comparable",
+        "throttle_oscillation_count": "not_currently_comparable",
+        "steer_unwind_duration": "not_currently_comparable",
+        "traction_slip_share": "not_currently_comparable",
+        "exit_speed": "comparable_with_caveats",
+        "exit_acceleration": "comparable_with_caveats",
+        "following_straight_elapsed_time": "comparable_with_caveats"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "F",
+      "name": "high_speed",
+      "definition": "Behaviour in the registered high-speed and high-aero regimes.",
+      "profile_trait_id": "high_speed_style",
+      "research_questions": [
+        "Steering commitment",
+        "Lift versus flat",
+        "Minimum speed",
+        "Direction change speed retention",
+        "Aero balance",
+        "Instability sensitivity",
+        "Line precision",
+        "Adaptation"
+      ],
+      "candidate_feature_ids": [
+        "throttle_lift_duration",
+        "minimum_speed_ratio",
+        "motion_stability",
+        "steering_smoothness"
+      ],
+      "game_observability": {
+        "throttle_lift_duration": "derived",
+        "minimum_speed_ratio": "derived",
+        "motion_stability": "proxy",
+        "steering_smoothness": "derived"
+      },
+      "public_compatibility": {
+        "throttle_lift_duration": "qualitative_resemblance_only",
+        "minimum_speed_ratio": "comparable_with_caveats",
+        "motion_stability": "not_currently_comparable",
+        "steering_smoothness": "qualitative_resemblance_only"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "G",
+      "name": "low_speed",
+      "definition": "Behaviour in tightly curved, traction- or mechanical-grip-sensitive segments.",
+      "profile_trait_id": "low_speed_style",
+      "research_questions": [
+        "Hairpin rotation",
+        "Low-speed braking",
+        "Tight entry",
+        "Steering lock",
+        "Traction",
+        "Adaptability",
+        "Wheelspin management",
+        "Entry versus exit trade"
+      ],
+      "candidate_feature_ids": [
+        "entry_rotation_fraction",
+        "braking_onset_distance",
+        "steer_rate",
+        "traction_slip_share",
+        "exit_acceleration",
+        "minimum_speed_ratio"
+      ],
+      "game_observability": {
+        "entry_rotation_fraction": "proxy",
+        "braking_onset_distance": "derived",
+        "steer_rate": "derived",
+        "traction_slip_share": "proxy",
+        "exit_acceleration": "derived",
+        "minimum_speed_ratio": "derived"
+      },
+      "public_compatibility": {
+        "entry_rotation_fraction": "qualitative_resemblance_only",
+        "braking_onset_distance": "comparable_with_caveats",
+        "steer_rate": "not_currently_comparable",
+        "traction_slip_share": "not_currently_comparable",
+        "exit_acceleration": "comparable_with_caveats",
+        "minimum_speed_ratio": "comparable_with_caveats"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "H",
+      "name": "tyre_management",
+      "definition": "Technique changes and outcome during tyre conditioning and repeated laps.",
+      "profile_trait_id": "tyre_management_style",
+      "research_questions": [
+        "Slide avoidance",
+        "Front versus rear preservation",
+        "Warm-up",
+        "Thermal management",
+        "Long-stint changes",
+        "Pace versus degradation",
+        "Response to wear"
+      ],
+      "candidate_feature_ids": [
+        "stint_degradation_slope",
+        "motion_stability",
+        "traction_slip_share",
+        "context_adaptation_shift"
+      ],
+      "game_observability": {
+        "stint_degradation_slope": "derived",
+        "motion_stability": "proxy",
+        "traction_slip_share": "proxy",
+        "context_adaptation_shift": "derived"
+      },
+      "public_compatibility": {
+        "stint_degradation_slope": "comparable_with_caveats",
+        "motion_stability": "not_currently_comparable",
+        "traction_slip_share": "not_currently_comparable",
+        "context_adaptation_shift": "comparable_with_caveats"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "I",
+      "name": "wet_weather",
+      "definition": "Behaviour in independently verified wet or changing conditions.",
+      "profile_trait_id": "wet_weather_style",
+      "research_questions": [
+        "Brake and steering adaptation",
+        "Throttle modulation",
+        "Traction",
+        "Wet line",
+        "Grip exploration",
+        "Confidence in transitions"
+      ],
+      "candidate_feature_ids": [
+        "wet_brake_shift",
+        "context_adaptation_shift",
+        "throttle_oscillation_count",
+        "world_position"
+      ],
+      "game_observability": {
+        "wet_brake_shift": "derived",
+        "context_adaptation_shift": "derived",
+        "throttle_oscillation_count": "proxy",
+        "world_position": "game_reported"
+      },
+      "public_compatibility": {
+        "wet_brake_shift": "comparable_with_caveats",
+        "context_adaptation_shift": "comparable_with_caveats",
+        "throttle_oscillation_count": "not_currently_comparable",
+        "world_position": "comparable_with_caveats"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "J",
+      "name": "racecraft_and_adaptation",
+      "definition": "Technique changes and tactical choices conditional on the driving task.",
+      "profile_trait_id": "adaptability",
+      "research_questions": [
+        "Qualifying vs race",
+        "Traffic and dirty air",
+        "Overtaking",
+        "Defence",
+        "Starts",
+        "Tyre use while following",
+        "Setup changes",
+        "Regulation changes",
+        "Grip changes",
+        "Pressure"
+      ],
+      "candidate_feature_ids": [
+        "traffic_entry_shift",
+        "context_adaptation_shift",
+        "stint_degradation_slope"
+      ],
+      "game_observability": {
+        "traffic_entry_shift": "derived",
+        "context_adaptation_shift": "derived",
+        "stint_degradation_slope": "derived"
+      },
+      "public_compatibility": {
+        "traffic_entry_shift": "comparable_with_caveats",
+        "context_adaptation_shift": "comparable_with_caveats",
+        "stint_degradation_slope": "comparable_with_caveats"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    },
+    {
+      "dimension_id": "K",
+      "name": "errors",
+      "definition": "Observed incidents or recurring failure modes with validated labels and denominators.",
+      "profile_trait_id": "error_patterns",
+      "research_questions": [
+        "Lock-ups",
+        "Track limits",
+        "Over/under-rotation",
+        "Coasting",
+        "Traction loss",
+        "Corrections",
+        "Entry overspeed",
+        "Missed apex",
+        "Exit compromise",
+        "Lap variation",
+        "Pressure effects"
+      ],
+      "candidate_feature_ids": [
+        "track_limits_incidents",
+        "valid_invalid_window_delta",
+        "lap_time_dispersion",
+        "sideslip_proxy",
+        "coasting_duration",
+        "steer_correction_count"
+      ],
+      "game_observability": {
+        "track_limits_incidents": "derived",
+        "valid_invalid_window_delta": "derived",
+        "lap_time_dispersion": "derived",
+        "sideslip_proxy": "proxy",
+        "coasting_duration": "derived",
+        "steer_correction_count": "proxy"
+      },
+      "public_compatibility": {
+        "track_limits_incidents": "comparable_with_caveats",
+        "valid_invalid_window_delta": "not_currently_comparable",
+        "lap_time_dispersion": "comparable_with_caveats",
+        "sideslip_proxy": "not_currently_comparable",
+        "coasting_duration": "not_currently_comparable",
+        "steer_correction_count": "not_currently_comparable"
+      },
+      "evidence_scope": "Use driver_evidence.csv and driver_style_profiles.json. An unanswered subquestion remains unknown."
+    }
+  ],
+  "independent_context_fields": [
+    "preferred_balance",
+    "observed_balance",
+    "adaptability",
+    "racecraft",
+    "strengths",
+    "limitations"
+  ],
+  "annotation_contract": [
+    "value",
+    "evidence_type",
+    "evidence_ids",
+    "applicable_context",
+    "confidence",
+    "missing_reason"
+  ]
+}

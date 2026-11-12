@@ -1,0 +1,1625 @@
+{
+  "schema_version": "1.0.0",
+  "definitions": {
+    "T(predicate)": "Integral of a Boolean predicate over eligible time. Return null if the denominator is zero.",
+    "MAD": "Median absolute deviation about the sample median.",
+    "gates": "Approach/entry, apex, exit and next braking reference are fixed for each circuit/version/corner; map or empirically register them on a held-out reference; never use player minimum speed to define the apex gate.",
+    "t_turn": "First sign-correct abs(q)>=0.08 crossing in entry held for 0.15 s; adaptive noise floor may only be substituted through a new preprocessing version.",
+    "sustained": "0.15 s unless a feature specifies another threshold; 0.03 hysteresis for throttle-on off state; retain crossing bracket.",
+    "coverage": "Fraction of registered analysis interval supported by eligible interpolation brackets. Check rate from median spacing on native packets and max gap before interpolation.",
+    "bounds": "Null if gate missing, flashback/pit crosses window, active validity unsuitable for requested analysis, denominator undefined, or values exceed the observable dynamic range."
+  },
+  "channels": {
+    "t": "Game session time in seconds with session UID and unrewound frame counter; OpenF1 UTC parsed to relative seconds.",
+    "s": "Metres along a versioned centerline, unwrapped. Game lap distance after coordinate validation; real public distance is estimated or supplied by a separately validated map.",
+    "v": "Speed m/s; divide game and real km/h by 3.6.",
+    "b": "Game normalized brake command [0,1].",
+    "B": "Brake on/off; public 0/100 or bool; game B via 0.05-on/0.03-off hysteresis and 0.12 s persistence before downsampling.",
+    "u": "Game normalized throttle [0,1]. Real public throttle signal is separately typed; never assumed equivalent to the game pedal.",
+    "q": "Game normalized steering command [-1,1]; device, calibration, sensitivity, deadzone and assists metadata required for cross-player interpretation.",
+    "gx": "Game longitudinal G along the documented convention; verify forward-acceleration sign on clean straight.",
+    "gy": "Game lateral G; verify axes and signs on constant-direction corners.",
+    "yaw": "Game heading/yaw radians, unwrap per continuous segment.",
+    "yaw_rate": "Verified MotionEx yaw component rad/s, or differentiated yaw with source typed; validate axes per format.",
+    "pose": "Game world position metres and forward/right basis; real public positions are approximate and need a separate scale, time alignment and map QA.",
+    "wheel_slip": "Game MotionEx per-wheel slip ratio and slip angle, wheel order RL/RR/FL/FR; validate sign and units per game build before use.",
+    "surface": "Game tyre surface categories, plus contact state where that field is available and version-verified. Categories alone do not establish contact.",
+    "gear": "Integer engaged gear.",
+    "lap": "Final lap time, game validity, completion, pit/flashback state, optional events and explicitly recorded intent.",
+    "context": "Task, weather, layout, version, assists, device, setup, compound/age, traffic/flags and available energy-state metadata.",
+    "reference": "Comparable player or approved cohort reference trace, with the same gates and preprocessing."
+  },
+  "quality_policies": {
+    "kin": {
+      "game_min_hz": 10,
+      "public_min_hz": 3.0,
+      "coverage": 0.95,
+      "max_game_gap_s": 0.2,
+      "max_public_gap_s": 0.6,
+      "filter": "Derive from native valid samples. Linear interpolation inside valid continuous segments only. Recompute at matched native/public bandwidth when comparing domains; no interpolation of packet gaps larger than the limit."
+    },
+    "game_input": {
+      "game_min_hz": 20,
+      "public_min_hz": null,
+      "coverage": 0.95,
+      "max_game_gap_s": 0.125,
+      "filter": "Resample continuous variables at 20 Hz within clean segments; reflect-pad centered second-order seven-point Savitzky-Golay (0.35 s window) for derivatives; use hysteresis on unfiltered commands for discrete transitions."
+    },
+    "public_binary": {
+      "game_min_hz": 20,
+      "public_min_hz": 3.0,
+      "coverage": 0.95,
+      "max_game_gap_s": 0.125,
+      "max_public_gap_s": 0.6,
+      "filter": "Sample game's debounced state using the public observation cadence for the comparison. Retain transition brackets (last off/first on etc.); use midpoint estimates and propagate the half-interval uncertainty. No smoothing or interpolation of binary state as pressure."
+    },
+    "aggregate": {
+      "game_min_hz": null,
+      "public_min_hz": null,
+      "coverage": null,
+      "filter": "Accept only passing input rows with the same metric, preprocessing and context; group by session first; no numeric imputation."
+    }
+  },
+  "features": [
+    {
+      "feature_id": "braking_onset_distance",
+      "group": "braking",
+      "units": "m",
+      "formula": "s(apex_gate)-s(t_B_on); positive before the fixed gate",
+      "required_channels": [
+        "t",
+        "s",
+        "B"
+      ],
+      "quality_policy": "public_binary",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Relative brake onset; earlier means larger.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "No bracketed onset within predeclared entry window or apex gate unavailable",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "braking_onset_speed",
+      "group": "braking",
+      "units": "m/s",
+      "formula": "v(t_B_on) from the onset bracket midpoint",
+      "required_channels": [
+        "t",
+        "v",
+        "B"
+      ],
+      "quality_policy": "public_binary",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Speed at brake activation.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "braking_duration",
+      "group": "braking",
+      "units": "s",
+      "formula": "t_B_off-t_B_on for the declared main episode",
+      "required_channels": [
+        "t",
+        "B"
+      ],
+      "quality_policy": "public_binary",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Duration of sustained activation.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "Episode truncated, unbracketed, or merged across a missing-data interval",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "brake_activation_fraction",
+      "group": "braking",
+      "units": "fraction",
+      "formula": "sum(dt with B=1)/sum(valid dt) over fixed window; use bracket midpoints",
+      "required_channels": [
+        "t",
+        "B"
+      ],
+      "quality_policy": "public_binary",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Coarse occupied time within a registered window.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "initial_brake_command",
+      "group": "braking",
+      "units": "fraction",
+      "formula": "max(b) from t_B_on through t_B_on+0.20 s",
+      "required_channels": [
+        "t",
+        "B",
+        "b"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Early game brake command magnitude.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "brake_application_rate",
+      "group": "braking",
+      "units": "fraction/s",
+      "formula": "(0.80-0.20)*b_peak/(t_80_rise-t_20_rise)",
+      "required_channels": [
+        "t",
+        "b",
+        "B"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "How quickly brake command builds.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Either crossing missing or crossing interval <0.10 s",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "brake_release_duration",
+      "group": "braking",
+      "units": "s",
+      "formula": "t_20_fall-t_80_fall for sustained post-peak crossings of b_peak",
+      "required_channels": [
+        "t",
+        "b",
+        "B"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Duration of pressure-command release.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Non-unique release without a sustained crossing or insufficient resolution",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "max_deceleration",
+      "group": "braking",
+      "units": "m/s^2",
+      "formula": "max(-a) in the brake episode; a is linear-fit slope of v on t in centered 1.0 s windows with >=4 native points",
+      "required_channels": [
+        "t",
+        "v",
+        "B"
+      ],
+      "quality_policy": "public_binary",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Peak one-second velocity-derived deceleration.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "No full eligible 1 s window with at least four distinct native timestamps",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "mean_deceleration",
+      "group": "braking",
+      "units": "m/s^2",
+      "formula": "(v(t_B_on)-v(t_B_off))/(t_B_off-t_B_on)",
+      "required_channels": [
+        "t",
+        "v",
+        "B"
+      ],
+      "quality_policy": "public_binary",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Average net speed reduction, influenced by drag and grade.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "trail_braking_fraction",
+      "group": "braking",
+      "units": "fraction",
+      "formula": "T(B & t>=t_turn & t<=t_apex & 0.05<=b<=0.8*b_peak & db/dt<=0.05/s)/T(B) during main episode",
+      "required_channels": [
+        "t",
+        "s",
+        "b",
+        "B",
+        "q"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "proxy",
+      "interpretation": "Proxy for releasing brake command while turning toward apex.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "brake_steer_overlap",
+      "group": "braking",
+      "units": "fraction",
+      "formula": "T(B & abs(q)>=0.08)/T(B) over entry",
+      "required_channels": [
+        "t",
+        "B",
+        "q"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Share of braking while steering is above threshold.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "brake_throttle_overlap",
+      "group": "braking",
+      "units": "fraction",
+      "formula": "T(B & u>=0.05)/T(B)",
+      "required_channels": [
+        "t",
+        "B",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Game command overlap.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "braking_point_variability",
+      "group": "braking",
+      "units": "m",
+      "formula": "1.4826*median(abs(d_i-median(d))) within matching corner/version and task",
+      "required_channels": [
+        "reference",
+        "context"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Robust spread of onset distances.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "Fewer than 5 qualifying lap observations or measurement resolution exceeds spread",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "braking_consistency_by_class",
+      "group": "braking",
+      "units": "dimensionless",
+      "formula": "median over eligible corners c of 1.4826*MAD(d_c)/declared_entry_length_c",
+      "required_channels": [
+        "reference",
+        "context"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Relative onset dispersion across eligible corners in class.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "Fewer than 3 corners with at least 5 observations each",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "braking_lateral_load_share",
+      "group": "braking",
+      "units": "fraction",
+      "formula": "T(B & abs(gy)>=0.5)/T(B) in entry",
+      "required_channels": [
+        "t",
+        "B",
+        "gy"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Braking while simulated lateral load is elevated.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steer_rate",
+      "group": "steering",
+      "units": "fraction/s",
+      "formula": "median(abs(dq/dt)) over active turn",
+      "required_channels": [
+        "t",
+        "q"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Typical steering command rate.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steer_rate_variability",
+      "group": "steering",
+      "units": "fraction/s",
+      "formula": "1.4826*MAD(dq/dt) over active turn",
+      "required_channels": [
+        "t",
+        "q"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Variability of steering command rate.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "turn_in_distance",
+      "group": "steering",
+      "units": "m",
+      "formula": "s(apex_gate)-s(t_turn) with turn threshold sustained in corner direction for 0.15 s",
+      "required_channels": [
+        "t",
+        "s",
+        "q"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "qualitative_resemblance_only",
+      "game_observability": "derived",
+      "interpretation": "Steering turn-in relative to fixed apex.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steer_correction_count",
+      "group": "steering",
+      "units": "count",
+      "formula": "Number of local counter-trend excursions in q from local extremum to extremum >=0.04 command, >=0.15 s duration, separated by >=0.20 s, within single-direction phase",
+      "required_channels": [
+        "t",
+        "q",
+        "s"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "proxy",
+      "interpretation": "Discrete reversal proxy; planned transitions excluded by map and phase.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Missing planned turn direction or window too short",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steer_correction_magnitude",
+      "group": "steering",
+      "units": "fraction",
+      "formula": "median(abs(q_end-q_start)) across qualifying correction excursions",
+      "required_channels": [
+        "t",
+        "q",
+        "s"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "proxy",
+      "interpretation": "Median amplitude of detected reversals.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "No qualifying events or unreliable detection",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steering_smoothness",
+      "group": "steering",
+      "units": "fraction/s^2",
+      "formula": "sqrt(integral((d2q/dt2)^2 dt)/T) during registered single-direction turning interval",
+      "required_channels": [
+        "t",
+        "q"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "qualitative_resemblance_only",
+      "game_observability": "derived",
+      "interpretation": "Lower RMS command acceleration means smoother at the defined bandwidth.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steer_unwind_duration",
+      "group": "steering",
+      "units": "s",
+      "formula": "t_20_fall-t_80_fall on abs(q) relative to its registered corner peak after apex",
+      "required_channels": [
+        "t",
+        "q",
+        "s"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Time to unwind the steering command.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Crossings missing or an immediate next turn prevents unwind",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steer_brake_overlap",
+      "group": "steering",
+      "units": "fraction",
+      "formula": "T(abs(q)>=0.08 & B)/T(abs(q)>=0.08) in corner",
+      "required_channels": [
+        "t",
+        "q",
+        "B"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Share of active steering while braking.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steer_throttle_overlap",
+      "group": "steering",
+      "units": "fraction",
+      "formula": "T(abs(q)>=0.08 & u>=0.20)/T(abs(q)>=0.08) in corner",
+      "required_channels": [
+        "t",
+        "q",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Share of active steering with positive throttle command.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "steer_under_lateral_load",
+      "group": "steering",
+      "units": "fraction",
+      "formula": "median(abs(q) | abs(gy) in the declared lateral-G band and v in matched speed band)",
+      "required_channels": [
+        "t",
+        "q",
+        "gy",
+        "v",
+        "context"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Command magnitude at comparable simulated loads.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "first_throttle_after_apex",
+      "group": "throttle",
+      "units": "m",
+      "formula": "s(t_u_on)-s(apex_gate); first u crosses 0.05 after apex and persists 0.15 s",
+      "required_channels": [
+        "t",
+        "s",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Exit throttle onset distance; flag carry-through if throttle never turns off.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Carry-through, unbracketed crossing or no onset before exit",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "throttle_progression_rate",
+      "group": "throttle",
+      "units": "fraction/s",
+      "formula": "0.70/(t_u85-t_u15) using first sustained exit crossings of 0.15 and 0.85",
+      "required_channels": [
+        "t",
+        "s",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Average rate of throttle build on exit.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Either crossing missing or interval <0.10 s",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "throttle_50_distance",
+      "group": "throttle",
+      "units": "m",
+      "formula": "s(t_u50)-s(apex_gate), first sustained post-apex crossing",
+      "required_channels": [
+        "t",
+        "s",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Distance until 50% game command.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "No bracketed 0.50 crossing",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "throttle_95_distance",
+      "group": "throttle",
+      "units": "m",
+      "formula": "s(t_u95)-s(apex_gate), first sustained post-apex crossing",
+      "required_channels": [
+        "t",
+        "s",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Distance until 95% game command.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "No bracketed 0.95 crossing",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "throttle_95_time",
+      "group": "throttle",
+      "units": "s",
+      "formula": "t_u95-t_apex, first sustained post-apex crossing",
+      "required_channels": [
+        "t",
+        "s",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Time until 95% game command.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "No bracketed 0.95 crossing",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "throttle_oscillation_count",
+      "group": "throttle",
+      "units": "count",
+      "formula": "Count post-onset falls of u>=0.08 lasting >=0.15 s and recovered by >=0.08 within exit; refractory 0.20 s",
+      "required_channels": [
+        "t",
+        "s",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "proxy",
+      "interpretation": "Repeated command corrections; traffic and deployment can motivate them.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "throttle_lift_duration",
+      "group": "throttle",
+      "units": "s",
+      "formula": "T(u<=0.85) for >=0.15 s contiguous runs in a declared fast-corner window",
+      "required_channels": [
+        "t",
+        "s",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "qualitative_resemblance_only",
+      "game_observability": "derived",
+      "interpretation": "Extent of game throttle lifts.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "coasting_duration",
+      "group": "mid_corner",
+      "units": "s",
+      "formula": "T(!B & u<0.05) within the predeclared apex phase",
+      "required_channels": [
+        "t",
+        "s",
+        "B",
+        "u"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Command coasting time.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "exit_acceleration",
+      "group": "exit",
+      "units": "m/s^2",
+      "formula": "(v(exit_gate)-v(apex_gate))/(t_exit-t_apex)",
+      "required_channels": [
+        "t",
+        "s",
+        "v"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Mean net exit acceleration.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "traction_slip_share",
+      "group": "exit",
+      "units": "fraction",
+      "formula": "T(u>=0.2 & max(driven_wheel_slip)>validated_threshold)/T(u>=0.2) from apex to exit; v>=8 m/s",
+      "required_channels": [
+        "t",
+        "s",
+        "v",
+        "u",
+        "wheel_slip",
+        "surface"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "proxy",
+      "interpretation": "Proxy for high driven-wheel longitudinal slip under power.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "Unknown slip sign/scale, threshold, driven axle or contaminated surface",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "entry_speed",
+      "group": "entry",
+      "units": "m/s",
+      "formula": "v(entry_gate) from bracketing valid samples",
+      "required_channels": [
+        "t",
+        "s",
+        "v"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Speed at registered entry gate.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "exit_speed",
+      "group": "exit",
+      "units": "m/s",
+      "formula": "v(exit_gate) from bracketing valid samples",
+      "required_channels": [
+        "t",
+        "s",
+        "v"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Speed at registered exit gate.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "minimum_speed",
+      "group": "apex",
+      "units": "m/s",
+      "formula": "min(v) over fixed apex window after median filter of 3 native samples; harmonize sampling bandwidth",
+      "required_channels": [
+        "t",
+        "s",
+        "v"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Minimum speed in a registered window.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "minimum_speed_ratio",
+      "group": "apex",
+      "units": "fraction",
+      "formula": "minimum_speed/median(v in the declared approach reference window)",
+      "required_channels": [
+        "t",
+        "s",
+        "v"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Relative speed retained through the corner.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Approach reference absent or median below 8 m/s",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "minimum_speed_position",
+      "group": "apex",
+      "units": "m",
+      "formula": "s of first attaining the filtered minimum speed, minus s(apex_gate)",
+      "required_channels": [
+        "t",
+        "s",
+        "v"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Minimum-speed location relative to a fixed reference.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Unstable or unresolvable location, clipped window or missing fixed gate",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "corner_elapsed_time",
+      "group": "timing",
+      "units": "s",
+      "formula": "t(exit_gate)-t(entry_gate)",
+      "required_channels": [
+        "t",
+        "s"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Elapsed time over fixed gates.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "following_straight_elapsed_time",
+      "group": "timing",
+      "units": "s",
+      "formula": "t(next_entry_gate)-t(exit_gate)",
+      "required_channels": [
+        "t",
+        "s"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Elapsed time over fixed gates.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "braking_zone_delta",
+      "group": "timing",
+      "units": "s",
+      "formula": "t(entry_gate)-t(approach_gate) minus reference elapsed time over identical gates",
+      "required_channels": [
+        "t",
+        "s",
+        "reference"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Positive delta means slower over the registered interval.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "entry_to_apex_delta",
+      "group": "timing",
+      "units": "s",
+      "formula": "t(apex_gate)-t(entry_gate) minus reference elapsed time over identical gates",
+      "required_channels": [
+        "t",
+        "s",
+        "reference"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Positive delta means slower over the registered interval.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "apex_to_exit_delta",
+      "group": "timing",
+      "units": "s",
+      "formula": "t(exit_gate)-t(apex_gate) minus reference elapsed time over identical gates",
+      "required_channels": [
+        "t",
+        "s",
+        "reference"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Positive delta means slower over the registered interval.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "corner_to_next_braking_delta",
+      "group": "timing",
+      "units": "s",
+      "formula": "t(next_braking_reference_gate)-t(entry_gate) minus reference elapsed time over identical gates",
+      "required_channels": [
+        "t",
+        "s",
+        "reference"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Positive delta means slower over the registered interval.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "time_loss_distribution",
+      "group": "timing",
+      "units": "s",
+      "formula": "t(window_end_gate)-t(window_start_gate) minus reference elapsed time over identical gates",
+      "required_channels": [
+        "t",
+        "s",
+        "reference"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Positive delta means slower over the registered interval.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "distance_aligned_time_delta",
+      "group": "timing",
+      "units": "s",
+      "formula": "(t_player(s)-t_player(s0))-(t_ref(s)-t_ref(s0)) using monotone gate interpolation",
+      "required_channels": [
+        "t",
+        "s",
+        "reference"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Cumulative relative time to each distance sample.",
+      "known_confounders": "Gate alignment, corner layout, grip, car, setup, load, assists and session task.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "official_sector_elapsed_time",
+      "group": "timing",
+      "units": "s",
+      "formula": "Published sector duration or completed game sector time at confirmed equivalent timing lines",
+      "required_channels": [
+        "lap",
+        "context"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "directly_comparable",
+      "game_observability": "derived",
+      "interpretation": "Direct timing observable; absolute comparison is performance context.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "lap_elapsed_time",
+      "group": "timing",
+      "units": "s",
+      "formula": "Official finished lap duration in seconds from result/timing source",
+      "required_channels": [
+        "lap"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "directly_comparable",
+      "game_observability": "derived",
+      "interpretation": "Valid lap elapsed time, independent of driving style.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "sector_consistency",
+      "group": "consistency",
+      "units": "s",
+      "formula": "1.4826*MAD(t_sector) across valid context-matched laps for each sector",
+      "required_channels": [
+        "lap",
+        "context"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Robust sector-time dispersion.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "Fewer than 5 laps per cell",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "lap_time_dispersion",
+      "group": "consistency",
+      "units": "s",
+      "formula": "1.4826*MAD(t_lap) over valid comparable laps",
+      "required_channels": [
+        "lap",
+        "context"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Robust lap-time dispersion.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "Fewer than 5 laps per cell",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "track_limits_incidents",
+      "group": "errors",
+      "units": "count",
+      "formula": "Count unique source-backed track-limit events by (session,lap,incident ID); preserve unknown reason",
+      "required_channels": [
+        "lap",
+        "context"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Observed rule events under each domain's enforcement.",
+      "known_confounders": "Rule geometry, enforcement, event coverage, settings and scope.",
+      "failure_conditions": "Source cannot distinguish invalidation reason or incident identity",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "valid_invalid_window_delta",
+      "group": "errors",
+      "units": "s",
+      "formula": "median(window elapsed time in tagged exploration stratum) - median(in comparable valid baseline)",
+      "required_channels": [
+        "lap",
+        "context",
+        "reference"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "derived",
+      "interpretation": "Exploration comparison; exclude portions after invalid shortcuts from pace conclusions.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "Fewer than 3 laps in either stratum, unknown intent, shortcut before comparison or incompatible paths",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "longitudinal_g",
+      "group": "dynamics",
+      "units": "g",
+      "formula": "median(gx) over declared phase",
+      "required_channels": [
+        "t",
+        "gx"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "game_reported",
+      "interpretation": "Direct game-simulated signed acceleration in g.",
+      "known_confounders": "Axis conventions, gradient, bumps and combined load.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "lateral_g",
+      "group": "dynamics",
+      "units": "g",
+      "formula": "median(abs(gy)) over declared phase",
+      "required_channels": [
+        "t",
+        "gy"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "game_reported",
+      "interpretation": "Direct game-simulated lateral load magnitude.",
+      "known_confounders": "Banking, axis conventions, bumps and combined load.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "heading",
+      "group": "dynamics",
+      "units": "rad",
+      "formula": "unwrap(yaw(t)) relative to local map tangent where available",
+      "required_channels": [
+        "t",
+        "yaw",
+        "pose"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "game_reported",
+      "interpretation": "Game vehicle heading, or heading minus map tangent when explicitly normalized.",
+      "known_confounders": "Map convention and yaw wrapping.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "yaw_rate",
+      "group": "rotation",
+      "units": "rad/s",
+      "formula": "Use verified reported yaw_rate; otherwise d unwrap(yaw)/dt with source typed",
+      "required_channels": [
+        "t",
+        "yaw_rate"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "reported_or_derived",
+      "interpretation": "Angular rate about the verified yaw axis.",
+      "known_confounders": "Game basis, bank, spins and threshold choice.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "entry_rotation_fraction",
+      "group": "rotation",
+      "units": "fraction",
+      "formula": "integral(abs(yaw_rate) dt, t_turn..t_apex)/integral(abs(yaw_rate) dt,t_turn..t_exit)",
+      "required_channels": [
+        "t",
+        "s",
+        "q",
+        "yaw_rate"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "qualitative_resemblance_only",
+      "game_observability": "proxy",
+      "interpretation": "Share of yaw activity accrued before apex.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "No stable turn onset or accumulated absolute yaw less than 0.05 rad",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "world_position",
+      "group": "dynamics",
+      "units": "m",
+      "formula": "Recorded world position x,y,z after explicit basis transform",
+      "required_channels": [
+        "t",
+        "pose"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "game_reported",
+      "interpretation": "Registration input only; public pose has reduced precision.",
+      "known_confounders": "Coordinate conventions, world scale, different racing lines and topology.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "vehicle_speed",
+      "group": "dynamics",
+      "units": "m/s",
+      "formula": "v_kmh/3.6",
+      "required_channels": [
+        "t",
+        "v"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "directly_comparable",
+      "game_observability": "game_reported",
+      "interpretation": "Same physical observable; absolute pace context.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "wheel_slip_ratio",
+      "group": "dynamics",
+      "units": "fraction",
+      "formula": "Reported per-wheel longitudinal slip ratio after verifying game build's sign and scale",
+      "required_channels": [
+        "t",
+        "wheel_slip",
+        "v"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "game_reported",
+      "interpretation": "Simulated tyre state.",
+      "known_confounders": "Low speeds, tyre radius, surface and ABS/TC interventions.",
+      "failure_conditions": "Unverified scale/sign, low speed or invalid wheel stream",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "surface_contact",
+      "group": "dynamics",
+      "units": "category",
+      "formula": "Per-wheel game surface/contact enum decoded by version; retain unknown values",
+      "required_channels": [
+        "t",
+        "surface"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "game_reported",
+      "interpretation": "Surface context and, where available, explicit contact state.",
+      "known_confounders": "Packet format and surface classifications.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "gear_changes",
+      "group": "dynamics",
+      "units": "count",
+      "formula": "Count integer gear transitions stable across >=2 consecutive samples; skip gaps",
+      "required_channels": [
+        "t",
+        "gear"
+      ],
+      "quality_policy": "kin",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Number of reported changes at matched bandwidth.",
+      "known_confounders": "Automatic gears, vehicle ratios and source cadence.",
+      "failure_conditions": "Required channel/gate missing or quality policy failed",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "motion_stability",
+      "group": "dynamics",
+      "units": "rad/s",
+      "formula": "1.4826*MAD(yaw_rate - v*kappa_map) at matched speed and phase; kappa_map in 1/m",
+      "required_channels": [
+        "t",
+        "s",
+        "v",
+        "yaw_rate",
+        "pose"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "proxy",
+      "interpretation": "Yaw residual dispersion; independent of actual tyre balance.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "No validated curvature or poor registration",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "sideslip_proxy",
+      "group": "dynamics",
+      "units": "rad",
+      "formula": "atan2(dot(v_world,right_basis),dot(v_world,forward_basis)) in road plane; v>=8 m/s",
+      "required_channels": [
+        "t",
+        "v",
+        "pose"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "not_currently_comparable",
+      "game_observability": "proxy",
+      "interpretation": "Direction of motion relative to heading.",
+      "known_confounders": "Banking, map basis, yaw reversals, velocity noise and game build.",
+      "failure_conditions": "No independent reliable velocity/basis or speed below threshold",
+      "source_ids": [
+        "EA_UDP_25_26"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "balance_response_proxy",
+      "group": "rotation",
+      "units": "rad/s",
+      "formula": "median(yaw_rate-v*kappa_ref) in matched turn phase, conditional on speed, q, lateral load and sideslip/wheel-slip evidence",
+      "required_channels": [
+        "t",
+        "s",
+        "v",
+        "q",
+        "gy",
+        "yaw_rate",
+        "pose",
+        "wheel_slip"
+      ],
+      "quality_policy": "game_input",
+      "real_f1_compatibility": "qualitative_resemblance_only",
+      "game_observability": "proxy",
+      "interpretation": "Observed response in a controlled game run; preference requires repeated choices or explicit statement.",
+      "known_confounders": "Device map, assists, setup, grip, trajectory, vehicle speed and driver intent.",
+      "failure_conditions": "No matched reference or independent motion/slip confirmation",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "stint_degradation_slope",
+      "group": "tyre_management",
+      "units": "s/lap",
+      "formula": "Theil-Sen median pairwise slope of lap-time residual against tyre age within one matched stint",
+      "required_channels": [
+        "lap",
+        "context",
+        "reference"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Pace residual change with tyre age; confounding can dominate.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "Fewer than 8 valid comparable laps, missing baseline or overlapping strategy changes",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "context_adaptation_shift",
+      "group": "adaptability",
+      "units": "normalized units",
+      "formula": "median(z_feature in condition B)-median(z_feature in condition A), within paired layout/task/vehicle/device groups",
+      "required_channels": [
+        "context",
+        "reference"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Observed change between declared conditions; sign is metric-specific.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "No adequately populated overlapping paired strata",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "wet_brake_shift",
+      "group": "wet_weather",
+      "units": "m",
+      "formula": "median(d_B_on in wet)-median(d_B_on in dry) in paired compatible corner and task strata",
+      "required_channels": [
+        "context",
+        "reference"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Earlier/later activation difference with wet grip.",
+      "known_confounders": "Brake thresholds, sample cadence, alignment, gear/energy recovery, aero drag, grade and grip.",
+      "failure_conditions": "No verified wet and dry matched cells",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    },
+    {
+      "feature_id": "traffic_entry_shift",
+      "group": "racecraft",
+      "units": "m",
+      "formula": "median(d_B_on with declared close-traffic classification)-median(d_B_on in clean air)",
+      "required_channels": [
+        "context",
+        "reference"
+      ],
+      "quality_policy": "aggregate",
+      "real_f1_compatibility": "comparable_with_caveats",
+      "game_observability": "derived",
+      "interpretation": "Observed entry change in a declared traffic condition; outside core DNA.",
+      "known_confounders": "Fuel burn, car, aero, traffic, tyre compound and age, energy deployment, flags and grip evolution.",
+      "failure_conditions": "No validated traffic series or insufficient matched lap counts",
+      "source_ids": [
+        "EA_UDP_25_26",
+        "OPENF1_DOCS",
+        "FASTF1_DATA"
+      ],
+      "notes": null
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0.0",
+  "axes_are_nonexclusive": true,
+  "candidate_changes": {
+    "trail_braking_dominant_and_braking_turn_in_separated": "Opposite poles of brake_turn_overlap",
+    "entry_and_exit_prioritizing": "Coupled phase observations under entry_exit_tradeoff",
+    "adaptive_mixed": "Adaptive retained with paired evidence. Mixed dropped as a default assignment."
+  },
+  "archetypes": [
+    {
+      "archetype_id": "precision_stability",
+      "name": "Precision and stability orientation",
+      "operational_definition": "Consistent corner-relative input and line under repeated matched tasks. Pace and preferred balance are independent attributes.",
+      "game_feature_ids": [
+        "steering_smoothness",
+        "motion_stability",
+        "braking_point_variability"
+      ],
+      "evidence_ids": [
+        "EV-PIA001"
+      ],
+      "examples": [
+        {
+          "driver_id": "piastri",
+          "evidence_id": "EV-PIA001",
+          "season": "2016–2021"
+        }
+      ],
+      "limitations": "Piastri cited prior junior-category feedback. This is a hypothesis for feature design, with no numerical F1 fingerprint.",
+      "misleading_cases": "Device filtering and a stable setup can produce similar traces.",
+      "validation_status": "unvalidated_continuous_axis"
+    },
+    {
+      "archetype_id": "entry_rotation",
+      "name": "Entry rotation",
+      "operational_definition": "Greater share of total heading change before the fixed apex, supported by yaw, path and input context.",
+      "game_feature_ids": [
+        "entry_rotation_fraction",
+        "balance_response_proxy",
+        "sideslip_proxy"
+      ],
+      "evidence_ids": [
+        "EV-SEN002",
+        "EV-ALO003"
+      ],
+      "examples": [
+        {
+          "driver_id": "senna",
+          "evidence_id": "EV-SEN002",
+          "season": "1990–1992"
+        },
+        {
+          "driver_id": "alonso",
+          "evidence_id": "EV-ALO003",
+          "season": "2003–2006"
+        }
+      ],
+      "limitations": "Senna and Alonso provide distinct, context-bound examples of yaw or trajectory strategies. Public yaw is unavailable at the required fidelity.",
+      "misleading_cases": "A responsive front preference, transient oversteer or a sharp turn-in can occur independently.",
+      "validation_status": "unvalidated_continuous_axis"
+    },
+    {
+      "archetype_id": "brake_turn_overlap",
+      "name": "Brake and turn overlap",
+      "operational_definition": "Continuous spectrum from early brake release before turn-in to sustained overlap with declining command. Estimate in a fixed entry window.",
+      "game_feature_ids": [
+        "trail_braking_fraction",
+        "brake_steer_overlap",
+        "brake_release_duration"
+      ],
+      "evidence_ids": [
+        "EV-NOR003",
+        "EV-PIA002"
+      ],
+      "examples": [
+        {
+          "driver_id": "norris",
+          "evidence_id": "EV-NOR003",
+          "season": "2025"
+        },
+        {
+          "driver_id": "piastri",
+          "evidence_id": "EV-PIA002",
+          "season": "2025"
+        }
+      ],
+      "limitations": "The McLaren comparison motivates a relative axis under the MCL39 context. The two reports share a source.",
+      "misleading_cases": "Heavy stops and linked bends demand different overlaps. Binary brake cannot reveal command release shape.",
+      "validation_status": "unvalidated_continuous_axis"
+    },
+    {
+      "archetype_id": "speed_retention",
+      "name": "Minimum-speed retention",
+      "operational_definition": "Higher minimum speed relative to matched approach in a fixed corner window, evaluated with downstream time and exit acceleration.",
+      "game_feature_ids": [
+        "minimum_speed_ratio",
+        "minimum_speed_position",
+        "corner_to_next_braking_delta"
+      ],
+      "evidence_ids": [],
+      "examples": [],
+      "limitations": "Working measurement hypothesis. No general driver assignment.",
+      "misleading_cases": "Vehicle grip and exit compromise can dominate. Minimum speed need not coincide with geometric apex.",
+      "validation_status": "unvalidated_continuous_axis"
+    },
+    {
+      "archetype_id": "entry_exit_tradeoff",
+      "name": "Entry and exit emphasis",
+      "operational_definition": "Jointly characterize time and speed over entry, apex, exit and next straight. Record entry and exit evidence independently.",
+      "game_feature_ids": [
+        "entry_to_apex_delta",
+        "apex_to_exit_delta",
+        "corner_to_next_braking_delta",
+        "exit_acceleration"
+      ],
+      "evidence_ids": [
+        "EV-MAS002",
+        "EV-OCO001"
+      ],
+      "examples": [
+        {
+          "driver_id": "massa",
+          "evidence_id": "EV-MAS002",
+          "season": "2014"
+        },
+        {
+          "driver_id": "ocon",
+          "evidence_id": "EV-OCO001",
+          "season": "2026"
+        }
+      ],
+      "limitations": "Massa and Ocon described individual sequences where preparation for the following turn or straight affects line choice.",
+      "misleading_cases": "A local time gain may reverse by the next braking zone. Energy deployment changes straight time.",
+      "validation_status": "unvalidated_continuous_axis"
+    },
+    {
+      "archetype_id": "traction_modulation",
+      "name": "Traction modulation",
+      "operational_definition": "Sustained throttle rise, corrective commands and simulated driven-axle slip within the same exit demand.",
+      "game_feature_ids": [
+        "throttle_progression_rate",
+        "throttle_oscillation_count",
+        "traction_slip_share"
+      ],
+      "evidence_ids": [
+        "EV-VER003"
+      ],
+      "examples": [
+        {
+          "driver_id": "verstappen",
+          "evidence_id": "EV-VER003",
+          "season": "2024"
+        }
+      ],
+      "limitations": "One wet start and line analysis provides context, with no public numerical pedal or tyre-slip reference.",
+      "misleading_cases": "Traction control, wet conditions, ERS and controller maps can change apparent smoothness.",
+      "validation_status": "unvalidated_continuous_axis"
+    },
+    {
+      "archetype_id": "context_adaptation",
+      "name": "Context-dependent adaptation",
+      "operational_definition": "Repeatable feature shifts across paired setup, grip or task conditions with adequate overlapping samples.",
+      "game_feature_ids": [
+        "context_adaptation_shift",
+        "wet_brake_shift",
+        "traffic_entry_shift"
+      ],
+      "evidence_ids": [
+        "EV-ALO002",
+        "EV-VER002",
+        "EV-SAI003"
+      ],
+      "examples": [
+        {
+          "driver_id": "alonso",
+          "evidence_id": "EV-ALO002",
+          "season": "2021"
+        },
+        {
+          "driver_id": "verstappen",
+          "evidence_id": "EV-VER002",
+          "season": "2022–2023"
+        },
+        {
+          "driver_id": "sainz",
+          "evidence_id": "EV-SAI003",
+          "season": "2023"
+        }
+      ],
+      "limitations": "Context and testimony can guide the matched conditions. Magnitude is undefined without controlled repeated observations.",
+      "misleading_cases": "Sparse coverage cannot establish a mixed style. Team swaps bundle multiple causes.",
+      "validation_status": "unvalidated_continuous_axis"
+    },
+    {
+      "archetype_id": "high_speed_commitment",
+      "name": "High-speed commitment",
+      "operational_definition": "Relative speed retention and lift behaviour in a specific high-speed class at the same aero mode and grip.",
+      "game_feature_ids": [
+        "throttle_lift_duration",
+        "minimum_speed_ratio",
+        "motion_stability"
+      ],
+      "evidence_ids": [
+        "EV-HAM003",
+        "EV-LEC003",
+        "EV-SAI004"
+      ],
+      "examples": [
+        {
+          "driver_id": "hamilton",
+          "evidence_id": "EV-HAM003",
+          "season": "2007–2019"
+        },
+        {
+          "driver_id": "leclerc",
+          "evidence_id": "EV-LEC003",
+          "season": "2022"
+        },
+        {
+          "driver_id": "sainz",
+          "evidence_id": "EV-SAI004",
+          "season": "2022"
+        }
+      ],
+      "limitations": "Sources motivate circuit-conditional hypotheses about instability and long fast corners.",
+      "misleading_cases": "Full throttle can be vehicle- or deployment-limited. Public throttle semantics need calibration.",
+      "validation_status": "unvalidated_continuous_axis"
+    }
+  ]
+}
